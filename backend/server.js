@@ -60,6 +60,21 @@ const swaggerOptions = {
  *                 type: string
  *               isMafia:
  *                 type: boolean
+ *         messages:
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               id:
+ *                 type: string
+ *               playerId:
+ *                 type: string
+ *               playerName:
+ *                 type: string
+ *               content:
+ *                 type: string
+ *               timestamp:
+ *                 type: number
  */
 
 
@@ -168,6 +183,62 @@ app.post('/api/rooms/:roomId/join', (req, res) => {
  *         description: Room not found
  */
 
+//Отправка сообщений
+app.post('/api/rooms/:roomId/messages', (req, res) => {
+    const { roomId } = req.params;
+    const { playerId, content } = req.body;
+    const room = rooms.get(roomId);
+  
+    if (!room) {
+      return res.status(404).json({ error: 'Room not found' });
+    }
+  
+    const player = room.players.find(p => p.id === playerId);
+    if (!player) {
+      return res.status(404).json({ error: 'Player not found' });
+    }
+  
+    const message = {
+      id: nanoid(),
+      playerId,
+      playerName: player.name,
+      content,
+      timestamp: Date.now(),
+    };
+  
+    room.messages.push(message);
+    res.json(message);
+  });
+
+/**
+ * @swagger
+ * /api/rooms/{roomId}/messages:
+ *   post:
+ *     summary: Send a message in a room
+ *     tags: [Messages]
+ *     parameters:
+ *       - in: path
+ *         name: roomId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               playerId:
+ *                 type: string
+ *               content:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Message sent successfully
+ *       404:
+ *         description: Room not found
+ */
 
 //запуск сервера на порте 3000
 const PORT = 3000;
