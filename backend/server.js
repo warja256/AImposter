@@ -63,7 +63,7 @@ const swaggerOptions = {
  */
 
 
-
+const rooms = new Map();
 //Создание локальной комнаты
 //обработка post запроса
 app.post('/api/rooms', (req, res) => {
@@ -87,7 +87,7 @@ app.post('/api/rooms', (req, res) => {
       timeRemaining: 20,
     };
   
-    //запись комнаты в массив комнат
+    //запись комнаты
     rooms.set(roomId, room);
     res.json(room);
   });
