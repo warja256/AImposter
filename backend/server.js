@@ -40,6 +40,29 @@ const swaggerOptions = {
 
 
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Room:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *         players:
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               id:
+ *                 type: string
+ *               name:
+ *                 type: string
+ *               isMafia:
+ *                 type: boolean
+ */
+
+
 
 //Создание локальной комнаты
 //обработка post запроса
@@ -68,6 +91,33 @@ app.post('/api/rooms', (req, res) => {
     rooms.set(roomId, room);
     res.json(room);
   });
+
+/**
+ * @swagger
+ * /api/rooms:
+ *   post:
+ *     summary: Create a new room
+ *     tags: [Rooms]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               playerName:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Room created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Room'
+ */
+
+
+
 
 //запуск сервера на порте 3000
 const PORT = 3000;
