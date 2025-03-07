@@ -240,6 +240,52 @@ app.post('/api/rooms/:roomId/messages', (req, res) => {
  *         description: Room not found
  */
 
+
+/**
+ * @swagger
+ * /api/rooms/{roomId}/vote:
+ *   post:
+ *     summary: Cast a vote for a player
+ *     tags: [Voting]
+ *     parameters:
+ *       - in: path
+ *         name: roomId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               voterId:
+ *                 type: string
+ *               targetId:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Vote cast successfully
+ *       404:
+ *         description: Room or player not found
+ */
+
+//голосование тутутуту
+app.post('/api/rooms/:roomId/vote', (req, res) => {
+    const { roomId } = req.params;
+    const { voterId, targetId } = req.body;
+    const room = rooms.get(roomId);
+  
+    if (!room) {
+      return res.status(404).json({ error: 'Room not found' });
+    }
+  
+    // Написать как работает)
+    res.json({ message: 'Vote recorded' });
+  });
+
+
 //запуск сервера на порте 3000
 const PORT = 3000;
 app.listen(PORT, () => {
