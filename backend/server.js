@@ -116,7 +116,57 @@ app.post('/api/rooms', (req, res) => {
  *               $ref: '#/components/schemas/Room'
  */
 
+//Присоединение к существующей комнате
+app.post('/api/rooms/:roomId/join', (req, res) => {
+    const { roomId } = req.params;
+    const { playerName } = req.body;
+    const room = rooms.get(roomId);
+  
+    if (!room) {
+      return res.status(404).json({ error: 'Room not found' });
+    }
+    //новый игрок
+    const player = {
+      id: nanoid(),
+      name: playerName,
+      isMafia: false,
+    };
+    //добавляется в список игроков комнаты
+    room.players.push(player);
+    res.json(room);
+  });
 
+/**
+ * @swagger
+ * /api/rooms/{roomId}/join:
+ *   post:
+ *     summary: Join an existing room
+ *     tags: [Rooms]
+ *     parameters:
+ *       - in: path
+ *         name: roomId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               playerName:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Successfully joined the room
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Room'
+ *       404:
+ *         description: Room not found
+ */
 
 
 //запуск сервера на порте 3000
