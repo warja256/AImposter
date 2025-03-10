@@ -1,11 +1,11 @@
 // src/App.js
 import React from 'react';
-import WelcomeScreen from './components/WelcomeScreen';
+import HumanRoleScreen from './components/HumanRoleScreen';
 
 function App() {
   return (
     <div>
-      <WelcomeScreen />
+      <HumanRoleScreen /> 
     </div>
   );
 }
