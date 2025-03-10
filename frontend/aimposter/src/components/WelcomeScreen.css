@@ -1,0 +1,77 @@
+/* src/components/WelcomeScreen.css */
+@font-face {
+    font-family: 'PressStart2P';
+    src: url('../assets/fonts/PressStart2P-Regular.ttf') format('truetype');
+  }
+
+  @font-face {
+    font-family: 'PixelifySans';
+    src: url('../assets/fonts/PixelifySans-SemiBold.ttf') format('truetype');
+  }
+
+  .welcome-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: 
+      url('../assets/images/gradient.png'), /* Наложенное изображение */
+      url('../assets/images/background.png'); /* Основной фон */
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    color: white;
+    text-align: center;
+  }
+
+  .header {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+  }
+
+  .logo-container img {
+    width: 114px; /* Размер логотипа */
+    height: auto;
+  }
+
+  .title-container {
+    margin-left: 10px;
+  }
+
+  .mafia-title {
+    font-size: 40px;
+    color: white;
+    font-family: 'PixelifySans', monospace;
+  }
+  
+  .logo img {
+    width: 100px;
+    height: auto;
+  }
+  
+  .text h1 {
+    font-size: 40px;
+    margin: 0;
+  }
+  
+  .text .mafia-ai {
+    font-size: 48px;
+    margin-top: 76px;
+    margin-bottom: 26px;
+    font-family: 'PressStart2P', sans-serif;
+  }
+
+  .text .header {
+    font-size: 40;
+    margin: 0.5rem 0;
+    font-family: 'SF Pro Text', sans-serif;
+  }
+  
+  .robot-icon img {
+    width: 150px;
+    height: 150px;
+  }
