@@ -1,28 +1,27 @@
-// src/components/HumanRoleScreen.js
 import React from 'react';
-import './MafiaScreen.css';
+import './RoleScreen.css';
 import '../header.css';
 import human from '../../assets/images/human.png';
 import logo from '../../assets/images/logo.png';
 
 const HumanRoleScreen = () => {
   return (
-    <div className="welcome-screen">
-      <div className="header">
-        <div className="logo-container">
-          <img src={logo} alt="Logo" />
-        </div>
-        <div className="title-container">
-          <span className="header-title">AImposter</span>
-        </div>
+    <div className="role-screen">
+      
+      <div className="logo-container">
+        <img src={logo} alt="AImposter Logo" />
+        <span className="header-title">AImposter</span>
       </div>
+
       <div className="text">
         <h1>ПОЗДРАВЛЯЕМ! ВАША РОЛЬ</h1>
-        <h2 className="mafia-ai">ЧЕЛОВЕК</h2>
+        <h2 className="role-name">ЧЕЛОВЕК</h2>
       </div>
-      <div className="robot-icon">
+
+      <div className="role">
         <img src={human} alt="Human" />
       </div>
+
     </div>
   );
 };

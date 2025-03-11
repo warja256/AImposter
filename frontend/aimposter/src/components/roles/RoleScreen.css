@@ -1,0 +1,33 @@
+  .role-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: 
+      url('../../assets/images/gradient.png'),
+      url('../../assets/images/background.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    color: white;
+    text-align: center;
+  }
+  
+  .text h1 {
+    font-family: 'Mulish', Arial, sans-serif;
+    font-size: 40px;
+    margin: 0;
+  }
+  
+  .text .role-name {
+    font-size: 48px;
+    margin-top: 76px;
+    margin-bottom: 26px;
+    font-family: 'PressStart2P', sans-serif;
+  }
+  
+  .role img {
+    width: 150px;
+    height: 150px;
+  }
