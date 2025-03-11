@@ -1,0 +1,36 @@
+// src/components/MafiaScreen.js
+import React from 'react';
+import './HumanNight.css';
+import '../header.css';
+import logo from '../../assets/images/logo.png';
+
+const HumanNightScreen = () => {
+  const [countdown, setCountdown] = useState(20);
+
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+  };
+
+
+  return (
+    <div className="night-screen">
+      
+      <div className="logo-container">
+        <img src={logo} alt="AImposter Logo" />
+        <span className="header-title">AImposter</span>
+      </div>
+
+      <div className="text">
+        <h1 className="head-text">ТШШ... НАСТУПИЛА НОЧЬ</h1>
+        <h2>МАФИЯ ДЕЛАЕТ СВОЙ ВЫБОР</h2>
+      </div>
+
+      <div className="timer">{formatTime(countdown)}</div>
+
+    </div>
+  );
+};
+
+export default HumanNightScreen;

@@ -1,0 +1,27 @@
+.night-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: 
+      url('../../assets/images/night_background.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    color: white;
+    text-align: center;
+  }
+
+  .text .head-text {
+    font-size: 48px;
+    /* margin-top: 76px;
+    margin-bottom: 26px; */
+    font-family: 'PressStart2P', sans-serif;
+  }
+
+  .text h2 {
+    font-family: 'Mulish', Arial, sans-serif;
+    font-size: 36px;
+    /* margin: 0; */
+  }
