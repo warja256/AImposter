@@ -123,6 +123,22 @@ html, body {
   opacity: 0;              /* Исчезновение подсказки при фокусе */
 }
 
+.message-input::after {
+  content: url("../../assets/images/blue_human.png"); /* Путь к изображению */
+  height: 45px;
+  width: 45px;
+  position: absolute;
+  right: 20px; /* Положение изображения в правой части поля */
+  top: 50%; /* Центрирование по вертикали */
+  transform: translateY(-50%); /* Коррекция вертикального положения */
+  pointer-events: none; /* Игнорирование взаимодействий с изображением */
+}
+
+.message-input {
+  position: relative; /* Позиционирование для ::after */
+  padding-right: 50px; /* Добавление дополнительного пространства для изображения */
+}
+
 .send-button {
   width: 309px;               /* Ширина кнопки */
   height: 61px;                /* Высота кнопки */
