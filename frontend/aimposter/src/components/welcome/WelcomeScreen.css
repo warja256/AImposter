@@ -1,0 +1,173 @@
+/* Основной контейнер */
+.main-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: 
+      url('../../assets/images/gradient.png'), /* Наложенное изображение */
+      url('../../assets/images/background.png'); /* Основной фон */
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    color: white;
+    text-align: center;
+}
+
+/* Логотип */
+.logo-container {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+.logo-container img {
+    width: 114px;
+    height: auto;
+}
+
+.game-title {
+    font-size: 32px;
+    font-family: 'PressStart2P', sans-serif;
+    color: white;
+    margin-left: 10px;
+}
+
+/* Контейнеры */
+.content {
+    display: flex;
+    gap: 20px;
+}
+
+.avatar-name {
+    display: flex;
+    align-items: center; /* Выравнивание по вертикали */
+    gap: 62px; 
+}
+
+.login-box {
+    width: 547px;
+    height: 460px;
+    box-shadow: 0 1px 15px rgba(0, 0, 0, 0.25);
+
+}
+
+/* Общие стили для карточек */
+.login-box, .info-box {
+
+    border-radius: 50px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(15px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Аватар */
+.avatar-container img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
+/* Поле ввода */
+.input-field {
+    width: 205px;
+    height: 71px;
+    border-radius: 50px;
+    border: 5px solid #C6D3EA;
+    text-align: center;
+    font-size: 18px;
+    font-family: 'PressStart2P', sans-serif;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+/* Ввод кода комнаты */
+.room-code-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.code-field {
+    width: 100px;
+    padding: 8px;
+    text-align: center;
+    font-size: 16px;
+    font-family: 'PressStart2P', sans-serif;
+    border-radius: 12px;
+    border: 2px solid #fff;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+/* Кнопки */
+.join-button, .create-game {
+    width: 100%;
+    padding: 12px;
+    font-size: 18px;
+    font-family: 'PressStart2P', sans-serif;
+    color: white;
+    background: #315efb;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    margin-top: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.create-game {
+    background: #1e40af;
+}
+
+.join-button:hover, .create-game:hover {
+    background: #243bb6;
+}
+
+/* Информационный блок */
+.info-box h3 {
+    font-size: 20px;
+    color: #ffcc00;
+    text-align: left;
+    font-family: 'PressStart2P', sans-serif;
+}
+
+.info-box p {
+    font-size: 16px;
+    text-align: left;
+}
+
+.player-role {
+    color: #36d1dc;
+    font-weight: bold;
+}
+
+.mafia-role {
+    color: #ff3366;
+    font-weight: bold;
+}
+
+/* Индикатор страниц */
+.dots {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    margin-top: 10px;
+}
+
+.dots span {
+    width: 10px;
+    height: 10px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.5;
+}
+
+.dots span:nth-child(2) {
+    background: #ffcc00;
+    opacity: 1;
+}

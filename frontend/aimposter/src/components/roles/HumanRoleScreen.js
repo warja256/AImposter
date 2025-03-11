@@ -1,6 +1,7 @@
 // src/components/HumanRoleScreen.js
 import React from 'react';
 import './MafiaScreen.css';
+import '../header.css';
 import human from '../../assets/images/human.png';
 import logo from '../../assets/images/logo.png';
 
@@ -12,7 +13,7 @@ const HumanRoleScreen = () => {
           <img src={logo} alt="Logo" />
         </div>
         <div className="title-container">
-          <span className="mafia-title">AImposter</span>
+          <span className="header-title">AImposter</span>
         </div>
       </div>
       <div className="text">
