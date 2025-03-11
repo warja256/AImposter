@@ -1,0 +1,88 @@
+html, body {
+  overflow: hidden; /* Запрещаем прокрутку */
+  height: 100%; /* Устанавливаем высоту равной 100% */
+}
+
+.ai-chat-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: 
+    url('../../assets/images/gradient.png'),
+    url('../../assets/images/background.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  color: white;
+  text-align: center;
+}
+
+.chat-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Центрирование по горизонтали и вертикали */
+  width: 720px;
+  height: 700px;
+  border-radius: 50px;
+  background: linear-gradient(
+              rgba(0, 0, 0, 0.3) 0%, 
+              rgba(0, 0, 0, 0.3) 118px, 
+              rgba(241, 241, 241, 0.2) 118px, 
+              rgba(241, 241, 241, 0.2) 100%);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  z-index: 1;
+  margin-top: 40px;
+}
+
+.panel {
+  display: flex; /* Размещаем элементы в одной строке */
+  align-items: center; /* Выравниваем элементы по вертикали */
+  margin-top: 35px;
+  margin-left: 45px;
+}
+
+.panel > *:nth-child(2) {
+  margin-left: 157px; /* Убираем отступ для второго элемента */
+}
+
+.panel > *:nth-child(3) {
+  margin-left: 101px; /* Индивидуальный отступ для третьего элемента */
+}
+
+.info {
+  width: 45px; /* Ширина картинки */
+  height: 45px; /* Высота картинки */
+}
+
+.timer {
+  font-family: 'PressStart2P'; /* Шрифт */
+  font-size: 48px; /* Размер шрифта */
+  line-height: 44px; /* Высота строки для центрирования текста */
+  text-align: center; /* Центрирование текста по горизонтали */
+  color: white; /* Цвет текста */
+  background-color: transparent; /* Прозрачный фон */
+}
+
+.code-panel {
+  display: flex; /* Используем Flexbox */
+  flex-direction: column; /* Размещаем элементы в столбец */
+  align-items: center; /* Выравниваем элементы по горизонтали */
+  gap: 10px;
+}
+
+.code-label {
+  font-family: 'PressStart2P';
+  color: white;
+  font-size: 24px;
+  margin: 0; /* Убираем отступы */
+}
+
+.code-value {
+  font-family: 'PressStart2P';
+  color: white;
+  font-size: 24px;
+  margin: 0; /* Убираем отступы */
+}
