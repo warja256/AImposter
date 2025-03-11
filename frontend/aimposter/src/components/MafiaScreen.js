@@ -1,10 +1,10 @@
-// src/components/WelcomeScreen.js
+// src/components/MafiaScreen.js
 import React from 'react';
-import './WelcomeScreen.css';
+import './MafiaScreen.css';
 import robot from '../assets/images/mafia_ai.png';
 import logo from '../assets/images/logo.png';
 
-const WelcomeScreen = () => {
+const MafiaScreen = () => {
   return (
     <div className="welcome-screen">
       <div className="header">
@@ -26,4 +26,4 @@ const WelcomeScreen = () => {
   );
 };
 
-export default WelcomeScreen;
+export default MafiaScreen;

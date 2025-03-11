@@ -1,6 +1,6 @@
 // src/components/HumanRoleScreen.js
 import React from 'react';
-import './WelcomeScreen.css';
+import './MafiaScreen.css';
 import human from '../assets/images/human.png';
 import logo from '../assets/images/logo.png';
 

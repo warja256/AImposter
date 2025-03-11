@@ -1,11 +1,12 @@
 // src/App.js
 import React from 'react';
-import HumanRoleScreen from './components/HumanRoleScreen';
+import HumanRoleScreen from './components/roles/HumanRoleScreen';
+import MafiaScreen from './components/roles/MafiaScreen';
 
 function App() {
   return (
     <div>
-      <HumanRoleScreen /> 
+      <MafiaScreen/> 
     </div>
   );
 }
