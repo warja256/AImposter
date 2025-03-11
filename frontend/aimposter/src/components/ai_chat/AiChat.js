@@ -6,7 +6,9 @@ import info from '../../assets/images/info.png';
 
 const AiChatScreen = () => {
   const [countdown, setCountdown] = useState(15); // Таймер
-  const [roomCode, setRoomCode] = useState('9090');
+  const [roomCode, setRoomCode] = useState('9090'); // Код комнаты
+  const [message, setMessage] = useState(''); // Сообщение
+  const [sentMessages, setSentMessages] = useState([]); // Массив для отправленных сообщений
 
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
@@ -28,6 +30,21 @@ const AiChatScreen = () => {
     return () => clearInterval(interval);
   }, [countdown]);
 
+  const handleSubmit = (event) => {
+    event.preventDefault(); // Предотвращаем перезагрузку страницы
+    
+    if (message.trim()) {
+      console.log(`Промт мафии: ${message}`);
+      setSentMessages([...sentMessages, message]); // Добавляем сообщение в массив
+      setMessage(''); // Очищаем поле ввода
+    }
+  };
+  
+  const handleChange = (event) => {
+    setMessage(event.target.value); // Обновление состояния при изменении ввода
+  };
+
+
   return (
     <div className="ai-chat-screen">
       
@@ -46,6 +63,13 @@ const AiChatScreen = () => {
           </div>
         </div>
       </div>
+
+      <div className="promt-label">Задайте промт для ИИ</div>
+
+      <form onSubmit={handleSubmit}>
+        <input className="message-input" placeholder="Введите промт..." value={message} onChange={handleChange} /><br></br>
+        <button className="send-button" type="submit">ОТПРАВИТЬ</button>
+      </form>
 
     </div>
   );

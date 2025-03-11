@@ -86,3 +86,71 @@ html, body {
   font-size: 24px;
   margin: 0; /* Убираем отступы */
 }
+
+.promt-label {
+  margin-top: 363px;
+  font-family: 'Mulish', Arial, sans-serif;
+  font-size: 48px;
+  font-weight: 600;
+}
+
+.message-input {
+  margin-top: 5px;
+  width: 663px;           /* Ширина поля */
+  height: 104px;          /* Высота поля */
+  border-radius: 50px;     /* Скругление границ */
+  border-color: rgba(255, 255, 255, 0.72);
+  background-color: rgba(255, 255, 255, 0.72); /* Цвет фона */
+  padding: 20px;           /* Внутренний отступ */
+  font-family: 'Mulish', Arial, sans-serif; /* Шрифт */
+  font-size: 24px;         /* Размер шрифта */
+  outline: none;           /* Убираем стандартное выделение */
+  resize: none;            /* Запрет изменения размера */
+  box-sizing: border-box;  /* Корректировка размеров с учетом внутренних отступов */
+  box-shadow: none;        /* Убираем тени */
+  border-style: solid;     /* Явно указываем стиль границы */
+  border-width: 1px;       /* Устанавливаем толщину границы */
+}
+
+.message-input::placeholder {
+  color: #888;             /* Цвет подсказки */
+  opacity: 1;              /* Прозрачность подсказки */
+}
+
+.message-input:focus::placeholder {
+  opacity: 0;              /* Исчезновение подсказки при фокусе */
+}
+
+.send-button {
+  width: 309px;               /* Ширина кнопки */
+  height: 61px;                /* Высота кнопки */
+  margin-top: 20px;            /* Отступ сверху */
+  border-radius: 40px;         /* Скругление углов */
+  background: linear-gradient(  /* Линейный градиент */
+    to right, 
+    #153CC5 0%,                /* Начало градиента */
+    #4D6EE3 50%,               /* Средняя точка градиента */
+    #153CC5 100%               /* Конец градиента */
+  );
+  border: 2px solid #153CC5; /* Stroke (граница) */
+  font-family: 'Mulish', Arial, sans-serif;   /* Шрифт */
+  font-size: 24px;                             /* Размер шрифта */
+  font-weight: 700;                            /* Толщина шрифта (жирный) */
+  color: white;                                /* Цвет текста */
+  cursor: pointer;                             /* Указатель мыши при наведении */
+  transition: all 0.3s ease-in-out;           /* Анимация при наведении */
+  outline: none;                               /* Убираем стандартное выделение */
+  user-select: none;                           /* Запрещаем выделение текста */
+}
+
+.send-button:hover {
+  transform: scale(1.05);                      /* Увеличение кнопки при наведении */
+}
+
+.send-button:active {
+  transform: scale(0.95);                      /* Уменьшение кнопки при клике */
+}
+
+.message-input, .send-button {
+  pointer-events: auto; /* Убедитесь, что взаимодействие разрешено */
+}
