@@ -1,10 +1,10 @@
-// src/components/MafiaScreen.js
+// src/components/HumanRoleScreen.js
 import React from 'react';
 import './MafiaScreen.css';
-import robot from '../assets/images/mafia_ai.png';
-import logo from '../assets/images/logo.png';
+import human from '../../assets/images/human.png';
+import logo from '../../assets/images/logo.png';
 
-const MafiaScreen = () => {
+const HumanRoleScreen = () => {
   return (
     <div className="welcome-screen">
       <div className="header">
@@ -17,13 +17,13 @@ const MafiaScreen = () => {
       </div>
       <div className="text">
         <h1>ПОЗДРАВЛЯЕМ! ВАША РОЛЬ</h1>
-        <h2 className="mafia-ai">МАФИЯ AI</h2>
+        <h2 className="mafia-ai">ЧЕЛОВЕК</h2>
       </div>
       <div className="robot-icon">
-        <img src={robot} alt="Robot" />
+        <img src={human} alt="Human" />
       </div>
     </div>
   );
 };
 
-export default MafiaScreen;
+export default HumanRoleScreen;

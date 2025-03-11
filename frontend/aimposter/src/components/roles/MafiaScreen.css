@@ -1,12 +1,12 @@
 /* src/components/WelcomeScreen.css */
 @font-face {
     font-family: 'PressStart2P';
-    src: url('../assets/fonts/PressStart2P-Regular.ttf') format('truetype');
+    src: url('../../assets/fonts/PressStart2P-Regular.ttf') format('truetype');
   }
 
   @font-face {
     font-family: 'PixelifySans';
-    src: url('../assets/fonts/PixelifySans-SemiBold.ttf') format('truetype');
+    src: url('../../assets/fonts/PixelifySans-SemiBold.ttf') format('truetype');
   }
 
   .welcome-screen {
@@ -16,8 +16,8 @@
     justify-content: center;
     height: 100vh;
     background: 
-      url('../assets/images/gradient.png'), /* Наложенное изображение */
-      url('../assets/images/background.png'); /* Основной фон */
+      url('../../assets/images/gradient.png'), /* Наложенное изображение */
+      url('../../assets/images/background.png'); /* Основной фон */
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
