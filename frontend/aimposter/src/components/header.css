@@ -8,6 +8,8 @@ font-family: 'PixelifySans';
 src: url('../assets/fonts/PixelifySans-SemiBold.ttf') format('truetype');
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap');
+
 .header {
     position: absolute;
     top: 20px;
@@ -21,10 +23,6 @@ src: url('../assets/fonts/PixelifySans-SemiBold.ttf') format('truetype');
     height: auto;
   }
 
-  .title-container {
-    margin-left: 10px;
-  }
-
   .logo img {
     width: 100px;
     height: auto;
@@ -33,5 +31,6 @@ src: url('../assets/fonts/PixelifySans-SemiBold.ttf') format('truetype');
   .header-title {
     font-size: 40px;
     color: white;
+    margin-left: 18px;
     font-family: 'PixelifySans', monospace;
   }

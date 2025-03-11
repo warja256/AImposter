@@ -20,14 +20,20 @@ const WelcomeScreen = () => {
                 <div className="avatar-container">
                     <img src={avatar} alt="Avatar" />
                 </div>
-                <input type="text" className="input-field" placeholder="Имя..." />
+                <input type="text" className="name-field" placeholder="Имя..." />
             </div>
           
           
-          <div className="room-code-container">
-            <button className="join-button">Войти</button>
-            <input type="text" className="code-field" value="0000000" readOnly />
-          </div>
+            <div className="room-code-container">
+                <div className="combined-button">
+                    <button className="join-button">Войти</button>
+                    <div className="input-filed">
+                      <input type="text" className="code-field" value="0000000" readOnly />
+                    </div>
+                    
+                </div>
+            </div>
+
 
           <button className="create-game">Создать Игру</button>
         </div>
