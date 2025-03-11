@@ -110,6 +110,8 @@ html, body {
   box-shadow: none;        /* Убираем тени */
   border-style: solid;     /* Явно указываем стиль границы */
   border-width: 1px;       /* Устанавливаем толщину границы */
+  position: relative;
+  z-index: 9999;
 }
 
 .message-input::placeholder {
@@ -141,6 +143,8 @@ html, body {
   transition: all 0.3s ease-in-out;           /* Анимация при наведении */
   outline: none;                               /* Убираем стандартное выделение */
   user-select: none;                           /* Запрещаем выделение текста */
+  position: relative;
+  z-index: 9999;
 }
 
 .send-button:hover {

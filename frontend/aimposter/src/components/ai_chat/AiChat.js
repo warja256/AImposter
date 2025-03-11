@@ -66,10 +66,8 @@ const AiChatScreen = () => {
 
       <div className="promt-label">Задайте промт для ИИ</div>
 
-      <form onSubmit={handleSubmit}>
-        <input className="message-input" placeholder="Введите промт..." value={message} onChange={handleChange} /><br></br>
-        <button className="send-button" type="submit">ОТПРАВИТЬ</button>
-      </form>
+      <input className="message-input" placeholder="Введите промт..." value={message} onChange={handleChange} /><br></br>
+      <button className="send-button" type="submit" onClick={handleSubmit}>ОТПРАВИТЬ</button>
 
     </div>
   );
