@@ -110,6 +110,8 @@ html, body {
   box-shadow: none;        /* Убираем тени */
   border-style: solid;     /* Явно указываем стиль границы */
   border-width: 1px;       /* Устанавливаем толщину границы */
+  position: relative;
+  z-index: 9999;
 }
 
 .message-input::placeholder {
@@ -119,6 +121,22 @@ html, body {
 
 .message-input:focus::placeholder {
   opacity: 0;              /* Исчезновение подсказки при фокусе */
+}
+
+.message-input::after {
+  content: url("../../assets/images/blue_human.png"); /* Путь к изображению */
+  height: 45px;
+  width: 45px;
+  position: absolute;
+  right: 20px; /* Положение изображения в правой части поля */
+  top: 50%; /* Центрирование по вертикали */
+  transform: translateY(-50%); /* Коррекция вертикального положения */
+  pointer-events: none; /* Игнорирование взаимодействий с изображением */
+}
+
+.message-input {
+  position: relative; /* Позиционирование для ::after */
+  padding-right: 50px; /* Добавление дополнительного пространства для изображения */
 }
 
 .send-button {
@@ -141,6 +159,8 @@ html, body {
   transition: all 0.3s ease-in-out;           /* Анимация при наведении */
   outline: none;                               /* Убираем стандартное выделение */
   user-select: none;                           /* Запрещаем выделение текста */
+  position: relative;
+  z-index: 9999;
 }
 
 .send-button:hover {

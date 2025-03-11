@@ -1,17 +1,12 @@
-//добавить картинку человека
-//адаптивность
-//настроить расстояние от поля сообщения до таймера
 import React, { useState, useEffect } from 'react';
 import './AiChat.css';
 import '../header.css';
 import logo from '../../assets/images/logo.png';
 import info from '../../assets/images/info.png';
 
-const AiChatScreen = () => {
+const AiResponses = () => {
   const [countdown, setCountdown] = useState(15); // Таймер
   const [roomCode, setRoomCode] = useState('9090'); // Код комнаты
-  const [message, setMessage] = useState(''); // Сообщение
-  const [sentMessages, setSentMessages] = useState([]); // Массив для отправленных сообщений
 
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
@@ -32,22 +27,7 @@ const AiChatScreen = () => {
 
     return () => clearInterval(interval);
   }, [countdown]);
-
-  const handleSubmit = (event) => {
-    event.preventDefault(); // Предотвращаем перезагрузку страницы
-    
-    if (message.trim()) {
-      console.log(`Промт мафии: ${message}`);
-      setSentMessages([...sentMessages, message]); // Добавляем сообщение в массив
-      setMessage(''); // Очищаем поле ввода
-    }
-  };
   
-  const handleChange = (event) => {
-    setMessage(event.target.value); // Обновление состояния при изменении ввода
-  };
-
-
   return (
     <div className="ai-chat-screen">
       
@@ -67,13 +47,13 @@ const AiChatScreen = () => {
         </div>
       </div>
 
-      <div className="promt-label">Задайте промт для ИИ</div>
-
-      <input className="message-input" placeholder="Введите промт..." value={message} onChange={handleChange} />
-      <button className="send-button" type="submit" onClick={handleSubmit}>ОТПРАВИТЬ</button>
+      <input className="message-input" />
+      <input className="message-input" />
+      <input className="message-input" />
+      <button className="send-button" type="submit">ОТПРАВИТЬ</button>
 
     </div>
   );
 };
 
-export default AiChatScreen;
+export default AiResponses;
