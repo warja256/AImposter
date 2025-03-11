@@ -1,4 +1,9 @@
-.night-screen {
+html, body {
+  overflow: hidden; /* Запрещаем прокрутку */
+  height: 100%; /* Устанавливаем высоту равной 100% */
+}
+
+.human-night-screen {
     display: flex;
     flex-direction: column;
     align-items: center;

@@ -15,7 +15,7 @@ const HumanNightScreen = () => {
 
 
   return (
-    <div className="night-screen">
+    <div className="human-night-screen">
       
       <div className="logo-container">
         <img src={logo} alt="AImposter Logo" />
