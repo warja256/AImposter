@@ -24,14 +24,10 @@ html, body {
     top: 55%;
     left: 50%;
     transform: translate(-50%, -50%); /* Центрирование по горизонтали и вертикали */
-    width: 700px;
-    height: 580px;
+    width: 780px;
+    height: 625px;
     border-radius: 50px;
-    background: linear-gradient(
-              rgba(0, 0, 0, 0.5) 0%, 
-              rgba(0, 0, 0, 0.5) 113px, 
-              rgba(0, 0, 0, 0.276) 113px, 
-              rgba(0, 0, 0, 0.276) 100%);
+    background-color: rgba(0, 0, 0, 0.276);
     box-shadow: 0 1 30px rgba(0, 0, 0, 0.4);
     border: 1px solid rgba(0, 0, 0, 0.5);
     z-index: 1;
@@ -87,6 +83,8 @@ html, body {
     font-size: 20px;
     cursor: pointer;
     border-radius: 50px;
+  
+    /* transition: background-color 0.3s; */
   }
   
   .player-button.selected,
