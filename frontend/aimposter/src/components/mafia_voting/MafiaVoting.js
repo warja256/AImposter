@@ -90,7 +90,7 @@ const MafiaVotingScreen = () => {
                     </button>
                 </div>
 
-                <button className="send-button" onClick={handleSend}>
+                <button className="send-button-m" onClick={handleSend}>
                 <div className="button-text">ОТПРАВИТЬ</div>
                 </button>
             </div>

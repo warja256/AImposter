@@ -216,10 +216,10 @@
 
 .info-box p {
     padding: 0 40px;
-    font-size: 32px;
+    font-size: 30px;
     text-align: left;
-    margin-bottom: 20px;
-    margin-top: 0px;
+    margin-bottom: 10px;
+    margin-top: 10px;
 }
 
 .info-box-details, .info-box-second {
@@ -235,25 +235,40 @@
     font-weight: 700;
 }
 
+.info-box-third-header {
+    font-weight: 700;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
 .dots {
     display: flex;
     justify-content: center;
     gap: 13px;
     position: absolute;
-    bottom: 20px;
+    bottom: 10px;
     width: 100%;
 }
 
-.dots span {
+.dot {
     width: 20px;
     height: 20px;
     background: #000990;
     border-radius: 50%;
     opacity: 0.5;
     cursor: pointer;
+    transition: opacity 0.3s ease-in-out, background 0.3s ease-in-out;
 }
 
-.dots span:nth-child(1) {
-    background: #000990;
+.dot.active {
     opacity: 1;
+    background: #000990;
+}
+
+.slides-container {
+    display: flex; transition: transform 0.5s ease-in-out;
+}
+
+.slide {
+    min-width: 100%;
 }

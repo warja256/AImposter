@@ -1,0 +1,183 @@
+html, body {
+    overflow: hidden; /* Запрещаем прокрутку */
+    height: 100%; /* Устанавливаем высоту равной 100% */
+    justify-content: center;
+    align-items: center;
+  }
+
+
+.lobby-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: url('../../assets/images/background_lobby.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    color: white;
+    text-align: center;
+  }
+
+.lobby-header {
+    font-size: 80px;
+    font-family: 'PixelifySans';
+    text-align: start;
+    margin-bottom: 64px;
+}
+
+.lobby-buttons {
+    display: flex;
+    flex-direction: column;
+}
+
+.lobby-users {
+    display: flex;
+    flex-direction: column;
+    border-radius: 50px;
+    background-color: rgba(198, 211, 234, 0.05);
+    box-shadow: 0 1px 15px rgba(0, 0, 0, 0.25);
+    width: 625px;
+    height: 501px;
+    gap: 22px;
+}
+
+.create-game {
+    width: 293px;
+    height: 93px;
+    margin-top: 68px;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    font-size: 32px;
+    font-weight: 700;
+    color: white;
+    background: url('../../assets/images/background_button.png');
+    background-size: 100% 100%;
+    animation: gradientAnimation 2s ease infinite;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: 'Mulish';
+}
+
+.room-code-container {
+    width: 400px;
+    height: 72px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 83px;
+}
+
+.combined-button {
+    width: 400px;
+    position: relative; /* Ensure the container is positioned */
+    display: flex; /* Make it inline-flex to fit content */
+    align-items: center;
+    justify-content: center;
+    border-radius: 50px; /* Overall rounded shape */
+    overflow: hidden; /* Hide any overflow from child elements */
+    background: #C6D3EA; /* Background color for the combined button */
+}
+
+.center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.join-button {
+    padding-left: 43px;
+    height: 72px;
+    font-size: 32px;
+    font-weight: 800;
+    border: none;
+    font-family: 'Mulish';
+    border-radius: 50px 0 0 50px; /* Rounded left side */
+    background: #C6D3EA; /* Same background as container */
+    color: rgba(0, 9, 144, 0.7);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.input-field {
+    position: absolute; /* Position absolutely within the container */
+    right: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0 50px 50px 0; /* Rounded right side */
+    background: white; /* White background for the input area */
+}
+
+.code-field {
+    margin-left: 45px;
+    margin-right: 11px;
+    width: 190px;
+    height: 46px;
+    text-align: center;
+    font-size: 28px;
+    font-weight: 600;
+    font-family: 'Mulish';
+    border: none;
+    border-radius: 50px;
+    background: white; /* Transparent background */
+    color: #7E7E7E;
+}
+
+.go-back {
+    background: url('../../assets/images/background_lobby2.png');
+    background-size: 100% 100%;
+}
+
+.lobby {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 116px;
+}
+
+.player-button {
+    display: flex;
+    align-items: center;
+    align-self: center;
+    width: 545px;
+    padding: 18px;
+    height: 75px;
+    margin: 0px;
+    background-color: rgba(198, 211, 234, 0.1);
+    border: 3px solid rgba(198, 211, 234, 0);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 50px;
+  
+    /* transition: background-color 0.3s; */
+  }
+
+  .lobby-users h3 {
+    font-size: 40px;
+    margin-top: 18px;
+    margin-bottom: 21px;
+  }
+
+  .avatar {
+    width: 52px;
+    height: 48px;
+    margin-right: 10px;
+  }
+
+.text {
+    padding: 18px 0;
+    font-size: 32px;
+    font-weight: bold;
+    margin: 0px;
+}
