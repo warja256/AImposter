@@ -64,19 +64,15 @@
 }
 
 .login-box {
-
     width: 547px;
     height: 460px;
-    box-shadow: 0 1px 15px rgba(0, 0, 0, 0.25);
-
 }
 
 /* Общие стили для карточек */
 .login-box, .info-box {
     border-radius: 50px;
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(15px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    background-color: rgba(198, 211, 234, 0.05);
+    box-shadow: 0 1px 15px rgba(0, 0, 0, 0.25);
 }
 
 /* Аватар */
@@ -92,20 +88,28 @@
     width: 400px;
     height: 72px;
     display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     margin-top: 83px;
-    margin-left: 58px;
 }
 
 .combined-button {
     width: 400px;
     position: relative; /* Ensure the container is positioned */
-    display: inline-flex; /* Make it inline-flex to fit content */
+    display: flex; /* Make it inline-flex to fit content */
     align-items: center;
+    justify-content: center;
     border-radius: 50px; /* Overall rounded shape */
     overflow: hidden; /* Hide any overflow from child elements */
     background: #C6D3EA; /* Background color for the combined button */
+}
+
+.center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .join-button {
@@ -160,6 +164,8 @@
     width: 400px;
     height: 72px;
     margin-top: 68px;
+    align-items: center;
+    justify-content: center;
     padding: 12px;
     font-size: 32px;
     font-weight: 700;
@@ -179,45 +185,75 @@
 
 
 /* Информационный блок */
+.info-box {
+    width: 536px;
+    height: 460px;
+    font-family: 'Mulish', sans-serif;
+    position: relative;
+    overflow: hidden;
+}
+
+.slide {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.slide.active {
+    opacity: 1;
+}
+
 .info-box h3 {
-    font-size: 20px;
-    color: #ffcc00;
-    text-align: left;
-    font-family: 'PressStart2P', sans-serif;
+    font-size: 32px;
+    margin-bottom: 20px;
+    font-weight: 800;
+    color: #FEF156;
+    text-align: center;
+    font-family: 'Mulish', sans-serif;
 }
 
 .info-box p {
-    font-size: 16px;
+    padding: 0 40px;
+    font-size: 32px;
     text-align: left;
+    margin-bottom: 20px;
+    margin-top: 0px;
 }
 
-.player-role {
-    color: #36d1dc;
-    font-weight: bold;
+.info-box-details, .info-box-second {
+    color: #C6D3EA;
 }
 
-.mafia-role {
-    color: #ff3366;
-    font-weight: bold;
-}
-
-/* Индикатор страниц */
-.dots {
-    display: flex;
-    justify-content: center;
-    gap: 5px;
+.info-box-second-header {
     margin-top: 10px;
 }
 
-.dots span {
-    width: 10px;
-    height: 10px;
-    background: white;
-    border-radius: 50%;
-    opacity: 0.5;
+.player-role {
+    color: #FEF156;
+    font-weight: 700;
 }
 
-.dots span:nth-child(2) {
-    background: #ffcc00;
+.dots {
+    display: flex;
+    justify-content: center;
+    gap: 13px;
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+}
+
+.dots span {
+    width: 20px;
+    height: 20px;
+    background: #000990;
+    border-radius: 50%;
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+.dots span:nth-child(1) {
+    background: #000990;
     opacity: 1;
 }
