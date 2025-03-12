@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './PlayerSelectionScreen.css';
+import './MafiaVoting.css';
 import '../header.css';
 import logo from '../../assets/images/logo.png';
 
@@ -40,8 +40,8 @@ const MaifiaVotingScreen = () => {
             <div className="chat-box">
 
                 <div className="panel">
-                    <div className="text">
-                        <h1 className="head-text">НОЧЬ, МАФИЯ ДЕЛАЕТ ВЫБОР
+                    <div className="head-text">
+                        <h1>НОЧЬ, МАФИЯ ДЕЛАЕТ ВЫБОР
                         <div className="timer">{formatTime(countdown)}</div></h1>
                     </div>
                 </div>
