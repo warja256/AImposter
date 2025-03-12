@@ -37,7 +37,7 @@ const HumanNightScreen = () => {
       </div>
 
       <div className="header-text">ТШШ... НАСТУПИЛА НОЧЬ</div>
-      <div className="text">МАФИЯ ДЕЛАЕТ СВОЙ ВЫБОР</div>
+      <div className="ordinary-text">МАФИЯ ДЕЛАЕТ СВОЙ ВЫБОР</div>
       <div className="timertime">{formatTime(countdown)}</div>
     </div>
   );

@@ -5,13 +5,13 @@ html, body {
     align-items: center;
   }
 
-.mafia-night-screen {
+.human-night-screen {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background: url('../../assets/images/night_background.png');
+    background: url('../../assets/images/full_background.png');
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -19,38 +19,42 @@ html, body {
     text-align: center;
   }
 
-  .central-box {
+  .central-box-h {
     position: absolute;
     top: 55%;
     left: 50%;
     transform: translate(-50%, -50%); /* Центрирование по горизонтали и вертикали */
-    width: 780px;
-    height: 625px;
+    width: 700px;
+    height: 580px;
     border-radius: 50px;
-    background-color: rgba(0, 0, 0, 0.276);
-    box-shadow: 0 1 30px rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(0, 0, 0, 0.5);
+    background: linear-gradient(
+              rgba(0, 0, 0, 0.3) 0%, 
+              rgba(0, 0, 0, 0.3) 111px, 
+              rgba(241, 241, 241, 0.2) 111px, 
+              rgba(241, 241, 241, 0.2) 100%);
+    box-shadow: 0 1px 30px rgba(0, 0, 0, 0.4);
     z-index: 1;
     margin:  0 0;
     align-items: center;
   }
   
-  .up-panel {
+  .up-panel-h {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 30px;
+    margin-top: 20px;
   }
   
-  .head-text {
-    font-size: 26px;
+  .head-text-h {
+    font-size: 35px;
     font-family: 'PressStart2P', sans-serif;
+    color: rgba(228, 232, 240, 1);
   }  
   
-  .timerr{
+  .timerr-h{
     margin-top: 10px;
-    font-size: 27px;
-    color: rgba(228, 232, 240, 0.8);
+    font-size: 33px;
+    color: rgba(228, 232, 240, 1);
   }
   
   .text{
@@ -65,31 +69,31 @@ html, body {
   
   .player-list {
     margin: 0 48px;
-    margin-top: 35px;
+    margin-top: 30px;
     align-items: center;
   }
   
-  .player-button {
+  .player-button-h {
     display: flex;
     align-items: center;
     width: 100%;
     padding: 18px;
     height: 75px;
     margin: 18px 0;
-    background-color: rgba(198, 211, 234, 0.1);
-    border: 3px solid rgba(198, 211, 234, 0);
+    background-color: rgba(198, 211, 234, 0.5);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+    border: 2px solid rgba(31, 74, 225, 0);
     color: white;
     font-size: 20px;
     cursor: pointer;
     border-radius: 50px;
-  
-    /* transition: background-color 0.3s; */
+    font-weight: 700;
   }
   
-  .player-button.selected,
-  .player-button:hover {
-    border: 3px solid #1346ff;
+  .player-button-h.selected,
+  .player-button-h:hover {
+    border: 2px solid rgba(31, 74, 225, 0.8);
+    box-shadow: 0 1px 15px rgba(31, 74, 225, 0.7);
   }
 
   .avatar {
@@ -98,21 +102,28 @@ html, body {
     margin-right: 10px;
   }
   
-  .send-button {
-    margin: 0 0;
-    background: linear-gradient(/* Линейный градиент */ to right, 
-        rgba(14, 42, 139, 1) 0%, /* Начало градиента */ 
-        rgba(53, 77, 160, 1)50%, /* Средняя точка градиента */ 
-        rgba(14, 42, 139, 1) 100% /* Конец градиента */);
-    border: 2px solid rgba(31, 74, 225, 0.7);
+  .send-button-h {
+    margin: 0;
+    width: 309px;
+    height: 61px;
+    background: linear-gradient(to right, #153CC5 0%, #4D6EE3 50%, #153CC5 100%);
+    border: 2px solid rgba(0, 9, 144, 0.24);
     color: white;
-    font-size: 18px;
+    font-size: 24px;
     cursor: pointer;
     border-radius: 40px;
-    transition: background-color 0.3s;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    font-family: 'Mulish', Arial, sans-serif;
+    font-weight: 600;
+    outline: none;
+    user-select: none;
+    position: relative;
+    z-index: 9999;
+    transition: transform 0.3s ease-in-out;
   }
   
-  .send-button:hover {
-    border: 3px solid #1346ff;
+  .send-button-h:active {
+    transform: scale(1.05);
+    transition: transform 0.1s ease-in-out;
   }
   
