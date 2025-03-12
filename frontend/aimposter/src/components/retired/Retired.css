@@ -1,0 +1,38 @@
+@font-face {
+    font-family: 'PressStart2P';
+    src: url('../../assets/fonts/PressStart2P-Regular.ttf') format('truetype');
+  }
+
+html, body {
+    overflow: hidden; /* Запрещаем прокрутку */
+    height: 100%; /* Устанавливаем высоту равной 100% */
+  }
+  
+  .retired-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: 
+      url('../../assets/images/gradient.png'),
+      url('../../assets/images/background.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    color: white;
+    text-align: center;
+  }
+
+  .message {
+    font-family: 'Mulish', Arial, sans-serif;
+    font-size: 48px;
+    font-weight: 600;
+  }
+
+.retired-user {
+    font-size: 48px;
+    margin-top: 76px;
+    margin-bottom: 26px;
+    font-family: 'PressStart2P', sans-serif;
+  }
