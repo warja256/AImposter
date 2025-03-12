@@ -1,0 +1,21 @@
+html, body {
+    overflow: hidden; /* Запрещаем прокрутку */
+    height: 100%; /* Устанавливаем высоту равной 100% */
+    justify-content: center;
+    align-items: center;
+  }
+
+
+.lobby-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: url('../../assets/images/background_lobby.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    color: white;
+    text-align: center;
+  }

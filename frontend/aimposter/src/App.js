@@ -10,13 +10,14 @@ import AiChatScreen from './components/ai_chat/AiChat.js';
 import AiResponses from './components/ai_chat/AiResponses.js';
 import HumanNightScreen from './components/night_human/HumanNight.js';
 import MafiaVotingScreen from './components/MafiaVoting/MafiaVoting.js';
+import LobbyScreen from './components/lobby/Lobby.js';
 import { Route } from 'react-router-dom';
 
 function App() {
   return (
     <div>
       <Router>
-        <HumanNightScreen/> 
+        <LobbyScreen/> 
       </Router>
     </div>
   );
