@@ -27,6 +27,12 @@ const AiResponses = () => {
 
     return () => clearInterval(interval);
   }, [countdown]);
+
+  const [selectedOption, setSelectedOption] = useState(null); // Начальное состояние: ни один вариант не выбран
+
+  const handleSelectOption = (optionIndex) => {
+    setSelectedOption(optionIndex); // Устанавливаем выбранный вариант
+  };
   
   return (
     <div className="ai-chat-screen">
@@ -47,10 +53,20 @@ const AiResponses = () => {
         </div>
       </div>
 
-      <input className="message-input" />
-      <input className="message-input" />
-      <input className="message-input" />
-      <button className="send-button" type="submit">ОТПРАВИТЬ</button>
+      <div className="responses-container">
+        <div className="choice-container">
+          {[1, 2, 3].map((value, index) => (
+            <input
+              key={index}
+              className={`message-input ${selectedOption === index ? 'selected' : ''}`}
+              readOnly // Делаем поле только для чтения
+              value={`Вариант ${value}`} // Значение для примера
+              onClick={() => handleSelectOption(index)} // Обработчик выбора
+            />
+          ))}
+        </div>
+        <button className="send-button" type="submit">ОТПРАВИТЬ</button>
+      </div>
 
     </div>
   );

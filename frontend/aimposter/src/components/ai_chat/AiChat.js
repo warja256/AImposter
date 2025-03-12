@@ -1,6 +1,3 @@
-//добавить картинку человека
-//адаптивность
-//настроить расстояние от поля сообщения до таймера
 import React, { useState, useEffect } from 'react';
 import './AiChat.css';
 import '../header.css';
@@ -12,6 +9,8 @@ const AiChatScreen = () => {
   const [roomCode, setRoomCode] = useState('9090'); // Код комнаты
   const [message, setMessage] = useState(''); // Сообщение
   const [sentMessages, setSentMessages] = useState([]); // Массив для отправленных сообщений
+  const [showChoices, setShowChoices] = useState(false); // Показывать варианты выбора
+  const [selectedOption, setSelectedOption] = useState(null); // Добавляем состояние для выбранного варианта
 
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
@@ -40,6 +39,7 @@ const AiChatScreen = () => {
       console.log(`Промт мафии: ${message}`);
       setSentMessages([...sentMessages, message]); // Добавляем сообщение в массив
       setMessage(''); // Очищаем поле ввода
+      setShowChoices(true); // Переключаемся на отображение вариантов выбора
     }
   };
   
@@ -47,15 +47,20 @@ const AiChatScreen = () => {
     setMessage(event.target.value); // Обновление состояния при изменении ввода
   };
 
+  const handleSelectOption = (index) => {
+    setSelectedOption(index); // Устанавливаем выбранный вариант
+    console.log(`Выбран вариант ${index + 1}`);
+  };
 
   return (
     <div className="ai-chat-screen">
-      
+      {/* Логотип и заголовок */}
       <div className="logo-container">
         <img src={logo} alt="AImposter Logo" />
         <span className="header-title">AImposter</span>
       </div>
 
+      {/* Основной чат-бокс */}
       <div className="chat-box">
         <div className="panel">
           <img src={info} alt="Info" className="info" />
@@ -67,12 +72,32 @@ const AiChatScreen = () => {
         </div>
       </div>
 
-      <div className="promt-container">
-        <div className="promt-label">Задайте промт для ИИ</div>
-        <input className="message-input" placeholder="Введите промт..." value={message} onChange={handleChange} />
-        <button className="send-button" type="submit" onClick={handleSubmit}>ОТПРАВИТЬ</button>
-      </div>
+      {/* Контейнер для отправки промтов */}
+      {!showChoices && (
+        <div className="promt-container">
+          <div className="promt-label">Задайте промт для ИИ</div>
+          <input className="message-input" placeholder="Введите промт..." value={message} onChange={handleChange} />
+          <button className="send-button" type="submit" onClick={handleSubmit}>ОТПРАВИТЬ</button>
+        </div>
+      )}
 
+      {/* Варианты выбора появляются после нажатия на кнопку "Отправить" */}
+      {showChoices && (
+        <div className="responses-container">
+          <div className="choice-container">
+            {[1, 2, 3].map((value, index) => (
+              <input
+                key={index}
+                className={`message-input ${selectedOption === index ? 'selected' : ''}`}
+                readOnly // Делаем поле только для чтения
+                value={`Вариант ${value}`} // Значение для примера
+                onClick={() => handleSelectOption(index)} // Обработчик выбора
+              />
+            ))}
+          </div>
+          <button className="send-button" type="submit">ОТПРАВИТЬ</button>
+        </div>
+      )}
     </div>
   );
 };
