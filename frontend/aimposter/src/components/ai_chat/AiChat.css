@@ -174,3 +174,11 @@ html, body {
 .message-input, .send-button {
   pointer-events: auto; /* Убедитесь, что взаимодействие разрешено */
 }
+
+.promt-container {
+  margin-top: 70px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Устанавливаем расстояние между элементами */
+  align-items: center;
+}
