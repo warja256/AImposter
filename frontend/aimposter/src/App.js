@@ -13,6 +13,7 @@ import MafiaVotingScreen from './components/mafia_voting/MafiaVoting.js';
 import LobbyScreen from './components/lobby/Lobby.js';
 import HumanVotingScreen from './components/human_voting/HumanVoting.js';
 import { Route } from 'react-router-dom';
+import HumanWritesScreen from './components/chat/HumanWrites.js';
 
 function App() {
   return (
