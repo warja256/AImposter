@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './AiChat.css';
+import './HumanWrites.css';
 import '../header.css';
 import logo from '../../assets/images/logo.png';
 import info from '../../assets/images/info.png';
@@ -45,7 +45,7 @@ const HumanWritesScreen = () => {
   };
 
   return (
-    <div className="ai-chat-screen">
+    <div className="human-writes-screen">
       <div className="logo-container">
         <img src={logo} alt="AImposter Logo" />
         <span className="header-title">AImposter</span>
@@ -62,8 +62,7 @@ const HumanWritesScreen = () => {
         </div>
       </div>
 
-      <div className="promt-container">
-          <div className="promt-label">Задайте промт для ИИ</div>
+      <div className="message-container">
           <input className="message-input" placeholder="Введите сообщение..." value={message} onChange={handleChange} />
           <button className="send-button" type="submit" onClick={handleSubmit}>ОТПРАВИТЬ</button>
         </div>
