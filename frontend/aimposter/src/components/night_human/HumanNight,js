@@ -1,4 +1,3 @@
-// src/components/MafiaScreen.js
 import React from 'react';
 import './HumanNight.css';
 import '../header.css';

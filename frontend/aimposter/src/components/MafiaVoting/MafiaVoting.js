@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import './PlayerSelectionScreen.css';
+import { useNavigate } from 'react-router-dom';
+import './MafiaVoting.css';
 import '../header.css';
 import logo from '../../assets/images/logo.png';
+import avatar from "../../assets/images/avatar.png"; 
 
-const MaifiaVotingScreen = () => {
+const MafiaVotingScreen = () => {
     const [countdown, setCountdown] = useState(20);
     const [selectedPlayer, setSelectedPlayer] = useState(null);
+    const navigate = useNavigate(); // Хук для навигации
 
     const formatTime = (seconds) => {
         const minutes = Math.floor(seconds / 60);
@@ -13,12 +16,22 @@ const MaifiaVotingScreen = () => {
         return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
     };
 
-    //   useEffect(() => {
-    //     if (countdown > 0) {
-    //       const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
-    //       return () => clearTimeout(timer);
-    //     }
-    //   }, [countdown]);
+    useEffect(() => {
+        if (countdown > 0) {
+            const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
+            return () => clearTimeout(timer);
+        } else {
+            // Заглушка для будущего кода перехода на другую страницу
+            handleCountdownEnd();
+        }
+    }, [countdown, navigate]);
+
+    const handleCountdownEnd = () => {
+        // Здесь будет логика перехода на другую страницу
+        console.log("Таймер завершен! Переход на другую страницу...");
+        // navigate('/next-page'); // Раскомментируйте эту строку, когда будете готовы к переходу
+    };
+
 
     const handlePlayerSelect = (playerId) => {
         setSelectedPlayer(playerId);
@@ -37,12 +50,12 @@ const MaifiaVotingScreen = () => {
                 <span className="header-title">AImposter</span>
             </div>
 
-            <div className="chat-box">
+            <div className="central-box">
 
-                <div className="panel">
-                    <div className="text">
-                        <h1 className="head-text">НОЧЬ, МАФИЯ ДЕЛАЕТ ВЫБОР
-                        <div className="timer">{formatTime(countdown)}</div></h1>
+                <div className="up-panel">
+                    <div className="head-text">
+                        НОЧЬ, МАФИЯ ДЕЛАЕТ ВЫБОР
+                        <div className="timerr">{formatTime(countdown)}</div>
                     </div>
                 </div>
 
@@ -51,24 +64,28 @@ const MaifiaVotingScreen = () => {
                         className={`player-button ${selectedPlayer === 1 ? 'selected' : ''}`}
                         onClick={() => handlePlayerSelect(1)}
                     >
+                        <img src={avatar} className="avatar" />
                         <div className="text">Игрок 1</div>
                     </button>
                     <button
                         className={`player-button ${selectedPlayer === 2 ? 'selected' : ''}`}
                         onClick={() => handlePlayerSelect(2)}
                     >
+                        <img src={avatar} className="avatar" />
                         <div className="text">Игрок 2</div>
                     </button>
                     <button
                         className={`player-button ${selectedPlayer === 3 ? 'selected' : ''}`}
                         onClick={() => handlePlayerSelect(3)}
                     >
+                        <img src={avatar} className="avatar" />
                         <div className="text">Игрок 3</div>
                     </button>
                     <button
                         className={`player-button ${selectedPlayer === 4 ? 'selected' : ''}`}
                         onClick={() => handlePlayerSelect(4)}
                     >
+                        <img src={avatar} className="avatar" />
                         <div className="text">Игрок 4</div>
                     </button>
                 </div>
@@ -81,4 +98,4 @@ const MaifiaVotingScreen = () => {
     );
 };
 
-export default MaifiaVotingScreen;
+export default MafiaVotingScreen;
