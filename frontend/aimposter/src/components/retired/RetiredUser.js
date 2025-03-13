@@ -3,8 +3,7 @@ import './Retired.css';
 import '../header.css';
 import logo from '../../assets/images/logo.png';
 
-const NightResult = () => {
-    const [userName, setUserName] = useState('ИГРОК 3');
+const RetiredUser = () => {
 
   return (
     <div className="retired-screen">
@@ -14,12 +13,14 @@ const NightResult = () => {
       </div>
 
       <div className="night-result">
-        <p className="message">ЭТОЙ НОЧЬЮ НАС ПОКИНУЛ</p>
-        <p className="retired-user">{userName}</p>
+        <p className="message">СОЖАЛЕЕМ, НО</p>
+        <p className="retired">ВАС ВЫГНАЛИ</p>
+        <button className="send-button" type="submit">Подождать результатов</button><br></br>
+        <button className="exit-button" type="submit">Выйти из игры</button>
       </div>
 
     </div>
   );
 };
 
-export default NightResult;
+export default RetiredUser;
