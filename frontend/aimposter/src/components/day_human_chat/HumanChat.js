@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './HumanChat.css';
 import '../header.css';
@@ -13,7 +13,9 @@ const ChatScreen = () => {
     const [round, setRound] = useState(1);
     const [inputValue, setInputValue] = useState('');
     const [isInputActive, setIsInputActive] = useState(false);
+    const [chatMessages, setChatMessages] = useState([]);
     const navigate = useNavigate();
+    const chatEndRef = useRef(null);
 
     const formatTime = (seconds) => {
         const minutes = Math.floor(seconds / 60);
@@ -26,28 +28,62 @@ const ChatScreen = () => {
             const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
             return () => clearTimeout(timer);
         } else {
-            if (round < 6) {
-                setRound(round + 1);
-                setCountdown(15);
-            } else {
-                handleCountdownEnd();
-            }
+            handleSendPendingMessages();
         }
-    }, [countdown, round]);
+    }, [countdown]);
+
+    useEffect(() => {
+        if (round > 6) {
+            handleCountdownEnd();
+        }
+    }, [round]);
 
     const handleCountdownEnd = () => {
         console.log("Таймер завершен! Переход на другую страницу...");
         // navigate('/next-page'); // Раскомментируйте эту строку, когда будете готовы к переходу
     };
 
+    const handleSendPendingMessages = () => {
+        // Добавляем заглушки сообщений от других игроков
+        const mockMessages = [
+            { text: 'Сообщение от игрока 1', sender: 'other', name: 'Player1' },
+            { text: 'Сообщение от игрока 2', sender: 'other', name: 'Player2' },
+            { text: 'Сообщение от игрока 3', sender: 'other', name: 'Player3' }
+        ];
+
+        // Обновляем chatMessages с новыми сообщениями
+        setChatMessages((prevMessages) => [
+            ...prevMessages,
+            ...mockMessages
+        ]);
+
+        // Переход к следующему раунду
+        if (round < 6) {
+            setRound(round + 1);
+            setCountdown(15);
+        }
+    };
+
     const handleSendMessage = () => {
         if (inputValue.trim() !== '') {
-            console.log('Сообщение отправлено:', inputValue);
-            // Здесь можно добавить логику для отправки сообщения в чат
+            setChatMessages((prevMessages) => [
+                ...prevMessages,
+                { text: inputValue, sender: 'user' }
+            ]);
             setInputValue('');
             setIsInputActive(false);
         }
     };
+
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            handleSendMessage();
+        }
+    };
+
+    useEffect(() => {
+        chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [chatMessages]);
 
     return (
         <div className="human-chat-screen">
@@ -67,7 +103,15 @@ const ChatScreen = () => {
                 </div>
 
                 <div className="chat">
-                    {/* Здесь будут отображаться сообщения */}
+                    {chatMessages.map((chatMessage, index) => (
+                        <div key={index} className={`chat-message ${chatMessage.sender}`}>
+                            {chatMessage.sender !== 'user' && (
+                                <div className="nickname">{chatMessage.name}:</div>
+                            )}
+                            <div className="message-text">{chatMessage.text}</div>
+                        </div>
+                    ))}
+                    <div ref={chatEndRef} />
                 </div>
 
                 <div className="input-line">
@@ -79,6 +123,7 @@ const ChatScreen = () => {
                             setInputValue(e.target.value);
                             setIsInputActive(true);
                         }}
+                        onKeyDown={handleKeyDown} // Обработчик нажатия клавиши Enter
                     />
                     <div className='img-inside-input'>
                         <img
@@ -95,3 +140,4 @@ const ChatScreen = () => {
 };
 
 export default ChatScreen;
+
