@@ -1,0 +1,107 @@
+html, body {
+    overflow: hidden; /* Запрещаем прокрутку */
+    height: 100%; /* Устанавливаем высоту равной 100% */
+    justify-content: center;
+    align-items: center;
+  }
+
+.human-chat-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: url('../../assets/images/full_background.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    color: white;
+    text-align: center;
+  }
+
+  .box {
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Центрирование по горизонтали и вертикали */
+    width: 700px;
+    height: 580px;
+    border-radius: 50px;
+    background: rgba(241, 241, 241, 0.2);
+    box-shadow: 0 1px 30px rgba(0, 0, 0, 0.4);
+    margin: 0 0;
+    align-items: center;
+
+    display: flex; /* Добавляем Flexbox */
+  flex-direction: column; /* Размещаем элементы в колонку */
+  justify-content: space-between;
+  }
+  
+  .up-header {
+    display: flex;
+    align-items: center;
+    margin: 0 0;
+    background: rgba(0, 0, 0, 0.3);
+    border-top-left-radius: 50px;
+    border-top-right-radius: 50px; 
+    height: 110px;
+    color: rgba(228, 232, 240, 1);
+    width: 100%;
+  }
+
+  .up-header > *:nth-child(1) {
+    margin-left: 46px;
+  }
+
+  .up-header > *:nth-child(2) {
+    margin-left: 130px; /* Убираем отступ для второго элемента */
+  }
+  
+  .up-header > *:nth-child(3) {
+    margin-left: 90px; /* Индивидуальный отступ для третьего элемента */
+  }
+  
+  .chat{
+    margin: 30px 30px;
+  }
+
+  .input-line{
+    display: flex;
+    align-items: center;
+    background: rgba(198, 211, 234, 0.8);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+    z-index: 1;
+    border-radius: 50px;
+    margin: 40px 40px;
+    height: 55px;
+    width: 620px;
+    border: none;
+    padding: 15 25px;
+  }
+
+  .chat-input-line {
+    background: rgba(198, 211, 234, 0);
+    border-radius: 50px;
+    height: 100%;
+    width: 86%;
+    margin-left: 20px;
+    flex-grow: 1; /* Позволяем полю ввода расти и занимать доступное пространство */
+    border: none;
+    outline: none; /* Убираем стандартное выделение */
+    box-shadow: none; /* Убираем тень, если она есть */
+    padding: 15 25px; /* Внутренние отступы для текста */
+    font-size: 20px;
+    font-family: 'Mulish', Arial, sans-serif;
+  }
+
+  .chat-input-line:focus {
+    outline: none; /* Убираем выделение при фокусе */
+    box-shadow: none; /* Убираем тень при фокусе */
+  }
+  
+  .img-inside-input img {
+    width: 35px; /* Установите нужный размер изображения */
+    height: 35px;
+    z-index: 10;
+    margin-right: 15px;
+  }

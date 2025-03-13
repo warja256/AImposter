@@ -62,7 +62,7 @@ html, body {
   font-size: 48px; /* Размер шрифта */
   line-height: 44px; /* Высота строки для центрирования текста */
   text-align: center; /* Центрирование текста по горизонтали */
-  color: white; /* Цвет текста */
+  color: rgba(228, 232, 240, 1); /* Цвет текста */
   background-color: transparent; /* Прозрачный фон */
 }
 
@@ -75,14 +75,14 @@ html, body {
 
 .code-label {
   font-family: 'PressStart2P';
-  color: white;
+  color: rgba(228, 232, 240, 1);
   font-size: 24px;
   margin: 0; /* Убираем отступы */
 }
 
 .code-value {
   font-family: 'PressStart2P';
-  color: white;
+  color: rgba(228, 232, 240, 1);
   font-size: 24px;
   margin: 0; /* Убираем отступы */
 }
