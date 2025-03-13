@@ -14,6 +14,7 @@ const ChatScreen = () => {
     const [inputValue, setInputValue] = useState('');
     const [isInputActive, setIsInputActive] = useState(false);
     const [chatMessages, setChatMessages] = useState([]);
+    const [hasMessageSent, setHasMessageSent] = useState(false); // Новый флаг
     const navigate = useNavigate();
     const chatEndRef = useRef(null);
 
@@ -61,17 +62,18 @@ const ChatScreen = () => {
         if (round < 6) {
             setRound(round + 1);
             setCountdown(15);
+            setHasMessageSent(false); // Сбрасываем флаг для нового раунда
         }
     };
 
     const handleSendMessage = () => {
-        if (inputValue.trim() !== '') {
+        if (inputValue.trim() !== '' && !hasMessageSent) { // Проверка на отправку только одного сообщения
             setChatMessages((prevMessages) => [
                 ...prevMessages,
                 { text: inputValue, sender: 'user' }
             ]);
             setInputValue('');
-            setIsInputActive(false);
+            setHasMessageSent(true); // Отмечаем, что сообщение отправлено
         }
     };
 
@@ -124,6 +126,7 @@ const ChatScreen = () => {
                             setIsInputActive(true);
                         }}
                         onKeyDown={handleKeyDown} // Обработчик нажатия клавиши Enter
+                        disabled={countdown === 0 || hasMessageSent} // Отключаем поле ввода, если время истекло или сообщение отправлено
                     />
                     <div className='img-inside-input'>
                         <img
@@ -131,6 +134,7 @@ const ChatScreen = () => {
                             alt="Human Img"
                             onClick={handleSendMessage}
                             style={{ cursor: 'pointer' }}
+                            disabled={countdown === 0 || hasMessageSent} // Отключаем кнопку отправки
                         />
                     </div>
                 </div>
@@ -140,4 +144,3 @@ const ChatScreen = () => {
 };
 
 export default ChatScreen;
-

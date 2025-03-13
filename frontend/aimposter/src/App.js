@@ -22,7 +22,7 @@ function App() {
   return (
     <div>
       <Router>
-        <HumanNightScreen/> 
+        <ChatScreen/> 
       </Router>
     </div>
   );
