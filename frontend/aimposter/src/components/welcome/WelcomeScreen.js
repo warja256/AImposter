@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { createRoom, joinRoom } from './api'; // Импортируем функции из api.js
 import "./WelcomeScreen.css";
 import "../header.css";
 import logo from "../../assets/images/logo.png";
