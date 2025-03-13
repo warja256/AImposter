@@ -1,0 +1,274 @@
+/* Основной контейнер */
+.main-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: 
+      url('../../assets/images/gradient.png'), /* Наложенное изображение */
+      url('../../assets/images/background.png'); /* Основной фон */
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    color: white;
+    text-align: center;
+}
+
+/* Логотип */
+.logo-container {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+.logo-container img {
+    width: 114px;
+    height: auto;
+}
+
+.game-title {
+    font-size: 32px;
+    font-family: 'PressStart2P', sans-serif;
+    color: white;
+    margin-left: 10px;
+}
+
+.name-field {
+    width: 206px;
+    height: 71px;
+    font-family: 'Mulish';
+    background-color: white;
+    color: #7E7E7E;
+    border-radius: 50px;
+    border: 5px solid #C6D3EA;
+    padding-left: 30px;
+    font-size: 28px;
+    font-weight: 700;
+    margin-top: 54px;
+}
+
+/* Контейнеры */
+.content {
+    display: flex;
+    margin-top: 132px;
+    gap: 20px;
+}
+
+.avatar-name {
+    display: flex;
+    align-items: center; /* Выравнивание по вертикали */
+    gap: 62px; 
+}
+
+.login-box {
+    width: 547px;
+    height: 460px;
+}
+
+/* Общие стили для карточек */
+.login-box, .info-box {
+    border-radius: 50px;
+    background-color: rgba(198, 211, 234, 0.05);
+    box-shadow: 0 1px 15px rgba(0, 0, 0, 0.25);
+}
+
+/* Аватар */
+.avatar-container img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-top: 37px;
+    margin-left: 87px;
+}
+
+.room-code-container {
+    width: 400px;
+    height: 72px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 83px;
+}
+
+.combined-button {
+    width: 400px;
+    position: relative; /* Ensure the container is positioned */
+    display: flex; /* Make it inline-flex to fit content */
+    align-items: center;
+    justify-content: center;
+    border-radius: 50px; /* Overall rounded shape */
+    overflow: hidden; /* Hide any overflow from child elements */
+    background: #C6D3EA; /* Background color for the combined button */
+}
+
+.center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.join-button {
+    padding-left: 43px;
+    height: 72px;
+    font-size: 32px;
+    font-weight: 800;
+    border: none;
+    font-family: 'Mulish';
+    border-radius: 50px 0 0 50px; /* Rounded left side */
+    background: #C6D3EA; /* Same background as container */
+    color: rgba(0, 9, 144, 0.7);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.input-field {
+    position: absolute; /* Position absolutely within the container */
+    right: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0 50px 50px 0; /* Rounded right side */
+    background: white; /* White background for the input area */
+}
+
+.code-field {
+    margin-left: 45px;
+    margin-right: 11px;
+    width: 190px;
+    height: 46px;
+    text-align: center;
+    font-size: 28px;
+    font-weight: 600;
+    font-family: 'Mulish';
+    border: none;
+    border-radius: 50px;
+    background: white; /* Transparent background */
+    color: #7E7E7E;
+}
+
+
+
+
+/* Кнопки */
+
+
+.create-game {
+    width: 400px;
+    height: 72px;
+    margin-top: 68px;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    font-size: 32px;
+    font-weight: 700;
+    color: white;
+    background: url('../../assets/images/background_button.png');
+    background-size: 100% 100%;
+    animation: gradientAnimation 2s ease infinite;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: 'Mulish';
+}
+
+
+
+
+
+
+/* Информационный блок */
+.info-box {
+    width: 536px;
+    height: 460px;
+    font-family: 'Mulish', sans-serif;
+    position: relative;
+    overflow: hidden;
+}
+
+.slide {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.slide.active {
+    opacity: 1;
+}
+
+.info-box h3 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    font-weight: 800;
+    color: #FEF156;
+    text-align: center;
+    font-family: 'Mulish', sans-serif;
+}
+
+.info-box p {
+    padding: 0 40px;
+    font-size: 30px;
+    text-align: left;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.info-box-details, .info-box-second {
+    color: #C6D3EA;
+}
+
+.info-box-second-header {
+    margin-top: 10px;
+}
+
+.player-role {
+    color: #FEF156;
+    font-weight: 700;
+}
+
+.info-box-third-header {
+    font-weight: 700;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.dots {
+    display: flex;
+    justify-content: center;
+    gap: 13px;
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+}
+
+.dot {
+    width: 20px;
+    height: 20px;
+    background: #000990;
+    border-radius: 50%;
+    opacity: 0.5;
+    cursor: pointer;
+    transition: opacity 0.3s ease-in-out, background 0.3s ease-in-out;
+}
+
+.dot.active {
+    opacity: 1;
+    background: #000990;
+}
+
+.slides-container {
+    display: flex; transition: transform 0.5s ease-in-out;
+}
+
+.slide {
+    min-width: 100%;
+}

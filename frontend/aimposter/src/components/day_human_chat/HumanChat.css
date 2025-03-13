@@ -1,0 +1,158 @@
+html, body {
+  overflow: hidden; /* Запрещаем прокрутку */
+  height: 100%; /* Устанавливаем высоту равной 100% */
+  justify-content: center;
+  align-items: center;
+  margin: 0; /* Убираем отступы по умолчанию */
+}
+
+.human-chat-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: url('../../assets/images/full_background.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  color: white;
+  text-align: center;
+}
+
+.box {
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Центрирование по горизонтали и вертикали */
+  width: 700px;
+  height: 580px;
+  border-radius: 50px;
+  background: rgba(241, 241, 241, 0.2);
+  box-shadow: 0 1px 30px rgba(0, 0, 0, 0.4);
+  display: flex; /* Добавляем Flexbox */
+  flex-direction: column; /* Размещаем элементы в колонку */
+}
+
+.up-header {
+  display: flex;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.3);
+  border-top-left-radius: 50px;
+  border-top-right-radius: 50px;
+  height: 110px;
+  color: rgba(228, 232, 240, 1);
+  width: 100%;
+  padding: 0 20px; /* Добавляем внутренние отступы */
+  box-sizing: border-box; /* Учитываем padding в размерах */
+}
+
+.up-header > *:nth-child(1) {
+  margin-left: 30px; /* Убираем отступ */
+}
+
+.up-header > *:nth-child(2) {
+  margin-left: 135px; /* Центрируем таймер */
+}
+
+.up-header > *:nth-child(3) {
+  margin-left: 70px; /* Отступ для третьего элемента */
+}
+
+.chat {
+  flex: 1; /* Разрешаем контейнеру расти и занимать доступное пространство */
+  overflow-y: auto; /* Включаем прокрутку по вертикали */
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column; /* Сообщения начинаются сверху */
+}
+
+.input-line {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+  border-radius: 50px;
+  height: 55px;
+  width: 650px;
+  padding: 0 15px; /* Добавляем внутренние отступы */
+  box-sizing: border-box; /* Учитываем padding в размерах */
+  margin: 25px 25px;
+  margin-top: 0;
+}
+
+.chat-input-line {
+  background: rgba(198, 211, 234, 0);
+  border-radius: 50px;
+  height: 100%;
+  flex-grow: 1; /* Позволяем полю ввода расти и занимать доступное пространство */
+  border: none;
+  outline: none; /* Убираем стандартное выделение */
+  padding: 0 20px; /* Внутренние отступы для текста */
+  font-size: 20px;
+  font-family: 'Mulish', Arial, sans-serif;
+}
+
+.img-inside-input img {
+  width: 35px; /* Установите нужный размер изображения */
+  height: 35px;
+  cursor: pointer;
+}
+
+.chat-message {
+  margin-bottom: 15px;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 20px;
+  font-family: 'Mulish', Arial, sans-serif;
+  max-width: 70%; /* Уменьшаем максимальную ширину */
+  word-wrap: break-word; /* Перенос слов */
+  white-space: pre-wrap; /* Сохранение пробелов и перенос строк */
+}
+
+.chat-message.user {
+  background-color: #3D5BC6;
+  text-align: left;
+  margin-left: auto; /* Выравнивание по правому краю */
+  margin-right: 10px;
+}
+
+.chat-message.other {
+  background-color: rgba(0, 0, 0, 0.35);
+  text-align: left;
+  margin-right: auto; /* Выравнивание по левому краю */
+  margin-left: 10px;
+}
+
+.nickname {
+  font-weight: bold;
+  margin-right: 10px; /* Отступ от текста сообщения */
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.message-text {
+  flex-grow: 1; /* Позволяем тексту занимать доступное пространство */
+}
+
+/* Стилизация прокрутки для WebKit-браузеров (Chrome, Safari и т.д.) */
+.chat::-webkit-scrollbar {
+  width: 10px; /* Ширина вертикальной полосы прокрутки */
+  margin-right: 10px;
+}
+
+.chat::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.0); /* Цвет фона полосы прокрутки */
+  border-radius: 10px;
+  
+}
+
+.chat::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.3); /* Цвет ползунка прокрутки */
+  border-radius: 10px;
+}
+
+.chat::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.5); /* Цвет ползунка при наведении */
+}

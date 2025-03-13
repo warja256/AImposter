@@ -1,0 +1,209 @@
+html, body {
+  overflow: hidden; /* Запрещаем прокрутку */
+  height: 100%; /* Устанавливаем высоту равной 100% */
+}
+
+.ai-chat-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: 
+    url('../../assets/images/gradient.png'),
+    url('../../assets/images/background.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  color: white;
+  text-align: center;
+}
+
+.chat-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Центрирование по горизонтали и вертикали */
+  width: 720px;
+  height: 700px;
+  border-radius: 50px;
+  background: linear-gradient(
+              rgba(0, 0, 0, 0.3) 0%, 
+              rgba(0, 0, 0, 0.3) 118px, 
+              rgba(241, 241, 241, 0.2) 118px, 
+              rgba(241, 241, 241, 0.2) 100%);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  z-index: 1;
+  margin-top: 40px;
+}
+
+.panel {
+  display: flex; /* Размещаем элементы в одной строке */
+  align-items: center; /* Выравниваем элементы по вертикали */
+  margin-top: 35px;
+  margin-left: 45px;
+}
+
+.panel > *:nth-child(2) {
+  margin-left: 157px; /* Убираем отступ для второго элемента */
+}
+
+.panel > *:nth-child(3) {
+  margin-left: 101px; /* Индивидуальный отступ для третьего элемента */
+}
+
+.info {
+  width: 45px; /* Ширина картинки */
+  height: 45px; /* Высота картинки */
+}
+
+.timer {
+  font-family: 'PressStart2P'; /* Шрифт */
+  font-size: 48px; /* Размер шрифта */
+  line-height: 44px; /* Высота строки для центрирования текста */
+  text-align: center; /* Центрирование текста по горизонтали */
+  color: rgba(228, 232, 240, 1); /* Цвет текста */
+  background-color: transparent; /* Прозрачный фон */
+}
+
+.code-panel {
+  display: flex; /* Используем Flexbox */
+  flex-direction: column; /* Размещаем элементы в столбец */
+  align-items: center; /* Выравниваем элементы по горизонтали */
+  gap: 10px;
+}
+
+.code-label {
+  font-family: 'PressStart2P';
+  color: rgba(228, 232, 240, 1);
+  font-size: 24px;
+  margin: 0; /* Убираем отступы */
+}
+
+.code-value {
+  font-family: 'PressStart2P';
+  color: rgba(228, 232, 240, 1);
+  font-size: 24px;
+  margin: 0; /* Убираем отступы */
+}
+
+.promt-label {
+  margin-top: 363px;
+  font-family: 'Mulish', Arial, sans-serif;
+  font-size: 48px;
+  font-weight: 600;
+}
+
+.message-input {
+  margin-top: 5px;
+  width: 663px;           /* Ширина поля */
+  height: 104px;          /* Высота поля */
+  border-radius: 50px;     /* Скругление границ */
+  border-color: rgba(255, 255, 255, 0.72);
+  background-color: rgba(255, 255, 255, 0.72); /* Цвет фона */
+  padding: 20px;           /* Внутренний отступ */
+  font-family: 'Mulish', Arial, sans-serif; /* Шрифт */
+  font-size: 24px;         /* Размер шрифта */
+  outline: none;           /* Убираем стандартное выделение */
+  resize: none;            /* Запрет изменения размера */
+  box-sizing: border-box;  /* Корректировка размеров с учетом внутренних отступов */
+  box-shadow: none;        /* Убираем тени */
+  border-style: solid;     /* Явно указываем стиль границы */
+  border-width: 1px;       /* Устанавливаем толщину границы */
+  position: relative;
+  z-index: 9999;
+}
+
+.message-input::placeholder {
+  color: #888;             /* Цвет подсказки */
+  opacity: 1;              /* Прозрачность подсказки */
+}
+
+.message-input:focus::placeholder {
+  opacity: 0;              /* Исчезновение подсказки при фокусе */
+}
+
+.message-input::after {
+  content: url("../../assets/images/blue_human.png"); /* Путь к изображению */
+  height: 45px;
+  width: 45px;
+  position: absolute;
+  right: 20px; /* Положение изображения в правой части поля */
+  top: 50%; /* Центрирование по вертикали */
+  transform: translateY(-50%); /* Коррекция вертикального положения */
+  pointer-events: none; /* Игнорирование взаимодействий с изображением */
+}
+
+.message-input {
+  position: relative; /* Позиционирование для ::after */
+  padding-right: 50px; /* Добавление дополнительного пространства для изображения */
+}
+
+.send-button {
+  width: 309px;               /* Ширина кнопки */
+  height: 61px;                /* Высота кнопки */
+  margin-top: 20px;            /* Отступ сверху */
+  border-radius: 40px;         /* Скругление углов */
+  background: linear-gradient(  /* Линейный градиент */
+    to right, 
+    #153CC5 0%,                /* Начало градиента */
+    #4D6EE3 50%,               /* Средняя точка градиента */
+    #153CC5 100%               /* Конец градиента */
+  );
+  border: 2px solid #153CC5; /* Stroke (граница) */
+  font-family: 'Mulish', Arial, sans-serif;   /* Шрифт */
+  font-size: 24px;                             /* Размер шрифта */
+  font-weight: 700;                            /* Толщина шрифта (жирный) */
+  color: white;                                /* Цвет текста */
+  cursor: pointer;                             /* Указатель мыши при наведении */
+  transition: all 0.3s ease-in-out;           /* Анимация при наведении */
+  outline: none;                               /* Убираем стандартное выделение */
+  user-select: none;                           /* Запрещаем выделение текста */
+  position: relative;
+  z-index: 9999;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.send-button:hover {
+  transform: scale(1.05);                      /* Увеличение кнопки при наведении */
+}
+
+.send-button:active {
+  transform: scale(0.95);                      /* Уменьшение кнопки при клике */
+}
+
+.message-input, .send-button {
+  pointer-events: auto; /* Убедитесь, что взаимодействие разрешено */
+}
+
+.promt-container {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Устанавливаем расстояние между элементами */
+  align-items: center;
+}
+
+.responses-container {
+  margin-top: 250px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Устанавливаем расстояние между элементами */
+  align-items: center;
+}
+
+.choice-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Устанавливаем расстояние между элементами */
+  align-items: center;
+  background: #C6D3EA 50%;
+  border-radius: 50px;
+  padding: 15px;
+}
+
+.selected {
+  border: 2px solid #6B85E2; /* Синяя граница */
+  box-shadow: 0 0 10px rgba(107, 133, 226, 0.5); /* Тень */
+  color: black; /* Оставляем черный текст */
+}

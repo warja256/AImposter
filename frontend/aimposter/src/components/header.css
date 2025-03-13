@@ -1,0 +1,36 @@
+@font-face {
+    font-family: 'PressStart2P';
+    src: url('../assets/fonts/PressStart2P-Regular.ttf') format('truetype');
+  }
+
+@font-face {
+font-family: 'PixelifySans';
+src: url('../assets/fonts/PixelifySans-SemiBold.ttf') format('truetype');
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap');
+
+.header {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+  }
+
+  .logo-container img {
+    width: 114px; /* Размер логотипа */
+    height: auto;
+  }
+
+  .logo img {
+    width: 100px;
+    height: auto;
+  }
+
+  .header-title {
+    font-size: 40px;
+    color: white;
+    margin-left: 18px;
+    font-family: 'PixelifySans', monospace;
+  }
