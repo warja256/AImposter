@@ -22,7 +22,7 @@ function App() {
   return (
     <div>
       <Router>
-        <MafiaVotingScreen/> 
+        <WelcomeScreen/> 
       </Router>
     </div>
   );
