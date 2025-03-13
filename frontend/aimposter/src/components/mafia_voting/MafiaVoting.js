@@ -61,28 +61,28 @@ const MafiaVotingScreen = () => {
 
                 <div className="player-list">
                     <button
-                        className={`player-button ${selectedPlayer === 1 ? 'selected' : ''}`}
+                        className={`player-button-m ${selectedPlayer === 1 ? 'selected' : ''}`}
                         onClick={() => handlePlayerSelect(1)}
                     >
                         <img src={avatar} className="avatar" />
                         <div className="text">Игрок 1</div>
                     </button>
                     <button
-                        className={`player-button ${selectedPlayer === 2 ? 'selected' : ''}`}
+                        className={`player-button-m ${selectedPlayer === 2 ? 'selected' : ''}`}
                         onClick={() => handlePlayerSelect(2)}
                     >
                         <img src={avatar} className="avatar" />
                         <div className="text">Игрок 2</div>
                     </button>
                     <button
-                        className={`player-button ${selectedPlayer === 3 ? 'selected' : ''}`}
+                        className={`player-button-m ${selectedPlayer === 3 ? 'selected' : ''}`}
                         onClick={() => handlePlayerSelect(3)}
                     >
                         <img src={avatar} className="avatar" />
                         <div className="text">Игрок 3</div>
                     </button>
                     <button
-                        className={`player-button ${selectedPlayer === 4 ? 'selected' : ''}`}
+                        className={`player-button-m ${selectedPlayer === 4 ? 'selected' : ''}`}
                         onClick={() => handlePlayerSelect(4)}
                     >
                         <img src={avatar} className="avatar" />

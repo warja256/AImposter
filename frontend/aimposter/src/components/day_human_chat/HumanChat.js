@@ -4,7 +4,7 @@ import './HumanChat.css';
 import '../header.css';
 import logo from '../../assets/images/logo.png';
 import info from '../../assets/images/info.png';
-import img from '../../assets/images/blue-human.png';
+import img from '../../assets/images/blue_human.png';
 import sendImg from '../../assets/images/send.png'; // Изображение для кнопки отправки
 
 const ChatScreen = () => {
