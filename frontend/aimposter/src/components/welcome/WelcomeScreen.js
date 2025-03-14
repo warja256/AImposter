@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { createRoom, joinRoom } from './api'; // Импортируем функции из api.js
+import { useNavigate } from 'react-router-dom';
 import "./WelcomeScreen.css";
 import "../header.css";
 import logo from "../../assets/images/logo.png";
@@ -7,9 +7,7 @@ import avatar from "../../assets/images/avatar.png";
 const WelcomeScreen = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isManual, setIsManual] = useState(false);
-  const [playerName, setPlayerName] = useState('');
-  const [roomCode, setRoomCode] = useState('');
-
+  const navigate = useNavigate();
   useEffect(() => {
     if (!isManual) {
       const interval = setInterval(() => {
@@ -26,24 +24,11 @@ const WelcomeScreen = () => {
     setTimeout(() => setIsManual(false), 5000);
   };
 
-  const handleCreateGame = async () => {
-    try {
-      const room = await createRoom(playerName);
-      console.log('Room created:', room);
-      // Дополнительная логика, например, перенаправление на страницу игры
-    } catch (error) {
-      console.error('Error creating room:', error);
-    }
-  };
 
-  const handleJoinGame = async () => {
-    try {
-      const room = await joinRoom(roomCode, playerName);
-      console.log('Joined room:', room);
-      // Дополнительная логика, например, перенаправление на страницу игры
-    } catch (error) {
-      console.error('Error joining room:', error);
-    }
+
+  const handleCreateGame = () => {
+    // Логика создания игры
+    navigate('/lobby'); // Переход к LobbyScreen
   };
 
   return (
