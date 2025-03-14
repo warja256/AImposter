@@ -1,9 +1,19 @@
 // src/controllers/roomController.js
 const { Room, Player, Honor } = require('../models'); // Импортируем модели из Sequelize (в соответствии с твоей моделью)
 
+
+function generateRandomCode() {
+    let code = '';
+    for (let i = 0; i < 4; i++) {
+        code += Math.floor(Math.random() * 10);  // Случайное число от 0 до 9
+    }
+    return code;
+}
+
 const createRoom = async (req, res) => {
     try {
-        const newRoom = await Room.create();  // Создаём комнату
+        const roomCode = generateRandomCode();
+        const newRoom = await Room.create({roomCode});  // Создаём комнату
         res.status(201).json(newRoom);  // Отправляем ответ с созданной комнатой
     } catch (error) {
         console.error(error);
