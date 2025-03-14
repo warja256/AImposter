@@ -54,7 +54,7 @@ const joinRoom = async (req, res) => {
             playerId: player.id,
         });
 
-        res.status(200).json({ message: 'Вы успешно присоединились к комнате', player, room });
+        res.status(200).json({room, player });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Ошибка при присоединении к комнате', details: error.message });
