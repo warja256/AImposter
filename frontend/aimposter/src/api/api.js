@@ -38,3 +38,15 @@ export const castVote = async (roomId, voterId, targetId) => {
     throw error;
   }
 };
+
+export const getRoomDetails = async (roomCode) => {
+  try {
+    const response = await fetch(`/api/rooms/${roomCode}`);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching room details:", error);
+    throw error;
+  }
+};
+
