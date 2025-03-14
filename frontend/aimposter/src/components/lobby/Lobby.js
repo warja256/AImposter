@@ -1,38 +1,38 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import "../header.css";
 import "./Lobby.css";
 import logo from '../../assets/images/logo.png';
 import avatar from "../../assets/images/avatar.png";
-import { createRoom } from '../../api/api'; // Импортируем функцию для создания комнаты
+import { createRoom } from '../../api/api';
 
 const LobbyScreen = () => {
   const [roomData, setRoomData] = useState(null); // Для хранения данных комнаты
   const [playerData, setPlayerData] = useState(null); // Для хранения данных игрока
-  const [playerName, setPlayerName] = useState(''); // Для хранения имени игрока
-  const [isNameSet, setIsNameSet] = useState(false); // Статус, что имя игрока установлено
+  const [playerName, setPlayerName] = useState('');
   const navigate = useNavigate();
+  const location = useLocation(); // Используем useLocation для получения переданных данных
 
   useEffect(() => {
-    // Запросить имя игрока при первом рендере
-    const playerName = prompt('Введите ваше имя', 'Игрок 1');
-    if (playerName) {
-      setPlayerName(playerName);
-      createRoomForPlayer(playerName); // Создание комнаты с переданным именем
+    if (location.state && location.state.playerName) {
+      setPlayerName(location.state.playerName); // Получаем имя игрока из состояния
     }
-  }, []);
 
-  // Функция для создания комнаты
-  const createRoomForPlayer = async (name) => {
-    try {
-      const response = await createRoom(name); // Создаем комнату с переданным именем
-      setRoomData(response.room); // Устанавливаем данные комнаты (включая roomCode)
-      setPlayerData(response.player); // Устанавливаем данные игрока
-      setIsNameSet(true); // Имя установлено
-    } catch (error) {
-      console.error("Error creating room:", error);
+    // Функция для создания комнаты (при необходимости)
+    const createNewRoom = async () => {
+      try {
+        const response = await createRoom(playerName);
+        setRoomData(response.room);
+        setPlayerData(response.player);
+      } catch (error) {
+        console.error("Error creating room:", error);
+      }
+    };
+
+    if (playerName) {
+      createNewRoom(); // Создаем комнату только если имя игрока установлено
     }
-  };
+  }, [location.state, playerName]); // Зависимость от имени игрока и состояния
 
   const handleGoBack = () => {
     navigate('/'); // Переход к WelcomeScreen
@@ -84,7 +84,7 @@ const LobbyScreen = () => {
           <h3>УЧАСТНИКИ {roomData ? `${roomData.playerCount}/4` : "0/4"}</h3>
           <button className="player-button">
             <img src={avatar} className="avatar" alt="Игрок 1" />
-            <div className="text">{playerData ? playerData.name : "Игрок 1"}</div>
+            <div className="text">{playerName}</div> {/* Отображаем имя игрока */}
           </button>
           {/* Здесь можно добавить отображение других игроков */}
         </div>

@@ -33,12 +33,13 @@ const WelcomeScreen = () => {
     try {
       const response = await createRoom(playerName); // Обращаемся к функции создания комнаты
       console.log("Room created:", response);
-      navigate('/lobby'); // Переход к LobbyScreen
+      navigate('/lobby', { state: { playerName: playerName } }); // Переход с передачей имени игрока
     } catch (error) {
       console.error("Error creating room:", error);
       alert("Ошибка при создании комнаты");
     }
   };
+  
 
   const handleJoinGame = async () => {
     try {
