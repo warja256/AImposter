@@ -4,6 +4,7 @@ import "./WelcomeScreen.css";
 import "../header.css";
 import logo from "../../assets/images/logo.png";
 import avatar from "../../assets/images/avatar.png";
+import { createRoom, joinRoom } from "../../api/api.js"; // Импортируем API функции
 
 const WelcomeScreen = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -28,14 +29,24 @@ const WelcomeScreen = () => {
     setTimeout(() => setIsManual(false), 5000);
   };
 
-  const handleCreateGame = () => {
-    // Логика создания игры
-    navigate('/lobby'); // Переход к LobbyScreen
+  const handleCreateGame = async () => {
+    try {
+      const roomData = await createRoom(playerName);
+      console.log("Room created:", roomData);
+      navigate('/lobby'); // Переход к LobbyScreen
+    } catch (error) {
+      console.error("Error creating room:", error);
+    }
   };
 
-  const handleJoinGame = () => {
-    // Логика входа в игру
-    console.log(`Joining game with code: ${roomCode}`);
+  const handleJoinGame = async () => {
+    try {
+      const roomData = await joinRoom(roomCode, playerName);
+      console.log("Joined room:", roomData);
+      navigate('/lobby'); // Переход к LobbyScreen
+    } catch (error) {
+      console.error("Error joining room:", error);
+    }
   };
 
   return (
@@ -77,7 +88,7 @@ const WelcomeScreen = () => {
             </div>
           </div>
 
-          <button className="create-game" onClick={handleCreateGame}>Создать Игру</button>
+          <button className="welcome-create-game" onClick={handleCreateGame}>Создать Игру</button>
         </div>
         <div className="info-box">
           <div className={`slide ${currentSlide === 0 ? "active" : ""}`}>
