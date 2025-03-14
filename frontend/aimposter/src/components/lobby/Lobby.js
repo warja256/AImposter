@@ -15,8 +15,8 @@ const LobbyScreen = () => {
     const createNewRoom = async () => {
       try {
         const response = await createRoom("Игрок 1"); // Здесь передаем имя игрока
-        setRoomData(response.room);
-        setPlayerData(response.player);
+        setRoomData(response.room); // Устанавливаем данные комнаты (включая roomCode)
+        setPlayerData(response.player); // Устанавливаем данные игрока
       } catch (error) {
         console.error("Error creating room:", error);
       }
