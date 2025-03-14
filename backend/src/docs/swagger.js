@@ -16,7 +16,8 @@ const swaggerOptions = {
       },
     ],
   },
-  apis: ['./src/routes/*.js'],  // Путь к твоим маршрутам для генерации документации
+  // apis: ['./src/routes/*.js'],  // Путь к твоим маршрутам для генерации документации
+     apis: ['../routes/*.js'],
 };
 
 const swaggerSpec = swaggerJsDoc(swaggerOptions);
