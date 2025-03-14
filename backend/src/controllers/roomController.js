@@ -45,6 +45,8 @@ const joinRoom = async (req, res) => {
         }
 
         const player = await Player.create({ name: playerName });
+        await room.update({ playerCount: room.playerCount + 1 });
+
 
         // Записываем информацию о присоединении игрока в таблицу сессии
         await GameSession.create({
