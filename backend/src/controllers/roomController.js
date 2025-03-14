@@ -38,7 +38,7 @@ const joinRoom = async (req, res) => {
 
         const player = await Player.create({ name: playerName, roomId: room.id });  // Создаём нового игрока
 
-        // Записываем информацию о присоединении игрока в таблицу чести
+        // Записываем информацию о присоединении игрока в таблицу сессии
         await Honor.create({ playerId: player.id, roomId: room.id });
 
         res.status(200).json({ message: 'Вы успешно присоединились к комнате', player, room });

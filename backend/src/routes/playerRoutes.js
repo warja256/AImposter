@@ -41,6 +41,6 @@ router.post('/', createPlayer);
  *       200:
  *         description: Данные игрока
  */
-router.get('/:playerId', getPlayer);
+router.get('/:id', getPlayer);
 
 module.exports = router;

@@ -31,4 +31,6 @@ const { votePlayer } = require('../controllers/voteController');
  */
 router.post('/:roomId', votePlayer);
 
+router.post('/:roomId/end', endVotingRound);
+
 module.exports = router;

@@ -14,12 +14,11 @@ const createPlayer = async (req, res) => {
 // Получить информацию об игроке
 const getPlayer = async (req, res) => {
     try {
-        const { playerId } = req.params;
-        const player = await Player.findByPk(playerId);
+        const { id } = req.params;
+        const player = await Player.findByPk(id);
         if (!player) {
             return res.status(404).json({ message: 'Игрок не найден' });
         }
-
         res.status(200).json(player);
     } catch (error) {
         res.status(500).json({ message: error.message });
