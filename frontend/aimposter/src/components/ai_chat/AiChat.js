@@ -20,15 +20,17 @@ const AiChatScreen = () => {
 
   useEffect(() => {
     let interval = null;
-
+  
     if (countdown !== 0) {
       interval = setInterval(() => {
         setCountdown(countdown => countdown - 1);
       }, 1000);
     } else {
       clearInterval(interval);
+      setShowChoices(true); // Показываем варианты выбора
+      setCountdown(15); // Обновляем таймер
     }
-
+  
     return () => clearInterval(interval);
   }, [countdown]);
 
@@ -90,9 +92,9 @@ const AiChatScreen = () => {
               <input
                 key={index}
                 className={`message-input ${selectedOption === index ? 'selected' : ''}`}
-                readOnly // Делаем поле только для чтения
-                value={`Вариант ${value}`} // Значение для примера
-                onClick={() => handleSelectOption(index)} // Обработчик выбора
+                readOnly
+                value={`Вариант ${value}`}
+                onClick={() => handleSelectOption(index)}
               />
             ))}
           </div>

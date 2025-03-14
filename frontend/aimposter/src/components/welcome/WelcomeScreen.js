@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { createRoom, joinRoom } from './api'; // Импортируем функции из api.js
+import { useNavigate } from 'react-router-dom';
 import "./WelcomeScreen.css";
 import "../header.css";
 import logo from "../../assets/images/logo.png";
 import avatar from "../../assets/images/avatar.png";
+
 const WelcomeScreen = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isManual, setIsManual] = useState(false);
-  const [playerName, setPlayerName] = useState('');
-  const [roomCode, setRoomCode] = useState('');
+  const [playerName, setPlayerName] = useState(""); // Добавляем состояние для имени игрока
+  const [roomCode, setRoomCode] = useState(""); // Добавляем состояние для кода комнаты
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!isManual) {
@@ -26,24 +28,14 @@ const WelcomeScreen = () => {
     setTimeout(() => setIsManual(false), 5000);
   };
 
-  const handleCreateGame = async () => {
-    try {
-      const room = await createRoom(playerName);
-      console.log('Room created:', room);
-      // Дополнительная логика, например, перенаправление на страницу игры
-    } catch (error) {
-      console.error('Error creating room:', error);
-    }
+  const handleCreateGame = () => {
+    // Логика создания игры
+    navigate('/lobby'); // Переход к LobbyScreen
   };
 
-  const handleJoinGame = async () => {
-    try {
-      const room = await joinRoom(roomCode, playerName);
-      console.log('Joined room:', room);
-      // Дополнительная логика, например, перенаправление на страницу игры
-    } catch (error) {
-      console.error('Error joining room:', error);
-    }
+  const handleJoinGame = () => {
+    // Логика входа в игру
+    console.log(`Joining game with code: ${roomCode}`);
   };
 
   return (
@@ -64,7 +56,7 @@ const WelcomeScreen = () => {
               className="name-field"
               placeholder="Имя..."
               value={playerName}
-              onChange={(e) => setPlayerName(e.target.value)}
+              onChange={(e) => setPlayerName(e.target.value)} // Обработчик для изменения имени игрока
             />
           </div>
 
@@ -77,7 +69,7 @@ const WelcomeScreen = () => {
                     type="text"
                     className="code-field"
                     value={roomCode}
-                    onChange={(e) => setRoomCode(e.target.value)}
+                    onChange={(e) => setRoomCode(e.target.value)} // Обработчик для изменения кода комнаты
                     placeholder="Код комнаты"
                   />
                 </div>
@@ -97,14 +89,14 @@ const WelcomeScreen = () => {
             <h3>КАК ИГРАТЬ:</h3>
             <p className="info-box-second-header"><b>3.</b> <b>Дневное веселье!</b></p>
             <p className="info-box-second">Днём все игроки общаются в чате, а мафия выбирает из вариантов, предложенных ИИ.</p>
-            <p className="info-box-second">У вас есть <span className="player-role">15 секунд,</span> чтобы написать сообщение, после чего все они отправляются одновременно.</p>
+            <p className="info-box-second">У вас есть <span className="player-role">25 секунд,</span> чтобы написать сообщение, после чего все они отправляются одновременно.</p>
           </div>
           <div className={`slide ${currentSlide === 2 ? "active" : ""}`}>
             <h3>КАК ИГРАТЬ:</h3>
             <p className="info-box-third-header"><b>4.</b> Раунды и голосования!</p>
-            <p className="info-box-second">Каждый раунд длится <span className="player-role">1,5 минуты.</span> В конце раунда вы должны проголосовать и выгнать одного участника.</p>
+            <p className="info-box-second">Каждый раунд длится <span className="player-role">3 минуты.</span> В конце раунда вы должны проголосовать и выгнать одного участника.</p>
             <p className="info-box-third-header"><b>5.</b> Ночные интриги!</p>
-            <p className="info-box-second">Ночью мафия выбирает свою жертву за <span className="player-role">20 секунд.</span></p>
+            <p className="info-box-second">Ночью мафия выбирает свою жертву за <span className="player-role">25 секунд.</span></p>
           </div>
           <div className="dots">
             {[0, 1, 2].map((index) => (
