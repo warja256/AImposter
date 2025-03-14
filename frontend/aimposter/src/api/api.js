@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3000/api';
+const API_URL = 'http://localhost:8080/api';
 
 export const createRoom = async (playerName) => {
   try {
@@ -12,9 +12,9 @@ export const createRoom = async (playerName) => {
 };
 
 
-export const joinRoom = async (roomId, playerName) => {
+export const joinRoom = async (roomCode, playerName) => {
   try {
-    const response = await axios.post(`${API_URL}/rooms/${roomId}/join`, { playerName });
+    const response = await axios.post(`${API_URL}/rooms/join`, { roomCode, playerName });
     return response.data;
   } catch (error) {
     throw error;
