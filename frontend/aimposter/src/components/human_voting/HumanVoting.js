@@ -44,7 +44,7 @@ const HumanVotingScreen = () => {
     };
 
     return (
-        <div className="human-night-screen">
+        <div className="human-voting-screen">
             <div className="logo-container">
                 <img src={logo} alt="AImposter Logo" />
                 <span className="header-title">AImposter</span>

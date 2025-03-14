@@ -24,10 +24,15 @@ html, body {
     top: 55%;
     left: 50%;
     transform: translate(-50%, -50%); /* Центрирование по горизонтали и вертикали */
-    width: 780px;
-    height: 625px;
+    width: 700px;
+    height: 580px;
     border-radius: 50px;
     background-color: rgba(0, 0, 0, 0.276);
+    background: linear-gradient(
+              rgba(0, 0, 0, 0.5) 0%, 
+              rgba(0, 0, 0, 0.5) 105px, 
+              rgba(0, 0, 0, 0.2) 105px, 
+              rgba(0, 0, 0, 0.2) 100%);
     box-shadow: 0 1 30px rgba(0, 0, 0, 0.4);
     border: 1px solid rgba(0, 0, 0, 0.5);
     z-index: 1;
@@ -39,7 +44,7 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 30px;
+    margin-top: 25px;
   }
   
   .head-text {
@@ -69,7 +74,7 @@ html, body {
     align-items: center;
   }
   
-  .player-button {
+  .player-button-m {
     display: flex;
     align-items: center;
     width: 100%;
@@ -86,8 +91,8 @@ html, body {
     font-weight: 600;
   }
   
-  .player-button.selected,
-  .player-button:hover {
+  .player-button-m.selected,
+  .player-button-m:hover {
     border: 3px solid #1346ff;
   }
 

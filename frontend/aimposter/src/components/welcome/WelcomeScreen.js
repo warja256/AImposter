@@ -4,12 +4,10 @@ import "./WelcomeScreen.css";
 import "../header.css";
 import logo from "../../assets/images/logo.png";
 import avatar from "../../assets/images/avatar.png";
-
 const WelcomeScreen = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isManual, setIsManual] = useState(false);
   const navigate = useNavigate();
-
   useEffect(() => {
     if (!isManual) {
       const interval = setInterval(() => {
@@ -25,6 +23,8 @@ const WelcomeScreen = () => {
     setIsManual(true);
     setTimeout(() => setIsManual(false), 5000);
   };
+
+
 
   const handleCreateGame = () => {
     // Логика создания игры
@@ -44,15 +44,27 @@ const WelcomeScreen = () => {
             <div className="avatar-container">
               <img src={avatar} alt="Avatar" />
             </div>
-            <input type="text" className="name-field" placeholder="Имя..." />
+            <input
+              type="text"
+              className="name-field"
+              placeholder="Имя..."
+              value={playerName}
+              onChange={(e) => setPlayerName(e.target.value)}
+            />
           </div>
 
           <div className="center">
             <div className="room-code-container">
               <div className="combined-button">
-                <button className="join-button">Войти</button>
+                <button className="join-button" onClick={handleJoinGame}>Войти</button>
                 <div className="input-filed">
-                  <input type="text" className="code-field" value="0000000" readOnly />
+                  <input
+                    type="text"
+                    className="code-field"
+                    value={roomCode}
+                    onChange={(e) => setRoomCode(e.target.value)}
+                    placeholder="Код комнаты"
+                  />
                 </div>
               </div>
             </div>
@@ -60,7 +72,6 @@ const WelcomeScreen = () => {
 
           <button className="create-game" onClick={handleCreateGame}>Создать Игру</button>
         </div>
-
         <div className="info-box">
           <div className={`slide ${currentSlide === 0 ? "active" : ""}`}>
             <h3>КАК ИГРАТЬ:</h3>

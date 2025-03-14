@@ -23,12 +23,14 @@ import RetiredUser from './components/retired/RetiredUser.js';
 
 const App = () => {
   return (
+
     <Router>
       <Routes>
         <Route path="/" element={<WelcomeScreen />} />
         <Route path="/lobby" element={<LobbyScreen />} />
       </Routes>
     </Router>
+
   );
 };
 
