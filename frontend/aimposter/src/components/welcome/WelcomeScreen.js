@@ -89,14 +89,14 @@ const WelcomeScreen = () => {
             <h3>КАК ИГРАТЬ:</h3>
             <p className="info-box-second-header"><b>3.</b> <b>Дневное веселье!</b></p>
             <p className="info-box-second">Днём все игроки общаются в чате, а мафия выбирает из вариантов, предложенных ИИ.</p>
-            <p className="info-box-second">У вас есть <span className="player-role">15 секунд,</span> чтобы написать сообщение, после чего все они отправляются одновременно.</p>
+            <p className="info-box-second">У вас есть <span className="player-role">25 секунд,</span> чтобы написать сообщение, после чего все они отправляются одновременно.</p>
           </div>
           <div className={`slide ${currentSlide === 2 ? "active" : ""}`}>
             <h3>КАК ИГРАТЬ:</h3>
             <p className="info-box-third-header"><b>4.</b> Раунды и голосования!</p>
-            <p className="info-box-second">Каждый раунд длится <span className="player-role">1,5 минуты.</span> В конце раунда вы должны проголосовать и выгнать одного участника.</p>
+            <p className="info-box-second">Каждый раунд длится <span className="player-role">3 минуты.</span> В конце раунда вы должны проголосовать и выгнать одного участника.</p>
             <p className="info-box-third-header"><b>5.</b> Ночные интриги!</p>
-            <p className="info-box-second">Ночью мафия выбирает свою жертву за <span className="player-role">20 секунд.</span></p>
+            <p className="info-box-second">Ночью мафия выбирает свою жертву за <span className="player-role">25 секунд.</span></p>
           </div>
           <div className="dots">
             {[0, 1, 2].map((index) => (
