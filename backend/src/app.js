@@ -26,7 +26,7 @@ swaggerSetup(app);  // Используем Swagger на маршруте /api-d
 
 startWebSocket(server);
 
-const PORT = process.env.PORT || 3000;
+const PORT = 8080;
 server.listen(PORT, async () => {
     console.log(`Server running on http://localhost:${PORT}/api-docs/`);
     await sequelize.sync({ alter: true });

@@ -17,16 +17,10 @@ router.post('/', createRoom);
 
 /**
  * @swagger
- * /api/rooms/{roomId}/join:
+ * /api/rooms/join:
  *   post:
  *     summary: Присоединиться к комнате
  *     tags: [Комнаты]
- *     parameters:
- *       - in: path
- *         name: roomId
- *         required: true
- *         schema:
- *           type: string
  *     requestBody:
  *       required: true
  *       content:
@@ -34,13 +28,15 @@ router.post('/', createRoom);
  *           schema:
  *             type: object
  *             properties:
+ *               roomCode:
+ *                 type: string
  *               playerName:
  *                 type: string
  *     responses:
  *       200:
  *         description: Успешное подключение
  */
-router.post('/:roomId/join', joinRoom);
+router.post('/join', joinRoom);
 
 /**
  * @swagger

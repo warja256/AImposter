@@ -36,24 +36,28 @@ const createRoom = async (req, res) => {
 
 const joinRoom = async (req, res) => {
     try {
-        const { roomId } = req.params;  // Получаем roomId из URL
-        const { playerName } = req.body;  // Получаем имя игрока из тела запроса
+        const { roomCode, playerName } = req.body;  // Получаем roomcode из тела запроса
 
-        const room = await Room.findByPk(roomId);  // Ищем комнату по ID
+        const room = await Room.findOne({ where: { roomCode } });  // Ищем комнату по code
 
         if (!room) {
-            return res.status(404).json({ message: 'Комната не найдена' });
+            return res.status(404).json({ message: 'Комната не найдена'});
         }
 
-        const player = await Player.create({ name: playerName, roomId: room.id });  // Создаём нового игрока
+        const player = await Player.create({ name: playerName });
+        await room.update({ playerCount: room.playerCount + 1 });
+
 
         // Записываем информацию о присоединении игрока в таблицу сессии
-        await Honor.create({ playerId: player.id, roomId: room.id });
+        await GameSession.create({
+            roomId: room.id,
+            playerId: player.id,
+        });
 
         res.status(200).json({ message: 'Вы успешно присоединились к комнате', player, room });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Ошибка при присоединении к комнате' });
+        res.status(500).json({ message: 'Ошибка при присоединении к комнате', details: error.message });
     }
 };
 
@@ -73,5 +77,25 @@ const getRoom = async (req, res) => {
         res.status(500).json({ message: 'Ошибка при получении информации о комнате' });
     }
 };
+
+const sendMessage = async (req, res) => {
+    try {
+        const { roomId, playerId, content } = req.body;
+        
+        const room = await Room.findByPk(roomId, { include: [Player] });
+        if (!room) {
+            return res.status(404).json({ message: 'Комната не найдена' });
+        }
+
+        // Допустим, у нас есть таблица сообщений, куда мы будем записывать
+        await Message.create({ roomId, playerId, content });
+
+        res.status(200).json({ message: 'Сообщение отправлено', content });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Ошибка при отправке сообщения', details: error.message });
+    }
+};
+
 
 module.exports = { createRoom, joinRoom, getRoom };
