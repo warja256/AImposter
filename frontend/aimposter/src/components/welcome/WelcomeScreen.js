@@ -4,7 +4,7 @@ import "./WelcomeScreen.css";
 import "../header.css";
 import logo from "../../assets/images/logo.png";
 import avatar from "../../assets/images/avatar.png";
-import { createRoom, joinRoom } from "../../api/api.js"; // Импортируем API функции
+import { createRoom, joinRoom } from "../../api/api.js";  // Импортируем API функции
 
 const WelcomeScreen = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -36,6 +36,7 @@ const WelcomeScreen = () => {
       navigate('/lobby'); // Переход к LobbyScreen
     } catch (error) {
       console.error("Error creating room:", error);
+      alert("Ошибка при создании комнаты");
     }
   };
 
@@ -46,6 +47,7 @@ const WelcomeScreen = () => {
       navigate('/lobby'); // Переход к LobbyScreen
     } catch (error) {
       console.error("Error joining room:", error);
+      alert("Ошибка при присоединении к комнате");
     }
   };
 

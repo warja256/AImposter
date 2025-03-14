@@ -1,12 +1,29 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "../header.css";
 import "./Lobby.css";
 import logo from '../../assets/images/logo.png';
 import avatar from "../../assets/images/avatar.png";
+import { createRoom } from '../../api/api'; // Импортируем функцию для создания комнаты
 
 const LobbyScreen = () => {
+  const [roomData, setRoomData] = useState(null); // Для хранения данных комнаты
+  const [playerData, setPlayerData] = useState(null); // Для хранения данных игрока
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const createNewRoom = async () => {
+      try {
+        const response = await createRoom("Игрок 1"); // Здесь передаем имя игрока
+        setRoomData(response.room); // Устанавливаем данные комнаты (включая roomCode)
+        setPlayerData(response.player); // Устанавливаем данные игрока
+      } catch (error) {
+        console.error("Error creating room:", error);
+      }
+    };
+
+    createNewRoom(); // Создаём комнату сразу при загрузке компонента
+  }, []);
 
   const handleGoBack = () => {
     navigate('/'); // Переход к WelcomeScreen
@@ -30,10 +47,17 @@ const LobbyScreen = () => {
             <div className="center">
               <div className="room-code-container">
                 <div className="combined-button">
-                  <button className="join-button">Войти</button>
-                  <div className="input-filed">
-                    <input type="text" className="code-field" value="0000000" readOnly />
-                  </div>
+                  {/* Отображаем код комнаты, если данные получены */}
+                  {roomData ? (
+                    <>
+                      <button className="join-button">Войти</button>
+                      <div className="input-filed">
+                        <input type="text" className="code-field" value={roomData.roomCode} readOnly />
+                      </div>
+                    </>
+                  ) : (
+                    <p>Загрузка...</p>
+                  )}
                 </div>
               </div>
             </div>
@@ -43,21 +67,12 @@ const LobbyScreen = () => {
           </div>
         </div>
         <div className="lobby-users">
-          <h3>УЧАСТНИКИ 2/4</h3>
+          <h3>УЧАСТНИКИ {roomData ? `${roomData.playerCount}/4` : "0/4"}</h3>
           <button className="player-button">
-            <img src={avatar} className="avatar" />
-            <div className="text">Игрок 1</div>
+            <img src={avatar} className="avatar" alt="Игрок 1" />
+            <div className="text">{playerData ? playerData.name : "Игрок 1"}</div>
           </button>
-          <button className="player-button">
-            <img src={avatar} className="avatar" />
-            <div className="text">Никнейм игрока 2</div>
-          </button>
-          <button className="player-button">
-            <div className="text"></div>
-          </button>
-          <button className="player-button">
-            <div className="text"></div>
-          </button>
+          {/* Здесь можно добавить отображение других игроков */}
         </div>
       </div>
     </div>

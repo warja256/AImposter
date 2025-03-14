@@ -9,7 +9,7 @@ import sendImg from '../../assets/images/send.png'; // Изображение д
 
 const ChatScreen = () => {
     const [roomCode, setRoomCode] = useState('9090');
-    const [countdown, setCountdown] = useState(15);
+    const [countdown, setCountdown] = useState(25);
     const [round, setRound] = useState(1);
     const [inputValue, setInputValue] = useState('');
     const [isInputActive, setIsInputActive] = useState(false);
