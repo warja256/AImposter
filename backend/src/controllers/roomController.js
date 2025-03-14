@@ -3,12 +3,15 @@ const { Room, Player, Honor } = require('../models'); // Импортируем 
 
 const createRoom = async (req, res) => {
     try {
-        const { roomName } = req.body;  // Получаем данные из запроса
-        const newRoom = await Room.create({ name: roomName });  // Создаём комнату
+        const newRoom = await Room.create();  // Создаём комнату
         res.status(201).json(newRoom);  // Отправляем ответ с созданной комнатой
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Ошибка создания комнаты' });
+        res.status(500).json({ 
+            message: 'Ошибка создания комнаты!',
+            details: error.message,  // Добавление деталей ошибки
+            stack: error.stack  // Полная трассировка стека (для разработки)
+         });
     }
 };
 
