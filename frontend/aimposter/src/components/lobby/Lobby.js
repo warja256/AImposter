@@ -4,35 +4,24 @@ import "../header.css";
 import "./Lobby.css";
 import logo from '../../assets/images/logo.png';
 import avatar from "../../assets/images/avatar.png";
-import { createRoom } from '../../api/api';
 
 const LobbyScreen = () => {
   const [roomData, setRoomData] = useState(null); // Для хранения данных комнаты
   const [playerData, setPlayerData] = useState(null); // Для хранения данных игрока
   const [playerName, setPlayerName] = useState('');
+  const [roomCode, setRoomCode] = useState('');
   const navigate = useNavigate();
   const location = useLocation(); // Используем useLocation для получения переданных данных
 
   useEffect(() => {
-    if (location.state && location.state.playerName) {
-      setPlayerName(location.state.playerName); // Получаем имя игрока из состояния
-    }
+    if (location.state) {
+      const { playerName, roomCode } = location.state;
 
-    // Функция для создания комнаты (при необходимости)
-    const createNewRoom = async () => {
-      try {
-        const response = await createRoom(playerName);
-        setRoomData(response.room);
-        setPlayerData(response.player);
-      } catch (error) {
-        console.error("Error creating room:", error);
-      }
-    };
-
-    if (playerName) {
-      createNewRoom(); // Создаем комнату только если имя игрока установлено
+      // Устанавливаем имя игрока и код комнаты, полученные из состояния
+      setPlayerName(playerName);
+      setRoomCode(roomCode);
     }
-  }, [location.state, playerName]); // Зависимость от имени игрока и состояния
+  }, [location.state]); // Зависимость от состояния
 
   const handleGoBack = () => {
     navigate('/'); // Переход к WelcomeScreen
@@ -57,14 +46,14 @@ const LobbyScreen = () => {
               <div className="room-code-container">
                 <div className="combined-button">
                   {/* Отображаем код комнаты, если данные получены */}
-                  {roomData ? (
+                  {roomCode ? (
                     <>
                       <button className="join-button">Войти</button>
                       <div className="input-filed">
                         <input
                           type="text"
                           className="code-field"
-                          value={roomData.roomCode}
+                          value={roomCode}
                           readOnly
                         />
                       </div>

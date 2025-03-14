@@ -31,14 +31,19 @@ const WelcomeScreen = () => {
 
   const handleCreateGame = async () => {
     try {
-      const response = await createRoom(playerName); // Обращаемся к функции создания комнаты
+      const response = await createRoom(playerName); // Функция для создания комнаты на сервере
+      const { roomCode } = response.room; // Извлекаем код комнаты из ответа сервера
       console.log("Room created:", response);
-      navigate('/lobby', { state: { playerName: playerName } }); // Переход с передачей имени игрока
+  
+      // Переходим на экран лобби, передавая имя игрока и код комнаты
+      navigate('/lobby', { state: { playerName: playerName, roomCode: roomCode } });
+  
     } catch (error) {
       console.error("Error creating room:", error);
       alert("Ошибка при создании комнаты");
     }
   };
+  
   
 
   const handleJoinGame = async () => {
