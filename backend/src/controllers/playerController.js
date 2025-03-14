@@ -3,9 +3,9 @@ const { Player } = require('../models');  // импортируем модель
 // Создание игрока
 const createPlayer = async (req, res) => {
     try {
-        const { nickname, avatar } = req.body;
-        const player = await Player.create({ nickname, avatar });
-        res.status(201).json(player);
+        const { name, avatar } = req.body;
+        const player = await Player.create({ name, avatar });
+        res.status(200).json(player);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
