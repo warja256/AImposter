@@ -78,4 +78,24 @@ const getRoom = async (req, res) => {
     }
 };
 
+const sendMessage = async (req, res) => {
+    try {
+        const { roomId, playerId, content } = req.body;
+        
+        const room = await Room.findByPk(roomId, { include: [Player] });
+        if (!room) {
+            return res.status(404).json({ message: 'Комната не найдена' });
+        }
+
+        // Допустим, у нас есть таблица сообщений, куда мы будем записывать
+        await Message.create({ roomId, playerId, content });
+
+        res.status(200).json({ message: 'Сообщение отправлено', content });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Ошибка при отправке сообщения', details: error.message });
+    }
+};
+
+
 module.exports = { createRoom, joinRoom, getRoom };
