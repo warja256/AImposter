@@ -1,5 +1,5 @@
 // src/controllers/roomController.js
-const { Room, Player, Honor } = require('../models'); // Импортируем модели из Sequelize (в соответствии с твоей моделью)
+const { Room, Player, GameSession } = require('../models'); // Импортируем модели из Sequelize (в соответствии с твоей моделью)
 
 
 function generateRandomCode() {
@@ -12,13 +12,22 @@ function generateRandomCode() {
 
 const createRoom = async (req, res) => {
     try {
+        const {playerName} = req.body;
         const roomCode = generateRandomCode();
+
         const newRoom = await Room.create({roomCode});  // Создаём комнату
-        res.status(201).json(newRoom);  // Отправляем ответ с созданной комнатой
+
+        const newPlayer = await Player.create({ name: playerName });
+        await GameSession.create({
+            roomId: newRoom.id,
+            playerId: newPlayer.id,
+        });
+
+        res.status(201).json({room: newRoom, player: newPlayer});  // Отправляем ответ с созданной комнатой
     } catch (error) {
         console.error(error);
         res.status(500).json({ 
-            message: 'Ошибка создания комнаты!',
+            message: 'Ошибка создания комнаты и игрока!',
             details: error.message,  // Добавление деталей ошибки
             stack: error.stack  // Полная трассировка стека (для разработки)
          });

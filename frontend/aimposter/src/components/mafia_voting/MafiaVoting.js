@@ -3,12 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import './MafiaVoting.css';
 import '../header.css';
 import logo from '../../assets/images/logo.png';
-import avatar from "../../assets/images/avatar.png"; 
+import avatar from "../../assets/images/avatar.png";
 
 const MafiaVotingScreen = () => {
-    const [countdown, setCountdown] = useState(20);
+    const [countdown, setCountdown] = useState(180); // 3 minutes
     const [selectedPlayer, setSelectedPlayer] = useState(null);
-    const navigate = useNavigate(); // Хук для навигации
+    const navigate = useNavigate(); // Hook for navigation
 
     const formatTime = (seconds) => {
         const minutes = Math.floor(seconds / 60);
@@ -21,17 +21,26 @@ const MafiaVotingScreen = () => {
             const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
             return () => clearTimeout(timer);
         } else {
-            // Заглушка для будущего кода перехода на другую страницу
+            // Placeholder for future code to navigate to another page
             handleCountdownEnd();
         }
     }, [countdown, navigate]);
 
-    const handleCountdownEnd = () => {
-        // Здесь будет логика перехода на другую страницу
-        console.log("Таймер завершен! Переход на другую страницу...");
-        // navigate('/next-page'); // Раскомментируйте эту строку, когда будете готовы к переходу
-    };
+    useEffect(() => {
+        const messageInterval = setInterval(() => {
+            if (selectedPlayer !== null) {
+                console.log(`Отправлен выбор: Игрок ${selectedPlayer}`);
+            }
+        }, 25000); // 25 seconds
 
+        return () => clearInterval(messageInterval);
+    }, [selectedPlayer]);
+
+    const handleCountdownEnd = () => {
+        // Logic for navigating to another page
+        console.log("Таймер завершен! Переход на другую страницу...");
+        // navigate('/next-page'); // Uncomment this line when ready to navigate
+    };
 
     const handlePlayerSelect = (playerId) => {
         setSelectedPlayer(playerId);
@@ -51,7 +60,6 @@ const MafiaVotingScreen = () => {
             </div>
 
             <div className="central-box">
-
                 <div className="up-panel">
                     <div className="head-text">
                         НОЧЬ, МАФИЯ ДЕЛАЕТ ВЫБОР
@@ -91,7 +99,7 @@ const MafiaVotingScreen = () => {
                 </div>
 
                 <button className="send-button-m" onClick={handleSend}>
-                <div className="button-text">ОТПРАВИТЬ</div>
+                    <div className="button-text">ОТПРАВИТЬ</div>
                 </button>
             </div>
         </div>

@@ -1,7 +1,6 @@
 require('dotenv').config();
 const { Sequelize } = require('sequelize');
 const sequelize = new Sequelize('AImposter', 'postgres', 'Baran9940', {
-// const sequelize = new Sequelize('AImposter', 'varvarakusaeva', '0000', {
 // const sequelize = new Sequelize('AImposter', 'postgres', 'fde2a1c7', {
     host: 'localhost',
     port: 5432,
