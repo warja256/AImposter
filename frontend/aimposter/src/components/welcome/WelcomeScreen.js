@@ -31,8 +31,8 @@ const WelcomeScreen = () => {
 
   const handleCreateGame = async () => {
     try {
-      const roomData = await createRoom(playerName);
-      console.log("Room created:", roomData);
+      const response = await createRoom(playerName); // Обращаемся к функции создания комнаты
+      console.log("Room created:", response);
       navigate('/lobby'); // Переход к LobbyScreen
     } catch (error) {
       console.error("Error creating room:", error);
@@ -41,8 +41,8 @@ const WelcomeScreen = () => {
 
   const handleJoinGame = async () => {
     try {
-      const roomData = await joinRoom(roomCode, playerName);
-      console.log("Joined room:", roomData);
+      const response = await joinRoom(roomCode, playerName); // Обращаемся к функции присоединения
+      console.log("Joined room:", response);
       navigate('/lobby'); // Переход к LobbyScreen
     } catch (error) {
       console.error("Error joining room:", error);
