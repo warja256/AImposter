@@ -4,10 +4,14 @@ import "./WelcomeScreen.css";
 import "../header.css";
 import logo from "../../assets/images/logo.png";
 import avatar from "../../assets/images/avatar.png";
+
 const WelcomeScreen = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isManual, setIsManual] = useState(false);
+  const [playerName, setPlayerName] = useState(""); // Добавляем состояние для имени игрока
+  const [roomCode, setRoomCode] = useState(""); // Добавляем состояние для кода комнаты
   const navigate = useNavigate();
+
   useEffect(() => {
     if (!isManual) {
       const interval = setInterval(() => {
@@ -24,11 +28,14 @@ const WelcomeScreen = () => {
     setTimeout(() => setIsManual(false), 5000);
   };
 
-
-
   const handleCreateGame = () => {
     // Логика создания игры
     navigate('/lobby'); // Переход к LobbyScreen
+  };
+
+  const handleJoinGame = () => {
+    // Логика входа в игру
+    console.log(`Joining game with code: ${roomCode}`);
   };
 
   return (
@@ -49,7 +56,7 @@ const WelcomeScreen = () => {
               className="name-field"
               placeholder="Имя..."
               value={playerName}
-              onChange={(e) => setPlayerName(e.target.value)}
+              onChange={(e) => setPlayerName(e.target.value)} // Обработчик для изменения имени игрока
             />
           </div>
 
@@ -62,7 +69,7 @@ const WelcomeScreen = () => {
                     type="text"
                     className="code-field"
                     value={roomCode}
-                    onChange={(e) => setRoomCode(e.target.value)}
+                    onChange={(e) => setRoomCode(e.target.value)} // Обработчик для изменения кода комнаты
                     placeholder="Код комнаты"
                   />
                 </div>
