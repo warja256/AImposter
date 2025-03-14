@@ -18,6 +18,8 @@ import { Route } from 'react-router-dom';
 import { Routes } from 'react-router-dom';
 import HumanWritesScreen from './components/chat/HumanWrites.js';
 import NightResult from './components/retired/NightResult.js';
+import KilledUser from './components/retired/KilledUser.js';
+import RetiredUser from './components/retired/RetiredUser.js';
 
 const App = () => {
   return (

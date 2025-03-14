@@ -136,7 +136,6 @@ html, body {
 
 .message-input {
   position: relative; /* Позиционирование для ::after */
-  padding-right: 50px; /* Добавление дополнительного пространства для изображения */
 }
 
 .send-button {

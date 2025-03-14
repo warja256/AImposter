@@ -1,3 +1,5 @@
+//экран не используется, для выбора просто появляется контейнер с ответами ии
+
 import React, { useState, useEffect } from 'react';
 import './AiChat.css';
 import '../header.css';
