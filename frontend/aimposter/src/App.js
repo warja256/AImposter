@@ -1,7 +1,7 @@
 // src/App.js
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router} from 'react-router-dom';
 
 import HumanRoleScreen from './components/roles/HumanRoleScreen';
 import MafiaScreen from './components/roles/MafiaScreen';
@@ -15,17 +15,19 @@ import ConnectScreen from './components/connect/Connect.js';
 import HumanVotingScreen from './components/human_voting/HumanVoting.js';
 import ChatScreen from './components/day_human_chat/HumanChat.js';
 import { Route } from 'react-router-dom';
+import { Routes } from 'react-router-dom';
 import HumanWritesScreen from './components/chat/HumanWrites.js';
 import NightResult from './components/retired/NightResult.js';
 
-function App() {
+const App = () => {
   return (
-    <div>
-      <Router>
-        <WelcomeScreen/> 
-      </Router>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<WelcomeScreen />} />
+        <Route path="/lobby" element={<LobbyScreen />} />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;
