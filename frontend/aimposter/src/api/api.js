@@ -11,6 +11,7 @@ export const createRoom = async (playerName) => {
   }
 };
 
+
 export const joinRoom = async (roomId, playerName) => {
   try {
     const response = await axios.post(`${API_URL}/rooms/${roomId}/join`, { playerName });
