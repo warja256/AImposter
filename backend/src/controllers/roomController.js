@@ -1,0 +1,55 @@
+// src/controllers/roomController.js
+const { Room, Player, Honor } = require('../models'); // Импортируем модели из Sequelize (в соответствии с твоей моделью)
+
+const createRoom = async (req, res) => {
+    try {
+        const { roomName } = req.body;  // Получаем данные из запроса
+        const newRoom = await Room.create({ name: roomName });  // Создаём комнату
+        res.status(201).json(newRoom);  // Отправляем ответ с созданной комнатой
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Ошибка создания комнаты' });
+    }
+};
+
+const joinRoom = async (req, res) => {
+    try {
+        const { roomId } = req.params;  // Получаем roomId из URL
+        const { playerName } = req.body;  // Получаем имя игрока из тела запроса
+
+        const room = await Room.findByPk(roomId);  // Ищем комнату по ID
+
+        if (!room) {
+            return res.status(404).json({ message: 'Комната не найдена' });
+        }
+
+        const player = await Player.create({ name: playerName, roomId: room.id });  // Создаём нового игрока
+
+        // Записываем информацию о присоединении игрока в таблицу чести
+        await Honor.create({ playerId: player.id, roomId: room.id });
+
+        res.status(200).json({ message: 'Вы успешно присоединились к комнате', player, room });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Ошибка при присоединении к комнате' });
+    }
+};
+
+const getRoom = async (req, res) => {
+    try {
+        const { roomId } = req.params;  // Получаем roomId из URL
+
+        const room = await Room.findByPk(roomId, { include: [Player] });  // Ищем комнату по ID и включаем список игроков
+
+        if (!room) {
+            return res.status(404).json({ message: 'Комната не найдена' });
+        }
+
+        res.status(200).json(room);  // Отправляем информацию о комнате
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Ошибка при получении информации о комнате' });
+    }
+};
+
+module.exports = { createRoom, joinRoom, getRoom };
