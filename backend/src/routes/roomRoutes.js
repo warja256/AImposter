@@ -40,13 +40,13 @@ router.post('/join', joinRoom);
 
 /**
  * @swagger
- * /api/rooms/{roomId}:
+ * /api/rooms/{roomCode}:
  *   get:
  *     summary: Получить информацию о комнате
  *     tags: [Комнаты]
  *     parameters:
  *       - in: path
- *         name: roomId
+ *         name: roomCode
  *         required: true
  *         schema:
  *           type: string
@@ -54,6 +54,6 @@ router.post('/join', joinRoom);
  *       200:
  *         description: Информация о комнате
  */
-router.get('/:roomId', getRoom);
+router.get('/:roomCode', getRoom);
 
 module.exports = router;

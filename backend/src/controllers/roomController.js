@@ -63,9 +63,18 @@ const joinRoom = async (req, res) => {
 
 const getRoom = async (req, res) => {
     try {
-        const { roomId } = req.params;  // Получаем roomId из URL
+        const { roomCode } = req.params;
 
-        const room = await Room.findByPk(roomId, { include: [Player] });  // Ищем комнату по ID и включаем список игроков
+        const room = await Room.findOne({
+            where: {
+                roomCode: roomCode
+              },
+              include: [{
+                model: Player,
+                attributes: ['id', 'name', 'avatar', 'role', 'status'],  // Выберите нужные поля
+                through: { attributes: [] }  // Исключаем поля промежуточной таблицы
+            }]
+    }); 
 
         if (!room) {
             return res.status(404).json({ message: 'Комната не найдена' });
@@ -74,7 +83,7 @@ const getRoom = async (req, res) => {
         res.status(200).json(room);  // Отправляем информацию о комнате
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Ошибка при получении информации о комнате' });
+        res.status(500).json({ message: 'Ошибка при получении информации о комнате', details: error.message});
     }
 };
 
