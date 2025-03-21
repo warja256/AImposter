@@ -13,7 +13,18 @@ const sendMessage = async (req, res) => {
     }
 };
 
-// Получить сообщения
+// Получить все сообщения в комнате
+// const getMessages = async (req, res) => {
+//     try {
+//         const { roomId } = req.params;
+//         const messages = await Message.findAll({ where: { roomId } });
+//         res.status(200).json(messages);
+//     } catch (error) {
+//         res.status(500).json({ message: error.message });
+//     }
+// };
+
+// Получить все сообщения в комнате в данном раунде
 const getMessages = async (req, res) => {
     try {
         const { roomId } = req.params;
