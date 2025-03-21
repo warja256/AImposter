@@ -9,11 +9,23 @@ function generateRandomCode() {
     }
     return code;
 }
+async function generateUniqueRoomCode() {
+    while (true) {
+        const randomCode = generateRandomCode();  // Генерируем случайный код
+        
+        // Проверяем, существует ли уже комната с таким кодом
+        const existingRoom = await Room.findOne({ where: { roomCode: randomCode } });
+        
+        if (!existingRoom) {
+            return randomCode;  // Возвращаем уникальный код
+        }
+    }
+}
 
 const createRoom = async (req, res) => {
     try {
         const {playerName} = req.body;
-        const roomCode = generateRandomCode();
+        const roomCode = await generateUniqueRoomCode(); 
 
         const newRoom = await Room.create({roomCode});  // Создаём комнату
 
