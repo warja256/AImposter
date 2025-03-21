@@ -99,24 +99,46 @@ const getRoom = async (req, res) => {
     }
 };
 
-const sendMessage = async (req, res) => {
+const leaveRoom = async (req, res) => {
     try {
-        const { roomId, playerId, content } = req.body;
-        
-        const room = await Room.findByPk(roomId, { include: [Player] });
-        if (!room) {
-            return res.status(404).json({ message: 'Комната не найдена' });
+        //берем код из ссылки и айди из тела запроса
+        const {roomCode} = req.params;
+        const {playerId} = req.body;
+        //находим игрока
+        const leavingPlayer = await Player.findByPk(playerId);
+        if (!leavingPlayer){
+            return res.status(404).json({message: "Игрок не найден"});
         }
-
-        // Допустим, у нас есть таблица сообщений, куда мы будем записывать
-        await Message.create({ roomId, playerId, content });
-
-        res.status(200).json({ message: 'Сообщение отправлено', content });
-    } catch (error) {
+        //находим комнату
+        const room = await Room.findOne({where: {roomCode}, include: [Player]});
+        if (!room){
+            return res.status(404).json({message: "Комната не найдена"});
+        }
+        //находим сессию
+        const gameSession = await GameSession.findOne(
+            {where: {playerId: leavingPlayer.id, roomId: room.id}});
+        if (!gameSession){
+            return res.status(404).json({message: "Игрок не находится в этой комнате"});
+        }
+        //удалем игрока
+        await leavingPlayer.destroy();
+        room.playerCount -= 1;
+        await room.save();
+        //проверяем комнату
+        if (room.playerCount===0)
+        {
+            await room.destroy();
+            return res.status(200).json({ message: 'Комната удалена' });
+        }
+        return res.status(200).json({ message: 'Игрок покинул комнату' });
+        
+    } catch(error) {
         console.error(error);
-        res.status(500).json({ message: 'Ошибка при отправке сообщения', details: error.message });
+        res.status(500).json({ message: 'Ошибка при выходе из комнаты', details: error.message });
+
     }
-};
+}
 
 
-module.exports = { createRoom, joinRoom, getRoom };
+
+module.exports = { createRoom, joinRoom, getRoom, leaveRoom };

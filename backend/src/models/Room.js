@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
+const GameSession = require('./GameSession');
 
 const Room = sequelize.define('Room', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, },
@@ -14,6 +15,12 @@ const Room = sequelize.define('Room', {
             len: [4],  // Длина кода ровно 4 символа
         },
     },
+});
+
+// Ассоциация между Room и GameSession
+Room.hasMany(GameSession, {
+    foreignKey: 'roomId',
+    onDelete: 'CASCADE',  // Каскадное удаление записей в GameSession при удалении комнаты
 });
 
 
