@@ -50,7 +50,7 @@ const WelcomeScreen = () => {
     try {
       const response = await joinRoom(roomCode, playerName); // Обращаемся к функции присоединения
       console.log("Joined room:", response);
-      navigate('/lobby'); // Переход к LobbyScreen
+      navigate('/lobby', { state: { playerName: playerName, roomCode: roomCode } }); // Переход к LobbyScreen
     } catch (error) {
       console.error("Error joining room:", error);
       alert("Ошибка при присоединении к комнате");
