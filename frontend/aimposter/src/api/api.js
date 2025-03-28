@@ -50,14 +50,22 @@ export const getRoomDetails = async (roomCode) => {
   }
 };
 
-export const leaveRoom = async (roomCode) => {
+export const leaveRoom = async (roomCode, playerId) => {
   try {
-    const response = await fetch(`${API_URL}/rooms/leave/{${roomCode}}`);
+    const response = await fetch(`${API_URL}/rooms/leave/${roomCode}`, {
+      method: "DELETE", 
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ playerId }),
+    });
+
     const data = await response.json();
-    return data
+    return data;
   } catch (error) {
-    console.error("Error fetching room details:", error);
+    console.error("Ошибка при выходе из комнаты:", error);
     throw error;
   }
 };
+
 

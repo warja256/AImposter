@@ -50,7 +50,7 @@ const LobbyScreen = () => {
         const response = await leaveRoom(roomCode);
         if (response.success) {
           console.log("Successfully left the room:", response);
-          navigate('/', {state: { id, roomCode }})
+          navigate('/', {state: { playerId, roomCode }})
         } // Удаляем игрока из комнаты
       } catch (error) {
         console.error("Ошибка при выходе из комнаты:", error);
