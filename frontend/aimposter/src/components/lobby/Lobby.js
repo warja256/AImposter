@@ -31,13 +31,14 @@ const LobbyScreen = () => {
       const fetchRoomData = async () => {
         try {
           const response = await getRoomDetails(roomCode);
-          setRoomData(response.room); // Устанавливаем данные о комнате
-          setPlayerCount(response.room.playerCount); // Устанавливаем количество игроков
-          setPlayerData(response.room.players); // Устанавливаем список игроков
+          setRoomData(response);  // Теперь мы устанавливаем всю комнату
+          setPlayerCount(response.playerCount); // Устанавливаем количество игроков
+          setPlayerData(response.Players); // Устанавливаем список игроков (заменяем 'players' на 'Players')
         } catch (error) {
           console.error("Error fetching room details:", error);
         }
       };
+      
 
       fetchRoomData(); // Загружаем данные при наличии кода комнаты
     }
@@ -120,6 +121,7 @@ const LobbyScreen = () => {
             <p>Загрузка участников...</p>
           )}
         </div>
+
       </div>
     </div>
   );
