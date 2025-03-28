@@ -4,7 +4,7 @@ import "../header.css";
 import "./Lobby.css";
 import logo from '../../assets/images/logo.png';
 import avatar from "../../assets/images/avatar.png";
-import { getRoomDetails, joinRoom, leaveRoom } from '../../api/api';
+import { getRoomDetails, leaveRoom } from '../../api/api';
 
 const LobbyScreen = () => {
   const [roomData, setRoomData] = useState(null); // Для хранения данных комнаты
@@ -12,16 +12,19 @@ const LobbyScreen = () => {
   const [playerName, setPlayerName] = useState('');
   const [roomCode, setRoomCode] = useState('');
   const [playerCount, setPlayerCount] = useState(0); // Счётчик игроков
+  const [playerId, setPlayerId] = useState(null); // Убираем дублирование
+
   const navigate = useNavigate();
   const location = useLocation(); // Используем useLocation для получения переданных данных
 
   useEffect(() => {
     if (location.state) {
-      const { playerName, roomCode } = location.state;
+      const { playerName, roomCode, playerId } = location.state;
 
-      // Устанавливаем имя игрока и код комнаты, полученные из состояния
+      // Устанавливаем имя игрока, код комнаты и playerId
       setPlayerName(playerName);
       setRoomCode(roomCode);
+      setPlayerId(playerId); // Устанавливаем playerId
     }
   }, [location.state]); // Зависимость от состояния
 
@@ -33,61 +36,42 @@ const LobbyScreen = () => {
           const response = await getRoomDetails(roomCode);
           setRoomData(response);  // Теперь мы устанавливаем всю комнату
           setPlayerCount(response.playerCount); // Устанавливаем количество игроков
-          setPlayerData(response.Players); // Устанавливаем список игроков (заменяем 'players' на 'Players')
+          setPlayerData(response.Players); // Устанавливаем список игроков
         } catch (error) {
           console.error("Error fetching room details:", error);
         }
       };
-      
 
       fetchRoomData(); // Первоначальный запрос
       const interval = setInterval(fetchRoomData, 5000); // Запрашиваем каждые 5 сек
 
       return () => clearInterval(interval); // Очищаем интервал при выходе
-
     }
   }, [roomCode]); // Зависимость от кода комнаты
 
   const handleLeaveRoom = async () => {
-    if (roomCode) {
+    if (roomCode && playerId) {  
       try {
-        const response = await leaveRoom(roomCode);
+        // Отправляем запрос с roomCode и playerId
+        const response = await leaveRoom(roomCode, playerId);
         if (response.success) {
           console.log("Successfully left the room:", response);
-          navigate('/', {state: { playerId, roomCode }})
-        } // Удаляем игрока из комнаты
+          // Переходим на главную страницу после успешного выхода
+          navigate('/', { state: { playerId, roomCode } });
+        }
       } catch (error) {
         console.error("Ошибка при выходе из комнаты:", error);
       }
+    } else {
+      console.error("Ошибка: Не указан roomCode или playerId");
     }
-    navigate('/'); // Переход на главный экран
   };
-  
-
-  // const handleJoinRoom = async () => {
-  //   if (roomCode && playerName) {
-  //     try {
-  //       const response = await joinRoom(roomCode, playerName);
-  //       if (response.success) {
-  //         console.log("Successfully joined the room:", response);
-  //         // Переход в лобби
-  //         navigate('/lobby', { state: { playerName, roomCode } });
-  //       }
-  //     } catch (error) {
-  //       console.error("Error joining room:", error);
-  //       alert("Ошибка при присоединении к комнате");
-  //     }
-  //   } else {
-  //     alert("Заполните код комнаты и имя игрока");
-  //   }
-  // };
 
   const handleCopyRoomCode = () => {
     navigator.clipboard.writeText(roomCode)
       .then(() => alert("Код комнаты скопирован!"))
       .catch(err => console.error("Ошибка при копировании:", err));
   };
-  
 
   return (
     <div className="lobby-screen">
@@ -106,26 +90,28 @@ const LobbyScreen = () => {
           <div>
             <div className="center">
               <div className="room-code-container">
-              <div className="combined-button">
-                {roomCode && (
-                  <div className="code-container">
-                    <input 
-                      type="text" 
-                      className="code-field" 
-                      value={roomCode} 
-                      readOnly
-                    />
-                    <button className="copy-button" onClick={handleCopyRoomCode}>
-                      📋 Копировать
-                    </button>
-                  </div>
-                )}
-              </div>
+                <div className="combined-button">
+                  {roomCode && (
+                    <div className="code-container">
+                      <input 
+                        type="text" 
+                        className="code-field" 
+                        value={roomCode} 
+                        readOnly
+                      />
+                      <button className="copy-button" onClick={handleCopyRoomCode}>
+                        📋 Копировать
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
           <div>
-            <button className="create-game go-back" onClick={handleLeaveRoom}>Назад</button>
+            {roomCode && playerId && (
+              <button className="create-game go-back" onClick={handleLeaveRoom}>Назад</button>
+            )}
           </div>
         </div>
         <div className="lobby-users">
@@ -141,7 +127,6 @@ const LobbyScreen = () => {
             <p>Загрузка участников...</p>
           )}
         </div>
-
       </div>
     </div>
   );
