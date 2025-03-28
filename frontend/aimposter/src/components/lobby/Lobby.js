@@ -75,6 +75,13 @@ const LobbyScreen = () => {
     }
   };
 
+  const handleCopyRoomCode = () => {
+    navigator.clipboard.writeText(roomCode)
+      .then(() => alert("Код комнаты скопирован!"))
+      .catch(err => console.error("Ошибка при копировании:", err));
+  };
+  
+
   return (
     <div className="lobby-screen">
       <div className="logo-container">
@@ -92,24 +99,21 @@ const LobbyScreen = () => {
           <div>
             <div className="center">
               <div className="room-code-container">
-                <div className="combined-button">
-                  {/* Отображаем код комнаты, если данные получены */}
-                  {roomCode ? (
-                    <>
-                      <button className="join-button" onClick={handleJoinRoom}>Войти</button>
-                      <div className="input-filed">
-                        <input
-                          type="text"
-                          className="code-field"
-                          value={roomCode}
-                          readOnly
-                        />
-                      </div>
-                    </>
-                  ) : (
-                    <p>Загрузка...</p>
-                  )}
-                </div>
+              <div className="combined-button">
+                {roomCode && (
+                  <div className="code-container">
+                    <input 
+                      type="text" 
+                      className="code-field" 
+                      value={roomCode} 
+                      readOnly
+                    />
+                    <button className="copy-button" onClick={handleCopyRoomCode}>
+                      📋 Копировать
+                    </button>
+                  </div>
+                )}
+              </div>
               </div>
             </div>
           </div>
