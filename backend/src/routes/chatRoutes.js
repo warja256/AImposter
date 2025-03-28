@@ -4,13 +4,13 @@ const { sendMessage, getMessages } = require('../controllers/chatController');
 
 /**
  * @swagger
- * /api/chat/{roomId}:
+ * /api/chat/{roomCode}:
  *   post:
  *     summary: Отправить сообщение в чат
  *     tags: [Чат]
  *     parameters:
  *       - in: path
- *         name: roomId
+ *         name: roomCode
  *         required: true
  *         schema:
  *           type: string
@@ -29,17 +29,17 @@ const { sendMessage, getMessages } = require('../controllers/chatController');
  *       200:
  *         description: Сообщение отправлено
  */
-router.post('/:roomId', sendMessage);
+router.post('/:roomCode', sendMessage);
 
 /**
  * @swagger
- * /api/chat/{roomId}:
+ * /api/chat/{roomCode}:
  *   get:
  *     summary: Получить историю сообщений
  *     tags: [Чат]
  *     parameters:
  *       - in: path
- *         name: roomId
+ *         name: roomCode
  *         required: true
  *         schema:
  *           type: string
@@ -47,6 +47,6 @@ router.post('/:roomId', sendMessage);
  *       200:
  *         description: История сообщений
  */
-router.get('/:roomId', getMessages);
+router.get('/:roomCode', getMessages);
 
 module.exports = router;

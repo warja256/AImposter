@@ -1,38 +1,68 @@
-const { Message } = require('../models');  // импортируем модель сообщения
+const { Message, Room } = require('../models'); // Добавляем Room
 const { io } = require("../websocket"); // Импорт WebSocket-сервера
 
-// Отправка сообщения
-
-// Функция отправки сообщения (через WebSocket)
+// Функция отправки сообщения
 const sendMessage = async (req, res) => {
     try {
-      const { roomId } = req.params;
-      
-      const { playerId, content } = req.body;
-      // Находим комнату и её текущий раунд
-      const room = await Room.findByPk(roomId);
-      if (!room) {
-        return res.status(404).json({ error: "Комната не найдена" });
-      }
+        const { Coderoom } = req.params; // Теперь принимаем код комнаты
+        const { playerId, content } = req.body;
 
-      // Получаем текущий раунд
-      const roundNumber = room.round;
+        // Находим комнату по её коду
+        const room = await Room.findOne({ where: { roomCode: Coderoom } });
+        if (!room) {
+            return res.status(404).json({ error: "Комната не найдена" });
+        }
 
-      // Сохранение сообщения в БД
-      const newMessage = await Message.create({ playerId, roomId, roundNumber, content });
+        const roundNumber = room.round; // Получаем текущий раунд
 
-      // Отправка сообщения в WebSocket-буфер
-      if (!global.messageBuffer[roomId]) {
-        global.messageBuffer[roomId] = [];
-      }
-      global.messageBuffer[roomId].push(newMessage);
-  
-      return res.status(200).json(newMessage);
+        // Сохраняем сообщение в базу
+        const newMessage = await Message.create({
+            playerId,
+            Coderoom,
+            roundNumber,
+            content
+        });
+
+        // Буфер сообщений
+        if (!global.messageBuffer[Coderoom]) {
+            global.messageBuffer[Coderoom] = [];
+        }
+        global.messageBuffer[Coderoom].push(newMessage);
+
+        res.status(200).json(newMessage);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
-  };
+};
 
+// Функция получения сообщений за текущий раунд
+const getMessages = async (req, res) => {
+    try {
+        const { Coderoom } = req.params;
+
+        // Находим комнату по коду
+        const room = await Room.findOne({ where: { roomCode: Coderoom } });
+        if (!room) {
+            return res.status(404).json({ error: "Комната не найдена" });
+        }
+
+        const currentRound = room.round;
+
+        // Получаем сообщения только за этот раунд
+        const messages = await Message.findAll({
+            where: { Coderoom: Coderoom, roundNumber: currentRound },
+        });
+
+        res.json(messages);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+
+module.exports = { sendMessage, getMessages };
+
+// Функция отправки сообщения
 // const sendMessage = async (req, res) => {
 //     try {
 //         const { roomId } = req.params;
@@ -43,38 +73,6 @@ const sendMessage = async (req, res) => {
 //         res.status(500).json({ message: error.message });
 //     }
 // };
-
-
-
-
-// Получение сообщений в комнате за текущий раунд
-const getMessages = async (req, res) => {
-  try {
-    const { roomId } = req.params;
-
-    // Находим комнату и её текущий раунд
-    const room = await Room.findByPk(roomId);
-    if (!room) {
-      return res.status(404).json({ error: "Комната не найдена" });
-    }
-
-    // Получаем текущий раунд
-    const currentRound = room.round;
-
-    // Получаем сообщения только за этот раунд
-    const messages = await Message.findAll({
-      where: { roomId, roundNumber: currentRound },
-    });
-
-    return res.json(messages);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-
-
-
 // Получить все сообщения в комнате
 // const getMessages = async (req, res) => {
 //     try {
@@ -96,5 +94,3 @@ const getMessages = async (req, res) => {
 //         res.status(500).json({ message: error.message });
 //     }
 // };
-
-module.exports = { sendMessage, getMessages };
