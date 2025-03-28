@@ -40,7 +40,11 @@ const LobbyScreen = () => {
       };
       
 
-      fetchRoomData(); // Загружаем данные при наличии кода комнаты
+      fetchRoomData(); // Первоначальный запрос
+      const interval = setInterval(fetchRoomData, 5000); // Запрашиваем каждые 5 сек
+
+      return () => clearInterval(interval); // Очищаем интервал при выходе
+
     }
   }, [roomCode]); // Зависимость от кода комнаты
 
