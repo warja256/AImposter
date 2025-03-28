@@ -52,21 +52,14 @@ const LobbyScreen = () => {
   }, [roomCode]); // Зависимость от кода комнаты
 
   const handleLeaveRoom = async () => {
-    if (roomCode && playerId) {  
-      try {
-        // Отправляем запрос с roomCode и playerId
-        const response = await leaveRoom(roomCode, playerId);
-        if (response.success) {
-          console.log("Successfully left the room:", response);
-          // Переходим на главную страницу после успешного выхода
-          navigate('/', { state: { playerId, roomCode } });
-        }
-      } catch (error) {
-        console.error("Ошибка при выходе из комнаты:", error);
-      }
-    } else {
-      console.error("Ошибка: Не указан roomCode или playerId");
+    try {
+      // Отправляем запрос с roomCode и playerId
+      const response = await leaveRoom(roomCode, playerId);
+      console.log(`Игрок ${playerId} вышел из комнаты ${roomCode} `, response);
+    } catch (error) {
+      console.error("Ошибка при выходе из комнаты:", error);
     }
+    
   };
 
   const handleCopyRoomCode = () => {
@@ -111,9 +104,9 @@ const LobbyScreen = () => {
             </div>
           </div>
           <div>
-            {roomCode && playerId && (
+            
               <button className="create-game go-back" onClick={handleLeaveRoom}>Назад</button>
-            )}
+            
           </div>
         </div>
         <div className="lobby-users">
