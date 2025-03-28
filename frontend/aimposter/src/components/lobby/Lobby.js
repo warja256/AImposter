@@ -52,14 +52,24 @@ const LobbyScreen = () => {
   }, [roomCode]); // Зависимость от кода комнаты
 
   const handleLeaveRoom = async () => {
-    try {
-      // Отправляем запрос с roomCode и playerId
-      const response = await leaveRoom(roomCode, playerId);
-      console.log(`Игрок ${playerId} вышел из комнаты ${roomCode} `, response);
-    } catch (error) {
-      console.error("Ошибка при выходе из комнаты:", error);
+    if (roomCode && playerId) {  
+        try {
+            // Отправляем запрос с roomCode и playerId
+            const response = await leaveRoom(roomCode, playerId);
+            
+            // Проверяем статус ответа и переходим на главную страницу
+            if (response.status === 200) {
+                console.log("Successfully left the room:");
+                navigate('/');
+            } else {
+                console.error("Ошибка при выходе из комнаты:", response);
+            }
+        } catch (error) {
+            console.error("Ошибка при выходе из комнаты:", error);
+        }
+    } else {
+        console.error("Ошибка: Не указан roomCode или playerId");
     }
-    
   };
 
   const handleCopyRoomCode = () => {
