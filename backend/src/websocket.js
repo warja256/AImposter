@@ -10,39 +10,45 @@ function startWebSocket(server) {
         console.log(`Игрок подключился: ${socket.id}`);
 
         // Присоединение к комнате
-        socket.on("joinRoom", async ({ roomCode, playerName }) => {
+        socket.on("joinRoom", async (data) => {
             try {
-                const room = await Room.findOne({ where: { roomCode } });
-
-                if (!room) {
-                    socket.emit("error", { message: "Комната не найдена" });
-                    return;
+                const { roomCode, playerName } = data; // Читаем данные из запроса
+        
+                if (!roomCode) {
+                    return socket.emit("error", "playerName обязательны!");
                 }
-
-                // Создаём игрока
+        
+                const room = await Room.findOne({ where: { roomCode } });
+        
+                if (!room) {
+                    return socket.emit("error", "Комната не найдена!");
+                }
+        
                 const player = await Player.create({ name: playerName });
-
-                // Увеличиваем количество игроков в комнате
                 await room.update({ playerCount: room.playerCount + 1 });
-
-                // Записываем в GameSession
+        
                 await GameSession.create({
                     roomId: room.id,
                     playerId: player.id,
                 });
-
+        
                 socket.join(roomCode);
                 socket.emit("joinedRoom", { room, player });
-                console.log(`Игрок ${player.name} (ID: ${player.id}) вошел в комнату ${roomCode}`);
+                console.log(`Игрок ${playerName} (${socket.id}) присоединился к комнате ${roomCode}`);
             } catch (error) {
                 console.error("Ошибка при присоединении к комнате:", error);
-                socket.emit("error", { message: "Ошибка при присоединении" });
+                socket.emit("error", "Ошибка при присоединении к комнате");
             }
         });
+        
 
         // Отправка сообщений
-        socket.on("sendMessage", async ({ roomCode, playerId, content }) => {
+        socket.on("sendMessage", async (data) => {
             try {
+                const { roomCode, playerId, content } = data;
+                if (!roomCode) {
+                    return socket.emit("error", "Код комнаты обязательны!");
+                }
                 const room = await Room.findOne({ where: { roomCode } });
                 if (!room) {
                     socket.emit("error", { message: "Комната не найдена" });
@@ -55,11 +61,16 @@ function startWebSocket(server) {
                     global.messageBuffer[roomCode] = [];
                 }
 
-                const newMessage = { playerId, roundNumber, content };
+                const newMessage = { roomCode, playerId, roundNumber, content };
                 global.messageBuffer[roomCode].push(newMessage);
 
                 // Сохраняем сообщение в БД
-                await Message.create({ roomId: room.id, playerId, roundNumber, content });
+                const newMessage_1 = await Message.create({
+                    playerId: playerId,
+                    roomCode: roomCode,
+                    roundNumber: roundNumber,
+                    content: content
+                });
 
                 // Проверяем лимит сообщений
                 const playerMessages = global.messageBuffer[roomCode].filter(msg => msg.playerId === playerId);

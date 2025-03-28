@@ -29,7 +29,7 @@ const { sendMessage, getMessages } = require('../controllers/chatController');
  *       200:
  *         description: Сообщение отправлено
  */
-router.post('/:roomCode', sendMessage);
+router.post('/send', sendMessage);
 
 /**
  * @swagger
