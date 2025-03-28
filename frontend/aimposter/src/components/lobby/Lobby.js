@@ -5,6 +5,7 @@ import "./Lobby.css";
 import logo from '../../assets/images/logo.png';
 import avatar from "../../assets/images/avatar.png";
 import { getRoomDetails, joinRoom } from '../../api/api';  // Импортируем функцию для получения деталей комнаты и присоединения
+import { getRoomDetails, joinRoom, leaveRoom } from '../../api/api';
 
 const LobbyScreen = () => {
   const [roomData, setRoomData] = useState(null); // Для хранения данных комнаты
@@ -44,9 +45,17 @@ const LobbyScreen = () => {
     }
   }, [roomCode]); // Зависимость от кода комнаты
 
-  const handleGoBack = () => {
-    navigate('/'); // Переход к WelcomeScreen
+  const handleLeaveRoom = async () => {
+    if (roomCode) {
+      try {
+        await leaveRoom(roomCode); // Удаляем игрока из комнаты
+      } catch (error) {
+        console.error("Ошибка при выходе из комнаты:", error);
+      }
+    }
+    navigate('/'); // Переход на главный экран
   };
+  
 
   const handleJoinRoom = async () => {
     if (roomCode && playerName) {
@@ -105,7 +114,7 @@ const LobbyScreen = () => {
             </div>
           </div>
           <div>
-            <button className="create-game go-back" onClick={handleGoBack}>Назад</button>
+            <button className="create-game go-back" onClick={handleLeaveRoom}>Назад</button>
           </div>
         </div>
         <div className="lobby-users">

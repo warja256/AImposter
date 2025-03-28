@@ -50,3 +50,14 @@ export const getRoomDetails = async (roomCode) => {
   }
 };
 
+export const leaveRoom = async (roomCode) => {
+  try {
+    const response = await fetch(`${API_URL}/rooms/leave/{${roomCode}}`);
+    const data = await response.json();
+    return data
+  } catch (error) {
+    console.error("Error fetching room details:", error);
+    throw error;
+  }
+};
+
