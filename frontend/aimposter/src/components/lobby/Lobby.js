@@ -20,13 +20,12 @@ const LobbyScreen = () => {
   useEffect(() => {
     if (location.state) {
       const { playerName, roomCode, playerId } = location.state;
-
-      // Устанавливаем имя игрока, код комнаты и playerId
       setPlayerName(playerName);
       setRoomCode(roomCode);
-      setPlayerId(playerId); // Устанавливаем playerId
+      setPlayerId(playerId);
     }
-  }, [location.state]); // Зависимость от состояния
+  }, [location.state]);
+  
 
   useEffect(() => {
     if (roomCode) {
