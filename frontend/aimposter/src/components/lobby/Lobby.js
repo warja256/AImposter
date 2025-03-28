@@ -37,7 +37,7 @@ const LobbyScreen = () => {
           setRoomData(response);  // Теперь мы устанавливаем всю комнату
           setPlayerCount(response.playerCount); // Устанавливаем количество игроков
           setPlayerData(response.Players); 
-          setPlayerId(response.playerId);
+          setPlayerId(response.Players.id);
           setRoomCode(response.roomCode);// Устанавливаем список игроков
         } catch (error) {
           console.error("Error fetching room details:", error);

@@ -32,11 +32,12 @@ const WelcomeScreen = () => {
   const handleCreateGame = async () => {
     try {
       const response = await createRoom(playerName); // Функция для создания комнаты на сервере
-      const { roomCode } = response.room; // Извлекаем код комнаты из ответа сервера
+      const { roomCode } = response.room; 
+      const { id } = response.player;// Извлекаем код комнаты из ответа сервера
       console.log("Room created:", response);
   
       // Переходим на экран лобби, передавая имя игрока и код комнаты
-      navigate('/lobby', { state: { playerName: playerName, roomCode: roomCode } });
+      navigate('/lobby', { state: { playerName: playerName, roomCode: roomCode, playerId: id } });
   
     } catch (error) {
       console.error("Error creating room:", error);
@@ -48,9 +49,11 @@ const WelcomeScreen = () => {
 
   const handleJoinGame = async () => {
     try {
-      const response = await joinRoom(roomCode, playerName); // Обращаемся к функции присоединения
+      const response = await joinRoom(roomCode, playerName);
+      const { id } = response.player;
+       // Обращаемся к функции присоединения
       console.log("Joined room:", response);
-      navigate('/lobby', { state: { playerName: playerName, roomCode: roomCode } }); // Переход к LobbyScreen
+      navigate('/lobby', { state: { playerName: playerName, roomCode: roomCode, playerId: id } }); // Переход к LobbyScreen
     } catch (error) {
       console.error("Error joining room:", error);
       alert("Ошибка при присоединении к комнате");
