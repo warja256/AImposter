@@ -4,7 +4,6 @@ import "../header.css";
 import "./Lobby.css";
 import logo from '../../assets/images/logo.png';
 import avatar from "../../assets/images/avatar.png";
-import { getRoomDetails, joinRoom } from '../../api/api';  // Импортируем функцию для получения деталей комнаты и присоединения
 import { getRoomDetails, joinRoom, leaveRoom } from '../../api/api';
 
 const LobbyScreen = () => {
