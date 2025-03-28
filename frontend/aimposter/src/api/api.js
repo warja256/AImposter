@@ -41,7 +41,7 @@ export const castVote = async (roomId, voterId, targetId) => {
 
 export const getRoomDetails = async (roomCode) => {
   try {
-    const response = await fetch(`/api/rooms/${roomCode}`);
+    const response = await fetch(`${API_URL}/rooms/${roomCode}`);
     const data = await response.json();
     return data;
   } catch (error) {
