@@ -48,7 +48,11 @@ const LobbyScreen = () => {
   const handleLeaveRoom = async () => {
     if (roomCode) {
       try {
-        await leaveRoom(roomCode); // Удаляем игрока из комнаты
+        const response = await leaveRoom(roomCode);
+        if (response.success) {
+          console.log("Successfully left the room:", response);
+          navigate('/', {state: { id, roomCode }})
+        } // Удаляем игрока из комнаты
       } catch (error) {
         console.error("Ошибка при выходе из комнаты:", error);
       }
@@ -57,23 +61,23 @@ const LobbyScreen = () => {
   };
   
 
-  const handleJoinRoom = async () => {
-    if (roomCode && playerName) {
-      try {
-        const response = await joinRoom(roomCode, playerName);
-        if (response.success) {
-          console.log("Successfully joined the room:", response);
-          // Переход в лобби
-          navigate('/lobby', { state: { playerName, roomCode } });
-        }
-      } catch (error) {
-        console.error("Error joining room:", error);
-        alert("Ошибка при присоединении к комнате");
-      }
-    } else {
-      alert("Заполните код комнаты и имя игрока");
-    }
-  };
+  // const handleJoinRoom = async () => {
+  //   if (roomCode && playerName) {
+  //     try {
+  //       const response = await joinRoom(roomCode, playerName);
+  //       if (response.success) {
+  //         console.log("Successfully joined the room:", response);
+  //         // Переход в лобби
+  //         navigate('/lobby', { state: { playerName, roomCode } });
+  //       }
+  //     } catch (error) {
+  //       console.error("Error joining room:", error);
+  //       alert("Ошибка при присоединении к комнате");
+  //     }
+  //   } else {
+  //     alert("Заполните код комнаты и имя игрока");
+  //   }
+  // };
 
   const handleCopyRoomCode = () => {
     navigator.clipboard.writeText(roomCode)
