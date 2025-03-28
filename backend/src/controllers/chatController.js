@@ -6,9 +6,20 @@ const { io } = require("../websocket"); // Импорт WebSocket-сервера
 // Функция отправки сообщения (через WebSocket)
 const sendMessage = async (req, res) => {
     try {
-      const { roomId, playerId, roundNumber, content } = req.body;
+      const { roomId } = req.params;
+      
+      const { playerId, content } = req.body;
+      // Находим комнату и её текущий раунд
+      const room = await Room.findByPk(roomId);
+      if (!room) {
+        return res.status(404).json({ error: "Комната не найдена" });
+      }
+
+      // Получаем текущий раунд
+      const roundNumber = room.round;
+
       // Сохранение сообщения в БД
-      const newMessage = await Message.create({ roomId, playerId, roundNumber, content });
+      const newMessage = await Message.create({ playerId, roomId, roundNumber, content });
 
       // Отправка сообщения в WebSocket-буфер
       if (!global.messageBuffer[roomId]) {
@@ -48,7 +59,7 @@ const getMessages = async (req, res) => {
     }
 
     // Получаем текущий раунд
-    const currentRound = room.currentRound;
+    const currentRound = room.round;
 
     // Получаем сообщения только за этот раунд
     const messages = await Message.findAll({
