@@ -25,7 +25,7 @@ const App = () => {
 
     <Router>
       <Routes>
-        <Route path="/" element={<LobbyScreen />} />
+        <Route path="/" element={<WelcomeScreen />} />
         <Route path="/lobby" element={<LobbyScreen />} />
       </Routes>
     </Router>

@@ -104,6 +104,7 @@ const leaveRoom = async (req, res) => {
         //берем код из ссылки и айди из тела запроса
         const {roomCode} = req.params;
         const {playerId} = req.body;
+        console.log("roomCode:", roomCode, "playerId:", playerId);
         //находим игрока
         const leavingPlayer = await Player.findByPk(playerId);
         if (!leavingPlayer){
