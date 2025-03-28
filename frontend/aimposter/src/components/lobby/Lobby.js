@@ -106,18 +106,16 @@ const LobbyScreen = () => {
           <div>
             <div className="center">
               <div className="room-code-container">
-              <div className="combined-button">
+              <div className="combined-lobby-button">
                 {roomCode && (
                   <div className="code-container">
+                    <button className="copy-button" onClick={handleCopyRoomCode}>Копировать</button>
                     <input 
                       type="text" 
                       className="code-field" 
                       value={roomCode} 
                       readOnly
                     />
-                    <button className="copy-button" onClick={handleCopyRoomCode}>
-                      📋 Копировать
-                    </button>
                   </div>
                 )}
               </div>

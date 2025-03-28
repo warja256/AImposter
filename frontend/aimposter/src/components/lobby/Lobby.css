@@ -30,6 +30,7 @@ html, body {
 .lobby-buttons {
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 .lobby-users {
@@ -61,6 +62,10 @@ html, body {
     cursor: pointer;
     font-family: 'Mulish';
 }
+.code-container{
+    display: flex;
+    align-items: center;
+}
 
 .room-code-container {
     width: 400px;
@@ -69,19 +74,20 @@ html, body {
     flex-wrap: wrap;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     margin-top: 83px;
 }
 
-.combined-button {
-    width: 400px;
-    position: relative; /* Ensure the container is positioned */
-    display: flex; /* Make it inline-flex to fit content */
+.combined-lobby-button {
+    width: 500px;
+    position: relative;
+    display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 50px; /* Overall rounded shape */
-    overflow: hidden; /* Hide any overflow from child elements */
-    background: #C6D3EA; /* Background color for the combined button */
+    border-radius: 50px;
+    overflow: hidden;
+    background: #C6D3EA;
+    margin-left: -45px;
 }
 
 .center {
@@ -90,7 +96,7 @@ html, body {
     justify-content: center;
 }
 
-.join-button {
+.copy-button {
     padding-left: 43px;
     height: 72px;
     font-size: 32px;
