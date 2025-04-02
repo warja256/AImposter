@@ -23,53 +23,89 @@ const LobbyScreen = () => {
       setPlayerName(playerName);
       setRoomCode(roomCode);
       setPlayerId(playerId);
+      console.log("Получены данные: ", { playerName, roomCode, playerId }); // Выведите для отладки
     }
   }, [location.state]);
+  
+  
   
 
   useEffect(() => {
     if (roomCode) {
-      // Функция для получения данных о комнате и её участниках
       const fetchRoomData = async () => {
         try {
           const response = await getRoomDetails(roomCode);
-          setRoomData(response);  // Теперь мы устанавливаем всю комнату
-          setPlayerCount(response.playerCount); // Устанавливаем количество игроков
-          setPlayerData(response.Players); 
-          setPlayerId(response.Players.id);
-          setRoomCode(response.roomCode);// Устанавливаем список игроков
+          if (response.status === 404) {
+            alert("Комната не найдена или была удалена.");
+            navigate('/');  // Переход на главную страницу, если комната удалена
+            return;
+          }
+          setRoomData(response);
+          setPlayerCount(response.playerCount);
+          setPlayerData(response.Players);
+          setRoomCode(response.roomCode);
         } catch (error) {
-          console.error("Error fetching room details:", error);
+          console.error("Ошибка при получении данных о комнате:", error);
+          if (error.response && error.response.status === 404) {
+            alert("Комната была удалена или не существует.");
+            navigate('/');  // Переход на главную страницу, если комната удалена
+          }
         }
       };
-
-      fetchRoomData(); // Первоначальный запрос
-      const interval = setInterval(fetchRoomData, 5000); // Запрашиваем каждые 5 сек
-
-      return () => clearInterval(interval); // Очищаем интервал при выходе
+  
+      fetchRoomData();
+      const interval = setInterval(fetchRoomData, 5000);
+  
+      return () => clearInterval(interval);
     }
-  }, [roomCode]); // Зависимость от кода комнаты
+  }, [roomCode]);
+
 
   const handleLeaveRoom = async () => {
-    if (roomCode && playerId) {  
-        try {
-            // Отправляем запрос с roomCode и playerId
-            const response = await leaveRoom(roomCode, playerId);
-            
-            // Проверяем статус ответа и переходим на главную страницу
-            if (response.status === 200) {
-                console.log("Successfully left the room:");
-                navigate('/');
-            } else {
-                console.error("Ошибка при выходе из комнаты:", response);
-            }
-        } catch (error) {
-            console.error("Ошибка при выходе из комнаты:", error);
-        }
-    } else {
-        console.error("Ошибка: Не указан roomCode или playerId");
+    if (!roomCode || !playerId) {
+      console.error("Ошибка: Не указан roomCode или playerId");
+      navigate('/');  // Переход на главную страницу, если данных нет
+      return;
+    }
+  
+    try {
+      // Сначала пробуем удалить игрока
+      const leavePlayerResponse = await leaveRoom(roomCode, playerId);
+  
+      // Если комната удалена
+      if (leavePlayerResponse.message === "Комната удалена") {
+        console.log("Комната была удалена, перенаправляем на главную");
+        navigate('/'); // Переход на главную страницу
+      } else if (leavePlayerResponse.status === 200) {
+        console.log("Игрок успешно покинул комнату");
+        navigate('/'); // Переход на главную страницу
+      } else {
+        console.error("Ошибка при удалении игрока из комнаты:", leavePlayerResponse);
+        alert("Ошибка при удалении игрока из комнаты: " + leavePlayerResponse.message);
+      }
+    } catch (error) {
+      // Обработка ошибки, если комната была удалена
+      if (error.message === "Комната удалена" || error.response?.status === 404) {
+        console.log("Комната была удалена, перенаправляем на главную");
+        navigate('/');
+      } else if (error.message === "Игрок не найден") {
+        console.log("Игрок не найден, возможно, он уже покинул комнату");
+        navigate('/');
+      } else {
+        console.error("Неизвестная ошибка при выходе из комнаты:", error);
+        navigate('/'); // Переход на главную страницу в случае других ошибок
+      }
     }
   };
+  
+  
+  
+  
+  
+  
+  
+  
+  
 
   const handleCopyRoomCode = () => {
     navigator.clipboard.writeText(roomCode)

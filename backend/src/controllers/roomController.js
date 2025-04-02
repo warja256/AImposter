@@ -123,6 +123,7 @@ const leaveRoom = async (req, res) => {
         }
         //удалем игрока
         await leavingPlayer.destroy();
+        await gameSession.destroy();  // Удаляем сессию игрока
         room.playerCount -= 1;
         await room.save();
         //проверяем комнату

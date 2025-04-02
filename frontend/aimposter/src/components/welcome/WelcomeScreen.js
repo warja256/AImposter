@@ -30,35 +30,55 @@ const WelcomeScreen = () => {
   };
 
   const handleCreateGame = async () => {
+    if (!playerName) {
+      alert("Пожалуйста, введите имя!");
+      return;
+    }
+  
     try {
-      const response = await createRoom(playerName); // Функция для создания комнаты на сервере
-      const { roomCode } = response.room; 
-      const { id } = response.player;// Извлекаем код комнаты из ответа сервера
-      console.log("Room created:", response);
+      const response = await createRoom(playerName);
+      console.log("API Response:", response);  // Для отладки
+      const { roomCode } = response.room;
+      const { id } = response.player;
   
-      // Переходим на экран лобби, передавая имя игрока и код комнаты
+      if (!roomCode || !id) {
+        throw new Error("Неверный ответ от сервера");
+      }
+  
+      console.log("Передаю в LobbyScreen данные: ", { playerName: playerName, roomCode: roomCode, playerId: id });
       navigate('/lobby', { state: { playerName: playerName, roomCode: roomCode, playerId: id } });
-  
+        
     } catch (error) {
       console.error("Error creating room:", error);
       alert("Ошибка при создании комнаты");
     }
   };
   
-  
-
   const handleJoinGame = async () => {
+    if (!playerName || !roomCode) {
+      alert("Пожалуйста, введите имя и код комнаты!");
+      return;
+    }
+  
     try {
       const response = await joinRoom(roomCode, playerName);
+      console.log("API Response:", response);  // Для отладки
       const { id } = response.player;
-       // Обращаемся к функции присоединения
-      console.log("Joined room:", response);
-      navigate('/lobby', { state: { playerName: playerName, roomCode: roomCode, playerId: id } }); // Переход к LobbyScreen
+  
+      if (!id) {
+        throw new Error("Неверный ответ от сервера");
+      }
+  
+      console.log("Передаю в LobbyScreen данные: ", { playerName: playerName, roomCode: roomCode, playerId: id });
+      navigate('/lobby', { state: { playerName: playerName, roomCode: roomCode, playerId: id } });
+        
     } catch (error) {
       console.error("Error joining room:", error);
       alert("Ошибка при присоединении к комнате");
     }
   };
+  
+  
 
   return (
     <div className="main-screen">
