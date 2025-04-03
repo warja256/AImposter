@@ -104,7 +104,6 @@ const leaveRoom = async (req, res) => {
         //берем код из ссылки и айди из тела запроса
         const {roomCode} = req.params;
         const {playerId} = req.body;
-        console.log("roomCode:", roomCode, "playerId:", playerId);
         //находим игрока
         const leavingPlayer = await Player.findByPk(playerId);
         if (!leavingPlayer){
@@ -141,6 +140,33 @@ const leaveRoom = async (req, res) => {
     }
 }
 
+const chooseMafia = async (req,res) =>{
+    try{
+        const {roomCode} = req.params;
+        const room = await Room.findOne({where: {roomCode}, include: [Player]});
+        if (!room){
+            return res.status(404).json({message: "Комната не найдена"});
+        }
+        
+        const players = room.Players;
+        if (players.length===0){
+            return res.status(404).json({message: "В комнате нет игроков"});
+        }
+
+        const mafiaIndex = Math.floor(Math.random() *players.length);
+        const mafia = players[mafiaIndex];
+
+        await mafia.update({role: 'mafia'});
+        res.status(200).json({mafiaId: mafia.id});
 
 
-module.exports = { createRoom, joinRoom, getRoom, leaveRoom };
+    } catch(error){
+        console.error(error);
+        res.status(500).json({ message: 'Ошибка при выборе мафии', details: error.message });
+
+    }
+}
+
+
+
+module.exports = { createRoom, joinRoom, getRoom, leaveRoom, chooseMafia };
