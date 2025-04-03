@@ -27,9 +27,10 @@ const createRoom = async (req, res) => {
         const {playerName} = req.body;
         const roomCode = await generateUniqueRoomCode(); 
 
-        const newRoom = await Room.create({roomCode});  // Создаём комнату
-
+        
         const newPlayer = await Player.create({ name: playerName });
+        const newRoom = await Room.create({roomCode: roomCode, creator: newPlayer.id});  // Создаём комнату
+
         await GameSession.create({
             roomId: newRoom.id,
             playerId: newPlayer.id,

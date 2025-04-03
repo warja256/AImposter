@@ -15,6 +15,7 @@ const Room = sequelize.define('Room', {
             len: [4],  // Длина кода ровно 4 символа
         },
     },
+    creator: {type: DataTypes.INTEGER},
 });
 
 // Ассоциация между Room и GameSession
