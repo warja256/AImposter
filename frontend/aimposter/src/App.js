@@ -27,9 +27,11 @@ const App = () => {
       <Routes>
         <Route path="/" element={<WelcomeScreen />} />
         <Route path="/lobby" element={<LobbyScreen />} />
+        <Route path="/human-night" element={<HumanNightScreen />} />
+        <Route path="/night-result" element={<NightResult />} />
+        <Route path="/chat" element={<ChatScreen />} />
       </Routes>
     </Router>
-
   );
 };
 
