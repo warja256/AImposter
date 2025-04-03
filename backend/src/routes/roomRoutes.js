@@ -1,7 +1,7 @@
 // src/routes/roomRoutes.js
 const express = require('express');
 const router = express.Router();
-const { createRoom, joinRoom, getRoom, leaveRoom } = require('../controllers/roomController');
+const { createRoom, joinRoom, getRoom, leaveRoom, chooseMafia } = require('../controllers/roomController');
 
 /**
  * @swagger
@@ -89,5 +89,7 @@ router.get('/:roomCode', getRoom);
  *         description: Внутренняя ошибка сервера
  */
 router.delete('/leave/:roomCode', leaveRoom);
+
+router.get('/chooseMafia/:roomCode', chooseMafia);
 
 module.exports = router;
