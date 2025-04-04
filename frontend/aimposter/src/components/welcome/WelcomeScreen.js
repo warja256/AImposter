@@ -40,19 +40,21 @@ const WelcomeScreen = () => {
       console.log("API Response:", response);  // Для отладки
       const { roomCode } = response.room;
       const { id } = response.player;
+      const isCreator = response.player.id === response.room.creator;  // Corrected part
   
       if (!roomCode || !id) {
         throw new Error("Неверный ответ от сервера");
       }
   
-      console.log("Передаю в LobbyScreen данные: ", { playerName: playerName, roomCode: roomCode, playerId: id });
-      navigate('/lobby', { state: { playerName: playerName, roomCode: roomCode, playerId: id } });
-        
+      console.log("Передаю в LobbyScreen данные: ", { playerName: playerName, roomCode: roomCode, playerId: id, isCreator: isCreator });
+      navigate('/lobby', { state: { playerName: playerName, roomCode: roomCode, playerId: id, isCreator: isCreator } });
+          
     } catch (error) {
       console.error("Error creating room:", error);
       alert("Ошибка при создании комнаты");
     }
   };
+  
   
   const handleJoinGame = async () => {
     if (!playerName || !roomCode) {
