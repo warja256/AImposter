@@ -1,6 +1,6 @@
 const API_URL = 'http://localhost:8080/api';
 
-export const getMafiaId = async () => {
+export const getMafiaId = async (roomCode) => {
     try {
         const response = await fetch(`${API_URL}/rooms/chooseMafia/${roomCode}`);
 

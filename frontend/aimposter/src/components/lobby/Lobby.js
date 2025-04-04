@@ -100,7 +100,14 @@ const LobbyScreen = () => {
     }
   };
   
-  
+  const handleStartGame = async () => {
+    try {
+      navigate('/connection', { state: { playerName, roomCode, playerId} });
+    } catch (error) {
+      console.error("Ошибка при определении мафии:", error);
+    }
+  };
+
   
   
   
@@ -128,7 +135,7 @@ const LobbyScreen = () => {
         <div className="lobby-buttons">
         {isCreator && (
              <div>
-               <button className="create-game">Начать</button>
+               <button className="create-game" onClick={handleStartGame}>Начать</button>
              </div>
            )}
           <div>
