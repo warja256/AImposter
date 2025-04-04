@@ -21,7 +21,7 @@ function startWebSocket(server) {
                 }
         
                 if (!roomCode) {
-                    return socket.emit("error", "playerName обязательны!");
+                    return socket.emit("error", "Код комнаты обязателен обязательны!");
                 }
         
                 const room = await Room.findOne({ where: { roomCode } });
