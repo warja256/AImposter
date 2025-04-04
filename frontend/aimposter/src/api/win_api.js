@@ -5,7 +5,7 @@ const API_URL = 'http://localhost:8080/api';
 
   export const seeWinner = async (roomCode) => {
     try {
-      const response = await fetch(`${API_URL}/rooms/${roomCode}/winner`);
+      const response = await fetch(`${API_URL}/rooms/IsWin/${roomCode}`);
       const winnerStatus = await response.text();
       
       if (winnerStatus !== "mafia" && winnerStatus !== "civilian" && winnerStatus !== "continue") {
