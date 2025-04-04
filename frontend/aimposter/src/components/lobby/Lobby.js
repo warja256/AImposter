@@ -4,7 +4,7 @@ import "../header.css";
 import "./Lobby.css";
 import logo from '../../assets/images/logo.png';
 import avatar from "../../assets/images/avatar.png";
-import { getRoomDetails, leaveRoom } from '../../api/api';
+import { getRoomDetails, leaveRoom } from '../../api/room_api';
 
 const LobbyScreen = () => {
   const [roomData, setRoomData] = useState(null); // Для хранения данных комнаты

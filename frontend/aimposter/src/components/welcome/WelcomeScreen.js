@@ -4,7 +4,7 @@ import "./WelcomeScreen.css";
 import "../header.css";
 import logo from "../../assets/images/logo.png";
 import avatar from "../../assets/images/avatar.png";
-import { createRoom, joinRoom } from "../../api/api.js";  // Импортируем API функции
+import { createRoom, joinRoom } from "../../api/room_api.js";  // Импортируем API функции
 
 const WelcomeScreen = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
