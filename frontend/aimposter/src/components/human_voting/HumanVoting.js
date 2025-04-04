@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './HumanVoting.css';
 import '../header.css';
 import logo from '../../assets/images/logo.png';
-import avatar from "../../assets/images/avatar.png"; 
+import avatar from "../../assets/images/avatar.png";
 
 const HumanVotingScreen = () => {
     const [countdown, setCountdown] = useState(20);
     const [selectedPlayer, setSelectedPlayer] = useState(null);
-    const navigate = useNavigate(); // Хук для навигации
+    const navigate = useNavigate();
+    const location = useLocation();
 
     const formatTime = (seconds) => {
         const minutes = Math.floor(seconds / 60);
@@ -21,17 +22,20 @@ const HumanVotingScreen = () => {
             const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
             return () => clearTimeout(timer);
         } else {
-            // Заглушка для будущего кода перехода на другую страницу
             handleCountdownEnd();
         }
-    }, [countdown, navigate]);
+    }, [countdown]);
 
     const handleCountdownEnd = () => {
-        // Здесь будет логика перехода на другую страницу
-        console.log("Таймер завершен! Переход на другую страницу...");
-        // navigate('/next-page'); // Раскомментируйте эту строку, когда будете готовы к переходу
+        const { roomCode, playerId } = location.state || {};
+        navigate('/killed', {
+            state: {
+                roomCode: roomCode,
+                playerId: playerId,
+                votedPlayer: selectedPlayer
+            }
+        });
     };
-
 
     const handlePlayerSelect = (playerId) => {
         setSelectedPlayer(playerId);
@@ -40,7 +44,20 @@ const HumanVotingScreen = () => {
     const handleSend = () => {
         if (selectedPlayer !== null) {
             console.log(`Отправлен выбор: Игрок ${selectedPlayer}`);
+            handleCountdownEnd();
         }
+    };
+
+    // Новая функция для перехода на экран голосования мафии
+    const handleNightTransition = () => {
+        const { roomCode, playerId } = location.state || {};
+        navigate('/mafia-voting', {
+            state: {
+                roomCode: roomCode,
+                playerId: playerId,
+                dayVote: selectedPlayer // Передаем результаты дневного голосования
+            }
+        });
     };
 
     return (
@@ -51,7 +68,6 @@ const HumanVotingScreen = () => {
             </div>
 
             <div className="central-box-h">
-
                 <div className="up-panel-h">
                     <div className="head-text-h">
                         ГОЛОСОВАНИЕ
@@ -60,40 +76,34 @@ const HumanVotingScreen = () => {
                 </div>
 
                 <div className="player-list">
-                    <button
-                        className={`player-button-h ${selectedPlayer === 1 ? 'selected' : ''}`}
-                        onClick={() => handlePlayerSelect(1)}
-                    >
-                        <img src={avatar} className="avatar" />
-                        <div className="text">Игрок 1</div>
-                    </button>
-                    <button
-                        className={`player-button-h ${selectedPlayer === 2 ? 'selected' : ''}`}
-                        onClick={() => handlePlayerSelect(2)}
-                    >
-                        <img src={avatar} className="avatar" />
-                        <div className="text">Игрок 2</div>
-                    </button>
-                    <button
-                        className={`player-button-h ${selectedPlayer === 3 ? 'selected' : ''}`}
-                        onClick={() => handlePlayerSelect(3)}
-                    >
-                        <img src={avatar} className="avatar" />
-                        <div className="text">Игрок 3</div>
-                    </button>
-                    <button
-                        className={`player-button-h ${selectedPlayer === 4 ? 'selected' : ''}`}
-                        onClick={() => handlePlayerSelect(4)}
-                    >
-                        <img src={avatar} className="avatar" />
-                        <div className="text">Игрок 4</div>
-                    </button>
+                    {[1, 2, 3, 4].map((playerId) => (
+                        <button
+                            key={playerId}
+                            className={`player-button-h ${selectedPlayer === playerId ? 'selected' : ''}`}
+                            onClick={() => handlePlayerSelect(playerId)}
+                        >
+                            <img src={avatar} className="avatar" alt={`Player ${playerId}`} />
+                            <div className="text">Игрок {playerId}</div>
+                        </button>
+                    ))}
                 </div>
 
-                <button className="send-button-h" onClick={handleSend}>
-                <div className="button-text">ОТПРАВИТЬ</div>
+                <button 
+                    className="send-button-h" 
+                    onClick={handleSend}
+                    disabled={selectedPlayer === null}
+                >
+                    <div className="button-text">ОТПРАВИТЬ</div>
                 </button>
             </div>
+            
+            {/* Кнопка для перехода в ночную фазу */}
+            <button 
+                className="but-night" 
+                onClick={handleNightTransition}
+            >
+                <div className="button-text">НОЧЬ</div>
+            </button>
         </div>
     );
 };

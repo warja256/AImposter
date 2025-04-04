@@ -5,7 +5,7 @@ import '../header.css';
 import logo from '../../assets/images/logo.png';
 import info from '../../assets/images/info.png';
 import img from '../../assets/images/blue_human.png';
-import sendImg from '../../assets/images/send.png'; // Изображение для кнопки отправки
+import sendImg from '../../assets/images/send.png';
 
 const ChatScreen = () => {
     const [roomCode, setRoomCode] = useState('9090');
@@ -14,7 +14,8 @@ const ChatScreen = () => {
     const [inputValue, setInputValue] = useState('');
     const [isInputActive, setIsInputActive] = useState(false);
     const [chatMessages, setChatMessages] = useState([]);
-    const [hasMessageSent, setHasMessageSent] = useState(false); // Новый флаг
+    const [hasMessageSent, setHasMessageSent] = useState(false);
+    const [isFinalReview, setIsFinalReview] = useState(false);
     const navigate = useNavigate();
     const chatEndRef = useRef(null);
 
@@ -29,56 +30,59 @@ const ChatScreen = () => {
             const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
             return () => clearTimeout(timer);
         } else {
-            handleSendPendingMessages();
+            if (round < 6) {
+                // Переход к следующему раунду
+                handleNextRound();
+            } else if (!isFinalReview) {
+                // После 6-го раунда - фаза финального просмотра
+                handleFinalReview();
+            } else {
+                // После финального просмотра - переход
+                navigate('/human-voting');
+            }
         }
-    }, [countdown]);
+    }, [countdown, round, isFinalReview]);
 
-    useEffect(() => {
-        if (round > 6) {
-            handleCountdownEnd();
-        }
-    }, [round]);
-
-    const handleCountdownEnd = () => {
-        console.log("Таймер завершен! Переход на другую страницу...");
-        // navigate('/next-page'); // Раскомментируйте эту строку, когда будете готовы к переходу
-    };
-
-    const handleSendPendingMessages = () => {
-        // Добавляем заглушки сообщений от других игроков
+    const handleNextRound = () => {
+        // Добавляем сообщения от других игроков
         const mockMessages = [
-            { text: 'Сообщение от игрока 1', sender: 'other', name: 'Player1' },
-            { text: 'Сообщение от игрока 2', sender: 'other', name: 'Player2' },
-            { text: 'Сообщение от игрока 3', sender: 'other', name: 'Player3' }
+            { text: `Сообщение от игрока 1`, sender: 'other', name: 'Player1' },
+            { text: `Сообщение от игрока 2`, sender: 'other', name: 'Player2' },
+            { text: `Сообщение от игрока 3`, sender: 'other', name: 'Player3' }
         ];
 
-        // Обновляем chatMessages с новыми сообщениями
-        setChatMessages((prevMessages) => [
-            ...prevMessages,
-            ...mockMessages
-        ]);
+        setChatMessages(prev => [...prev, ...mockMessages]);
+        setRound(round + 1);
+        setCountdown(25);
+        setHasMessageSent(false);
+    };
 
-        // Переход к следующему раунду
-        if (round < 6) {
-            setRound(round + 1);
-            setCountdown(15);
-            setHasMessageSent(false); // Сбрасываем флаг для нового раунда
-        }
+    const handleFinalReview = () => {
+        // Добавляем финальные сообщения
+        const finalMessages = [
+            { text: `Сообщение от игрока 1`, sender: 'other', name: 'Player1' },
+            { text: `Сообщение от игрока 2`, sender: 'other', name: 'Player2' },
+            { text: `Сообщение от игрока 3`, sender: 'other', name: 'Player3' }
+        ];
+
+        setChatMessages(prev => [...prev, ...finalMessages]);
+        setIsFinalReview(true);
+        setCountdown(10); // 10 секунд на финальный просмотр
     };
 
     const handleSendMessage = () => {
-        if (inputValue.trim() !== '' && !hasMessageSent) { // Проверка на отправку только одного сообщения
-            setChatMessages((prevMessages) => [
-                ...prevMessages,
-                { text: inputValue, sender: 'user' }
+        if (inputValue.trim() && !hasMessageSent && !isFinalReview) {
+            setChatMessages(prev => [
+                ...prev,
+                { text: `${inputValue}`, sender: 'user' }
             ]);
             setInputValue('');
-            setHasMessageSent(true); // Отмечаем, что сообщение отправлено
+            setHasMessageSent(true);
         }
     };
 
-    const handleKeyDown = (event) => {
-        if (event.key === 'Enter') {
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter' && !isFinalReview) {
             handleSendMessage();
         }
     };
@@ -105,12 +109,12 @@ const ChatScreen = () => {
                 </div>
 
                 <div className="chat">
-                    {chatMessages.map((chatMessage, index) => (
-                        <div key={index} className={`chat-message ${chatMessage.sender}`}>
-                            {chatMessage.sender !== 'user' && (
-                                <div className="nickname">{chatMessage.name}:</div>
+                    {chatMessages.map((msg, i) => (
+                        <div key={i} className={`chat-message ${msg.sender}`}>
+                            {msg.sender !== 'user' && msg.name && (
+                                <div className="nickname">{msg.name}:</div>
                             )}
-                            <div className="message-text">{chatMessage.text}</div>
+                            <div className="message-text">{msg.text}</div>
                         </div>
                     ))}
                     <div ref={chatEndRef} />
@@ -119,22 +123,24 @@ const ChatScreen = () => {
                 <div className="input-line">
                     <input
                         className="chat-input-line"
-                        placeholder="Введите сообщение..."
+                        placeholder={isFinalReview ? "Финальный просмотр..." : "Введите сообщение..."}
                         value={inputValue}
                         onChange={(e) => {
                             setInputValue(e.target.value);
-                            setIsInputActive(true);
+                            setIsInputActive(e.target.value.length > 0);
                         }}
-                        onKeyDown={handleKeyDown} // Обработчик нажатия клавиши Enter
-                        disabled={countdown === 0 || hasMessageSent} // Отключаем поле ввода, если время истекло или сообщение отправлено
+                        onKeyDown={handleKeyDown}
+                        disabled={isFinalReview || hasMessageSent || countdown === 0}
                     />
                     <div className='img-inside-input'>
                         <img
                             src={isInputActive ? sendImg : img}
-                            alt="Human Img"
-                            onClick={handleSendMessage}
-                            style={{ cursor: 'pointer' }}
-                            disabled={countdown === 0 || hasMessageSent} // Отключаем кнопку отправки
+                            alt="Send"
+                            onClick={isFinalReview ? undefined : handleSendMessage}
+                            style={{ 
+                                cursor: isFinalReview ? 'not-allowed' : 'pointer',
+                                opacity: isFinalReview ? 0.5 : 1
+                            }}
                         />
                     </div>
                 </div>

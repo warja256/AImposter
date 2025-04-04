@@ -1,14 +1,20 @@
 //экран не используется, для выбора просто появляется контейнер с ответами ии
 
 import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './AiChat.css';
 import '../header.css';
 import logo from '../../assets/images/logo.png';
 import info from '../../assets/images/info.png';
 
 const AiResponses = () => {
-  const [countdown, setCountdown] = useState(15); // Таймер
-  const [roomCode, setRoomCode] = useState('9090'); // Код комнаты
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { roomCode: prevRoomCode, message } = location.state || {};
+  
+  const [countdown, setCountdown] = useState(15);
+  const [roomCode, setRoomCode] = useState(prevRoomCode || '9090');
+  const [selectedOption, setSelectedOption] = useState(null);
 
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
@@ -25,20 +31,34 @@ const AiResponses = () => {
       }, 1000);
     } else {
       clearInterval(interval);
+      // Автоматический переход при окончании времени
+      handleSubmit();
     }
 
     return () => clearInterval(interval);
   }, [countdown]);
 
-  const [selectedOption, setSelectedOption] = useState(null); // Начальное состояние: ни один вариант не выбран
-
   const handleSelectOption = (optionIndex) => {
-    setSelectedOption(optionIndex); // Устанавливаем выбранный вариант
+    setSelectedOption(optionIndex);
   };
-  
+
+  const handleSubmit = () => {
+    // Подготовка данных для передачи
+    const transitionData = {
+      roomCode: roomCode,
+      aiMessage: message,
+      selectedOption: selectedOption !== null ? `Вариант ${selectedOption + 1}` : null,
+      fromScreen: 'ai-responses'
+    };
+
+    // Переход на экран чата с передачей данных
+    navigate('/chat', {
+      // state: transitionData
+    });
+  };
+
   return (
     <div className="ai-chat-screen">
-      
       <div className="logo-container">
         <img src={logo} alt="AImposter Logo" />
         <span className="header-title">AImposter</span>
@@ -61,15 +81,21 @@ const AiResponses = () => {
             <input
               key={index}
               className={`message-input ${selectedOption === index ? 'selected' : ''}`}
-              readOnly // Делаем поле только для чтения
-              value={`Вариант ${value}`} // Значение для примера
-              onClick={() => handleSelectOption(index)} // Обработчик выбора
+              readOnly
+              value={`Вариант ${value}`}
+              onClick={() => handleSelectOption(index)}
             />
           ))}
         </div>
-        <button className="send-button" type="submit">ОТПРАВИТЬ</button>
+        <button 
+          className="send-button" 
+          type="submit"
+          onClick={handleSubmit}
+          disabled={selectedOption === null} // Кнопка неактивна, пока не выбран вариант
+        >
+          ОТПРАВИТЬ
+        </button>
       </div>
-
     </div>
   );
 };

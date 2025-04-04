@@ -36,6 +36,11 @@ const App = () => {
         <Route path="/chat" element={<ChatScreen />} />
         <Route path="/mafia-winner" element={<MafiaWinnerScreen />} />
         <Route path="/human-winner" element={<HumanWinnerScreen />} />
+        <Route path="/ai-responses" element={<AiResponses />} />
+        <Route path="/human-voting" element={<HumanVotingScreen />} />
+        <Route path="/ai-chat" element={<AiChatScreen />} />
+        <Route path="/killed" element={<KilledUser />} />
+        <Route path="/mafia-voting" element={<MafiaVotingScreen />} />
       </Routes>
     </Router>
   );

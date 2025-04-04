@@ -6,7 +6,7 @@ import logo from '../../assets/images/logo.png';
 import avatar from "../../assets/images/avatar.png";
 
 const MafiaVotingScreen = () => {
-    const [countdown, setCountdown] = useState(180); // 3 minutes
+    const [countdown, setCountdown] = useState(25);
     const [selectedPlayer, setSelectedPlayer] = useState(null);
     const navigate = useNavigate(); // Hook for navigation
 

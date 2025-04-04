@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './AiChat.css';
 import '../header.css';
 import logo from '../../assets/images/logo.png';
 import info from '../../assets/images/info.png';
 
 const AiChatScreen = () => {
+  const navigate = useNavigate();
   const [countdown, setCountdown] = useState(15); // Таймер
   const [roomCode, setRoomCode] = useState('9090'); // Код комнаты
   const [message, setMessage] = useState(''); // Сообщение
@@ -43,6 +45,15 @@ const AiChatScreen = () => {
       setMessage(''); // Очищаем поле ввода
       setShowChoices(true); // Переключаемся на отображение вариантов выбора
       setCountdown(15); // Сбрасываем таймер и начинаем отсчет заново
+      
+      // Переход на страницу ответов
+      navigate('/ai-responses', {
+        // state: {
+        //   roomCode: roomCode,
+        //   message: message,
+        //   sentMessages: sentMessages
+        // }
+      });
     }
   };
   
@@ -79,8 +90,19 @@ const AiChatScreen = () => {
       {!showChoices && (
         <div className="promt-container">
           <div className="promt-label">Задайте промт для ИИ</div>
-          <input className="message-input" placeholder="Введите промт..." value={message} onChange={handleChange} />
-          <button className="send-button" type="submit" onClick={handleSubmit}>ОТПРАВИТЬ</button>
+          <input 
+            className="message-input" 
+            placeholder="Введите промт..." 
+            value={message} 
+            onChange={handleChange} 
+          />
+          <button 
+            className="send-button" 
+            type="submit" 
+            onClick={handleSubmit}
+          >
+            ОТПРАВИТЬ
+          </button>
         </div>
       )}
 
