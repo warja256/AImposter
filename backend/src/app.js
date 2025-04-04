@@ -4,6 +4,12 @@ const http = require('http');
 const cors = require('cors');
 const { sequelize } = require('./models');
 const { startWebSocket } = require('./websocket');
+
+const roomRoutes = require('./routes/roomRoutes');
+const playerRoutes = require('./routes/playerRoutes');
+const chatRoutes = require('./routes/chatRoutes');
+const voteRoutes = require('./routes/voteRoutes');
+
 const swaggerSetup = require('./docs/swagger');  // Импортируем Swagger настройку
 
 const app = express();
@@ -12,10 +18,6 @@ const server = http.createServer(app);
 app.use(cors());
 app.use(express.json());
 
-const roomRoutes = require('./routes/roomRoutes');
-const playerRoutes = require('./routes/playerRoutes');
-const chatRoutes = require('./routes/chatRoutes');
-const voteRoutes = require('./routes/voteRoutes');
 
 app.use('/api/rooms', roomRoutes);
 app.use('/api/players', playerRoutes);

@@ -16,14 +16,13 @@ const swaggerOptions = {
       },
     ],
   },
-     apis: ['./src/routes/*.js'],  // Путь к твоим маршрутам для генерации документации
-     //apis: ['../routes/*.js'],
+  apis: ['./routes/*.js'],  // Путь к твоим маршрутам для генерации документации
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 
 const swaggerSetup = (app) => {
-  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));  // Настроим UI для Swagger
+  app.use('/api-docs/', swaggerUi.serve, swaggerUi.setup(swaggerDocs));  // Настроим UI для Swagger
 };
 
 module.exports = swaggerSetup;

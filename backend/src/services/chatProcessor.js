@@ -17,7 +17,7 @@ function processMessages(io) {
                 messagesQueue.set(roomId, []); // Очищаем очередь
             }
         });
-    }, 20000); // Каждые 20 секунд
+    }, 200000); // Каждые 20 секунд
 }
 
 module.exports = { addMessage, processMessages };

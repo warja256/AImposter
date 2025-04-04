@@ -3,15 +3,33 @@ const express = require('express');
 const router = express.Router();
 const { createRoom, joinRoom, getRoom, leaveRoom, chooseMafia, changeStatus, isWin } = require('../controllers/roomController');
 
+// src/routes/roomRoutes.js
+
 /**
  * @swagger
- * /api/rooms:
- *   post:
- *     summary: Создать новую комнату
- *     tags: [Комнаты]
+ * /api/rooms/{roomCode}:
+ *   get:
+ *     summary: Получить информацию о комнате по её коду
+ *     parameters:
+ *       - in: path
+ *         name: roomCode
+ *         required: true
+ *         description: Код комнаты
+ *         schema:
+ *           type: string
  *     responses:
- *       201:
- *         description: Комната создана
+ *       200:
+ *         description: Информация о комнате
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 roomCode:
+ *                   type: string
+ *                   example: '1234'
+ *       404:
+ *         description: Комната не найдена
  */
 router.post('/', createRoom);
 
