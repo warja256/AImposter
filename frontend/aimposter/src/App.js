@@ -27,7 +27,7 @@ const App = () => {
 
     <Router>
       <Routes>
-        <Route path="/" element={<HumanRoleScreen />} />
+        <Route path="/" element={<WelcomeScreen />} />
         <Route path="/lobby" element={<LobbyScreen />} />
         <Route path="/human-night" element={<HumanNightScreen />} />
         <Route path="/night-result" element={<NightResult />} />
