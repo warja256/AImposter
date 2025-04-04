@@ -1,5 +1,6 @@
 // src/controllers/roomController.js
 const { Room, Player, GameSession } = require('../models'); // Импортируем модели из бд
+const { generateToken } = require("../auth");
 
 
 function generateRandomCode() {
@@ -35,8 +36,10 @@ const createRoom = async (req, res) => {
             roomId: newRoom.id,
             playerId: newPlayer.id,
         });
+        const token = generateToken(newPlayer);
 
-        res.status(201).json({room: newRoom, player: newPlayer});  // Отправляем ответ с созданной комнатой
+
+        res.status(201).json({room: newRoom, player: newPlayer, token});  // Отправляем ответ с созданной комнатой
     } catch (error) {
         console.error(error);
         res.status(500).json({ 
@@ -67,7 +70,10 @@ const joinRoom = async (req, res) => {
             playerId: player.id,
         });
 
-        res.status(200).json({room, player });
+        // Генерируем JWT
+        const token = generateToken(player);
+
+        res.status(200).json({room, player,token });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Ошибка при присоединении к комнате', details: error.message });

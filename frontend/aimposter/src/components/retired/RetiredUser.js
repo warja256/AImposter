@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import './Retired.css';
 import '../header.css';
 import logo from '../../assets/images/logo.png';
-import { leaveRoom } from '../../api/api';
+import { leaveRoom } from '../../api/room_api';
 
 const RetiredUser = () => {
   const navigate = useNavigate();

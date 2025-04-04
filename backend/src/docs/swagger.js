@@ -12,7 +12,7 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: 'http://localhost:3000', // Здесь укажи адрес твоего локального сервера
+        url: 'http://localhost:8080', // Здесь укажи адрес твоего локального сервера
       },
     ],
   },

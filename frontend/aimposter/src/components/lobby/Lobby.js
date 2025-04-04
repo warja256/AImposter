@@ -4,7 +4,7 @@ import "../header.css";
 import "./Lobby.css";
 import logo from '../../assets/images/logo.png';
 import avatar from "../../assets/images/avatar.png";
-import { getRoomDetails, leaveRoom } from '../../api/api';
+import { getRoomDetails, leaveRoom } from '../../api/room_api';
 
 const LobbyScreen = () => {
   const [roomData, setRoomData] = useState(null); // Для хранения данных комнаты
@@ -13,17 +13,20 @@ const LobbyScreen = () => {
   const [roomCode, setRoomCode] = useState('');
   const [playerCount, setPlayerCount] = useState(0); // Счётчик игроков
   const [playerId, setPlayerId] = useState(null); // Убираем дублирование
+  const [isCreator, setIsCreator] = useState(false); // Default to false, can be updated based on the passed value
+
 
   const navigate = useNavigate();
   const location = useLocation(); // Используем useLocation для получения переданных данных
 
   useEffect(() => {
     if (location.state) {
-      const { playerName, roomCode, playerId } = location.state;
+      const { playerName, roomCode, playerId, isCreator } = location.state;
       setPlayerName(playerName);
       setRoomCode(roomCode);
       setPlayerId(playerId);
-      console.log("Получены данные: ", { playerName, roomCode, playerId }); // Выведите для отладки
+      console.log("Получены данные: ", { playerName, roomCode, playerId, isCreator });
+      setIsCreator(isCreator); 
     }
   }, [location.state]);
   
@@ -124,9 +127,11 @@ const LobbyScreen = () => {
       </div>
       <div className="lobby">
         <div className="lobby-buttons">
-          <div>
-            <button className="create-game">Начать</button>
-          </div>
+          {isCreator && (
+            <div>
+              <button className="create-game">Начать</button>
+            </div>
+          )}
           <div>
             <div className="center">
               <div className="room-code-container">
