@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { votePlayer,  endVotingRound} = require('../controllers/voteController');
+const { votePlayer,  endVotingRound, killVote, killPlayer} = require('../controllers/voteController');
 
 /**
  * @swagger
@@ -32,5 +32,9 @@ const { votePlayer,  endVotingRound} = require('../controllers/voteController');
 router.post('/:roomCode', votePlayer);
 
 router.post('/:roomCode/end', endVotingRound);
+
+router.post('/mafia/:roomCode', killVote);
+
+router.post('/mafia/:roomCode/end', killPlayer);
 
 module.exports = router;
