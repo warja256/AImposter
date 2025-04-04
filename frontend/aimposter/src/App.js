@@ -27,7 +27,7 @@ const App = () => {
 
     <Router>
       <Routes>
-        <Route path="/" element={<WelcomeScreen />} />
+        <Route path="/" element={<HumanRoleScreen />} />
         <Route path="/lobby" element={<LobbyScreen />} />
         <Route path="/human-night" element={<HumanNightScreen />} />
         <Route path="/night-result" element={<NightResult />} />
@@ -43,6 +43,7 @@ const App = () => {
         <Route path="/mafia-voting" element={<MafiaVotingScreen />} />
         <Route path="/connection" element={<ConnectScreen />} />
         <Route path="/mafia-role" element={<MafiaScreen />} />
+        <Route path="/human-role" element={<HumanRoleScreen />} />
       </Routes>
     </Router>
   );
