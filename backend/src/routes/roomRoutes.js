@@ -1,7 +1,7 @@
 // src/routes/roomRoutes.js
 const express = require('express');
 const router = express.Router();
-const { createRoom, joinRoom, getRoom, leaveRoom, chooseMafia } = require('../controllers/roomController');
+const { createRoom, joinRoom, getRoom, leaveRoom, chooseMafia, changeStatus } = require('../controllers/roomController');
 
 /**
  * @swagger
@@ -91,5 +91,7 @@ router.get('/:roomCode', getRoom);
 router.delete('/leave/:roomCode', leaveRoom);
 
 router.get('/chooseMafia/:roomCode', chooseMafia);
+
+router.get('/changeStatus/:roomCode', changeStatus);
 
 module.exports = router;

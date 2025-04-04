@@ -170,4 +170,24 @@ const chooseMafia = async (req,res) =>{
 
 
 
-module.exports = { createRoom, joinRoom, getRoom, leaveRoom, chooseMafia };
+const changeStatus  = async (req,res) =>{
+    try{
+        const {roomCode} = req.params;
+
+        const room = await Room.findOne({where: {roomCode}});
+        if (!room){
+            return res.status(404).json({message: "Комната не найдена"});
+        }
+
+        const newStatus = room.status === "day" ? "night" : "day";
+        await room.update({status: newStatus});
+
+        res.status(200).json(room);
+
+    }catch(error){
+        console.error(error);
+        res.status(500).json({ message: 'Ошибка при смене статуса', details: error.message });
+    }
+}
+
+module.exports = { createRoom, joinRoom, getRoom, leaveRoom, chooseMafia, changeStatus };
