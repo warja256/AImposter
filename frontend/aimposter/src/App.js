@@ -41,6 +41,9 @@ const App = () => {
         <Route path="/ai-chat" element={<AiChatScreen />} />
         <Route path="/killed" element={<KilledUser />} />
         <Route path="/mafia-voting" element={<MafiaVotingScreen />} />
+        <Route path="/connection" element={<ConnectScreen />} />
+        <Route path="/mafia-role" element={<MafiaScreen />} />
+        <Route path="/human-role" element={<HumanRoleScreen />} />
       </Routes>
     </Router>
   );

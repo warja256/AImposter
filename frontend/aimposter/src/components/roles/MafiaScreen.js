@@ -1,14 +1,24 @@
 // src/components/MafiaScreen.js
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './RoleScreen.css';
 import '../header.css';
 import robot from '../../assets/images/mafia_ai.png';
 import logo from '../../assets/images/logo.png';
 
 const MafiaScreen = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      navigate('/ai-responses'); 
+    }, 7000);
+
+    return () => clearTimeout(timer);
+  }, [navigate]);
+
   return (
     <div className="role-screen">
-      
       <div className="logo-container">
         <img src={logo} alt="AImposter Logo" />
         <span className="header-title">AImposter</span>
@@ -22,7 +32,6 @@ const MafiaScreen = () => {
       <div className="role">
         <img src={robot} alt="Robot" />
       </div>
-
     </div>
   );
 };
