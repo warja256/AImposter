@@ -1,5 +1,6 @@
 const { Server } = require("socket.io");
 const { Room, Player, GameSession, Message } = require("./models");
+const { verifyToken } = require("./auth");
 
 global.messageBuffer = {}; // Буфер сообщений
 
@@ -12,7 +13,12 @@ function startWebSocket(server) {
         // Присоединение к комнате
         socket.on("joinRoom", async (data) => {
             try {
-                const { roomCode, playerName } = data; // Читаем данные из запроса
+                const { token, roomCode, playerName } = data; // Читаем данные из запроса(токен, комната, сообщение)
+
+                const decoded = verifyToken(token);
+                if (!decoded) {
+                    return socket.emit("error", "Неверный или истёкший токен!");
+                }
         
                 if (!roomCode) {
                     return socket.emit("error", "playerName обязательны!");
@@ -45,7 +51,13 @@ function startWebSocket(server) {
         // Отправка сообщений
         socket.on("sendMessage", async (data) => {
             try {
-                const { roomCode, playerId, content } = data;
+                const { token, roomCode, playerId, content } = data;
+
+                const decoded = verifyToken(token);
+                if (!decoded) {
+                    return socket.emit("error", "Неверный или истёкший токен!");
+                }
+
                 if (!roomCode) {
                     return socket.emit("error", "Код комнаты обязательны!");
                 }
@@ -99,7 +111,7 @@ function startWebSocket(server) {
                 global.messageBuffer[roomCode] = [];
             }
         });
-    }, 20000);
+    }, 200000);
 }
 
 module.exports = { startWebSocket };
