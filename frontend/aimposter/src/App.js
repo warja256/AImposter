@@ -34,6 +34,7 @@ const App = () => {
         <Route path="/killed" element={<KilledUser />} />
         <Route path="/retired" element={<RetiredUser />} />
         <Route path="/chat" element={<ChatScreen />} />
+        <Route path="/mafia-role" element={<MafiaScreen />} />
         <Route path="/mafia-winner" element={<MafiaWinnerScreen />} />
         <Route path="/human-winner" element={<HumanWinnerScreen />} />
         <Route path="/ai-responses" element={<AiResponses />} />
@@ -41,6 +42,7 @@ const App = () => {
         <Route path="/ai-chat" element={<AiChatScreen />} />
         <Route path="/killed" element={<KilledUser />} />
         <Route path="/mafia-voting" element={<MafiaVotingScreen />} />
+        <Route path="/connection" element={<ConnectScreen />} />
       </Routes>
     </Router>
   );
