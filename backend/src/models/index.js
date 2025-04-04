@@ -3,6 +3,7 @@ const Player = require('./Player');
 const Room = require('./Room');
 const GameSession = require('./GameSession');
 const Message = require('./Message');
+const Vote = require('./Vote');
 
 Player.belongsToMany(Room, { through: GameSession, foreignKey: 'playerId', onDelete: 'CASCADE' });
 Room.belongsToMany(Player, { through: GameSession, foreignKey: 'roomId', onDelete: 'CASCADE' });
@@ -10,4 +11,4 @@ Room.belongsToMany(Player, { through: GameSession, foreignKey: 'roomId', onDelet
 Message.belongsTo(Player, { foreignKey: 'playerId' });
 Message.belongsTo(Room, { foreignKey: 'roomId' });
 
-module.exports = { sequelize, Player, Room, GameSession, Message };
+module.exports = { sequelize, Player, Room, GameSession, Message, Vote };

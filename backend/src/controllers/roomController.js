@@ -1,5 +1,5 @@
 // src/controllers/roomController.js
-const { Room, Player, GameSession } = require('../models'); // Импортируем модели из Sequelize (в соответствии с твоей моделью)
+const { Room, Player, GameSession } = require('../models'); // Импортируем модели из бд
 
 
 function generateRandomCode() {

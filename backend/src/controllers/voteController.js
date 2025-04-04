@@ -1,31 +1,40 @@
-/*const { Vote } = require('../models');  // импортируем модель голосования
+const { Vote, Player, GameSession, Room } = require('../models'); 
 
 // Проголосовать за игрока
 const votePlayer = async (req, res) => {
     try {
-        const { roomId } = req.params;
+        const { roomCode } = req.params;
         const { voterId, targetId } = req.body;
 
-        const vote = await Vote.create({ roomId, voterId, targetId });
-        res.status(200).json(vote);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-};
+        //Ищем комнату
+        const room = await Room.findOne({ where: { roomCode } });
+        if (!room) {
+            return res.status(404).json({ message: 'Комната не найдена' });
+        }
 
-module.exports = { votePlayer };*/
+        const roomId = room.id;
 
+        //Ищем игрока
+        const gameSession = await GameSession.findOne({ where: { playerId: voterId, roomId } });
+        if (!gameSession) {
+            return res.status(400).json({ message: 'Игрок не найден в этой комнате' });
+        }
 
-const { Vote, Player } = require('../models');  // Импортируем модели Vote и Player
+        //Игрок жив или нет
+        const player = await Player.findOne({ where: { id: voterId, status: 'alive' } });
+        if (!player) {
+            return res.status(400).json({ message: 'Голосующий игрок мёртв' });
+        }
 
-// Проголосовать за игрока
-const votePlayer = async (req, res) => {
-    try {
-        const { roomId } = req.params;
-        const { voterId, targetId } = req.body;
+        //Ищем игрока за которого проголосовали
+        const targetPlayer = await Player.findOne({ where: { id: targetId } });
+        if (!targetPlayer) {
+            return res.status(400).json({ message: 'Игрок, за которого голосуют не найден' });
+        }
 
-        const vote = await Vote.create({ roomId, voterId, targetId });
-        res.status(200).json(vote);
+        // Если всё в порядке, записываем голос
+        const vote = await Vote.create({ roomCode, voterId, targetId });
+        res.status(200).json({ message: 'Голос учтён', vote });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -34,18 +43,30 @@ const votePlayer = async (req, res) => {
 // Завершить раунд голосования и определить исключенного игрока
 const endVotingRound = async (req, res) => {
     try {
-        const { roomId } = req.params;
+        const { roomCode } = req.params;
 
-        // Получаем все голоса за раунд
-        const votes = await Vote.findAll({ where: { roomId } });
+        //Ищем комнату
+        const room = await Room.findOne({ where: { roomCode } });
+        if (!room) {
+            return res.status(404).json({ message: 'Комната не найдена' });
+        }
 
-        // Подсчитываем количество голосов за каждого игрока
+        const roomId = room.id;
+
+        //Получаем все голоса за раунд
+        const votes = await Vote.findAll({ where: { roomCode } });
+
+        if (votes.length === 0) {
+            return res.status(400).json({ message: 'Нет голосов для подсчёта' });
+        }
+
+        //Подсчитываем
         const targetVotes = votes.reduce((acc, vote) => {
             acc[vote.targetId] = (acc[vote.targetId] || 0) + 1;
             return acc;
         }, {});
 
-        // Находим игрока с наибольшим количеством голосов
+        //Ищем игрока которого выгонят
         let mostVotedTarget = null;
         let maxVotes = 0;
         for (let targetId in targetVotes) {
@@ -55,15 +76,20 @@ const endVotingRound = async (req, res) => {
             }
         }
 
-        // Исключаем игрока, получившего наибольшее количество голосов
+        //Исключаем игрока
         if (mostVotedTarget) {
             await Player.update(
                 { status: 'dead' },
                 { where: { id: mostVotedTarget } }
             );
+
+            //Удаляем все голоса для этой комнаты
+            await Vote.destroy({ where: { roomCode } });
+
+            return res.status(200).json({ mostVotedTarget});
         }
 
-        res.status(200).json({ message: 'Раунд голосования завершён' });
+        res.status(200).json({ message: 'Раунд голосования завершён, но нет игроков для исключения' });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

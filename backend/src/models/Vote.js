@@ -3,9 +3,9 @@ const sequelize = require('../config/database');
 
 const Vote = sequelize.define('Vote', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    roomId: { type: DataTypes.INTEGER },  // ID комнаты, где проходит игра
+    roomCode: { type: DataTypes.STRING },  // код комнаты
     voterId: { type: DataTypes.INTEGER },  // ID голосующего игрока
-    targetId: { type: DataTypes.INTEGER },  // ID целевого игрока
+    targetId: { type: DataTypes.INTEGER },  // ID игрока за которого проголосовали
 });
 
 module.exports = Vote;
