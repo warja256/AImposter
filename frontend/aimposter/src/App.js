@@ -19,6 +19,8 @@ import { Routes } from 'react-router-dom';
 import NightResult from './components/retired/NightResult.js';
 import KilledUser from './components/retired/KilledUser.js';
 import RetiredUser from './components/retired/RetiredUser.js';
+import MafiaWinnerScreen from './components/winner/MafiaWinnerScreen.js';
+import HumanWinnerScreen from './components/winner/HumanWinnerScreen.js';
 
 const App = () => {
   return (
@@ -32,6 +34,8 @@ const App = () => {
         <Route path="/killed" element={<KilledUser />} />
         <Route path="/retired" element={<RetiredUser />} />
         <Route path="/chat" element={<ChatScreen />} />
+        <Route path="/mafia-winner" element={<MafiaWinnerScreen />} />
+        <Route path="/human-winner" element={<HumanWinnerScreen />} />
       </Routes>
     </Router>
   );
