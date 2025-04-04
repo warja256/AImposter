@@ -23,7 +23,7 @@ const ConnectScreen = () => {
                 <span className="header-title">AImposter</span>
             </div>
             <div>
-                <h3 className="connect-header">СЕЙЧАС ОПРЕДЕЛЯЕМ ВАШУ РОЛЬ</h3>
+                <h3 className="connect-header">ОПРЕДЕЛЯЕМ ВАШУ РОЛЬ</h3>
             </div>
             <div className="connect-dots">
                 <span></span>
