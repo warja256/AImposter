@@ -1,0 +1,78 @@
+@font-face {
+    font-family: 'PressStart2P';
+    src: url('../../assets/fonts/PressStart2P-Regular.ttf') format('truetype');
+  }
+
+html, body {
+    overflow: hidden; /* Запрещаем прокрутку */
+    height: 100%; /* Устанавливаем высоту равной 100% */
+  }
+  
+  .mafia-winner-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: 
+      url('../../assets/images/gradient.png'),
+      url('../../assets/images/background.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    color: white;
+    text-align: center;
+  }
+
+  .message {
+    font-family: 'Mulish', Arial, sans-serif;
+    font-size: 48px;
+    font-weight: 600;
+  }
+
+  .mafia {
+    font-size: 48px;
+    margin-top: 10px;
+    margin-bottom: 26px;
+    font-family: 'PressStart2P', sans-serif;
+  }
+
+  .human {
+    font-size: 48px;
+    margin-top: 10px;
+    margin-bottom: 26px;
+    font-family: 'PressStart2P', sans-serif;
+  }
+
+  .exit-button {
+    width: 344px;               /* Ширина кнопки */
+    height: 84px;                /* Высота кнопки */
+    margin-top: 36px;            /* Отступ сверху */
+    border-radius: 40px;         /* Скругление углов */
+    background: linear-gradient(  /* Линейный градиент */
+      to right, 
+      #4B51A6 0%,                /* Начало градиента */
+      #7A7FC9 50%,               /* Средняя точка градиента */
+      #4B51A6 100%               /* Конец градиента */
+    );
+    border: 2px solid #000990; /* Stroke (граница) */
+    font-family: 'Mulish', Arial, sans-serif;   /* Шрифт */
+    font-size: 24px;                             /* Размер шрифта */
+    font-weight: 700;                            /* Толщина шрифта (жирный) */
+    color: white;                                /* Цвет текста */
+    cursor: pointer;                             /* Указатель мыши при наведении */
+    transition: all 0.3s ease-in-out;           /* Анимация при наведении */
+    outline: none;                               /* Убираем стандартное выделение */
+    user-select: none;                           /* Запрещаем выделение текста */
+    position: relative;
+    z-index: 9999;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  .exit-button:hover {
+    transform: scale(1.05);                      /* Увеличение кнопки при наведении */
+  }
+  
+  .exit-button:active {
+    transform: scale(0.95);                      /* Уменьшение кнопки при клике */
+  }
