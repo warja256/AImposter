@@ -31,10 +31,10 @@ const { votePlayer,  endVotingRound, killVote, killPlayer} = require('../control
  */
 router.post('/:roomCode', votePlayer);
 
-router.post('/:roomCode/end', endVotingRound);
+router.get('/:roomCode/end', endVotingRound);
 
 router.post('/mafia/:roomCode', killVote);
 
-router.post('/mafia/:roomCode/end', killPlayer);
+router.get('/mafia/:roomCode/end', killPlayer);
 
 module.exports = router;
