@@ -4,7 +4,7 @@ const { sendMessage, getMessages } = require('../controllers/chatController');
 
 /**
  * @swagger
- * /api/chat/{roomCode}:
+ * /api/chat/{roomCode}/send:
  *   post:
  *     summary: Отправить сообщение в чат
  *     tags: [Чат]
@@ -22,20 +22,47 @@ const { sendMessage, getMessages } = require('../controllers/chatController');
  *             type: object
  *             properties:
  *               playerId:
- *                 type: string
+ *                 type: integer
+ *                 description: ID игрока, отправляющего сообщение
  *               content:
  *                 type: string
+ *                 description: Текст сообщения
  *     responses:
  *       200:
  *         description: Сообщение отправлено
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                   description: ID отправленного сообщения
+ *                 playerId:
+ *                   type: integer
+ *                   description: ID игрока, отправившего сообщение
+ *                 roomCode:
+ *                   type: string
+ *                   description: Код комнаты
+ *                 roundNumber:
+ *                   type: integer
+ *                   description: Номер раунда, в котором отправлено сообщение
+ *                 content:
+ *                   type: string
+ *                   description: Текст сообщения
+ *       404:
+ *         description: Комната не найдена
+ *       500:
+ *         description: Ошибка на сервере
  */
 router.post('/send', sendMessage);
+
 
 /**
  * @swagger
  * /api/chat/{roomCode}:
  *   get:
- *     summary: Получить историю сообщений
+ *     summary: Получить историю сообщений в чате за текущий раунд
  *     tags: [Чат]
  *     parameters:
  *       - in: path
@@ -45,8 +72,35 @@ router.post('/send', sendMessage);
  *           type: string
  *     responses:
  *       200:
- *         description: История сообщений
+ *         description: История сообщений за текущий раунд
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                     description: ID сообщения
+ *                   playerId:
+ *                     type: integer
+ *                     description: ID игрока, отправившего сообщение
+ *                   roomCode:
+ *                     type: string
+ *                     description: Код комнаты
+ *                   roundNumber:
+ *                     type: integer
+ *                     description: Номер раунда, в котором отправлено сообщение
+ *                   content:
+ *                     type: string
+ *                     description: Текст сообщения
+ *       404:
+ *         description: Комната не найдена
+ *       500:
+ *         description: Ошибка на сервере
  */
 router.get('/:roomCode', getMessages);
+
 
 module.exports = router;
