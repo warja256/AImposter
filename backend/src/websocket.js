@@ -1,5 +1,5 @@
 const { Server } = require("socket.io");
-const { Room, Player, GameSession, Message } = require("./models");
+const { Room, Player, Message } = require("./models");
 const { verifyToken } = require("./auth");
 
 global.messageBuffer = {}; // Буфер сообщений
@@ -13,7 +13,7 @@ function startWebSocket(server) {
         // Присоединение к комнате
         socket.on("joinRoom", async (data) => {
             try {
-                const { token, roomCode, playerName } = data; // Читаем данные из запроса(токен, комната, сообщение)
+                const { token, roomCode, playerId} = data; // Читаем данные из запроса(токен, комната, сообщение)
 
                 const decoded = verifyToken(token);
                 if (!decoded) {
@@ -29,21 +29,52 @@ function startWebSocket(server) {
                 if (!room) {
                     return socket.emit("error", "Комната не найдена!");
                 }
-        
-                const player = await Player.create({ name: playerName });
-                await room.update({ playerCount: room.playerCount + 1 });
-        
-                await GameSession.create({
-                    roomId: room.id,
-                    playerId: player.id,
-                });
+
+                const player = await Player.findOne({ where: { id: playerId } });
         
                 socket.join(roomCode);
                 socket.emit("joinedRoom", { room, player });
-                console.log(`Игрок ${playerName} (${socket.id}) присоединился к комнате ${roomCode}`);
+                console.log(`Игрок ${player.name} (${socket.id}) присоединился к комнате ${roomCode}`);
             } catch (error) {
                 console.error("Ошибка при присоединении к комнате:", error);
                 socket.emit("error", "Ошибка при присоединении к комнате");
+            }
+        });
+
+
+        // Начало игры
+        socket.on("startGame", async (data) => {
+            try {
+                const { token, roomCode, playerId } = data;
+
+                const decoded = verifyToken(token);
+                if (!decoded) {
+                    return socket.emit("error", "Неверный или истёкший токен!");
+                }
+
+                if (!roomCode) {
+                    return socket.emit("error", "Код комнаты обязателен!");
+                }
+
+                const room = await Room.findOne({ where: { roomCode } });
+
+                if (!room) {
+                    return socket.emit("error", "Комната не найдена!");
+                }
+
+                if (playerId !== room.creator){
+                    return socket.emit("error", "Этот игрок не является создателем комнаты, он не может начать игру!");
+                }
+
+                // Обновляем статус комнаты
+                await room.update({ playStatus: 'coming' });
+
+                // Отправляем событие всем игрокам в комнате
+                io.to(roomCode).emit("gameStarted", { roomCode });
+                console.log(`Началась игра в комнате ${roomCode}`);
+            } catch (error) {
+                console.error("Ошибка при начале игры:", error);
+                socket.emit("error", "Ошибка при начале игры");
             }
         });
         
@@ -111,7 +142,7 @@ function startWebSocket(server) {
                 global.messageBuffer[roomCode] = [];
             }
         });
-    }, 200000);
+    }, 20000);
 }
 
 module.exports = { startWebSocket };
