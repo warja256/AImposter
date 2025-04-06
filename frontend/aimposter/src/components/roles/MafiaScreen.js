@@ -11,7 +11,7 @@ const MafiaScreen = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigate('/ai-responses'); 
+      navigate('/ai-chat'); 
     }, 7000);
 
     return () => clearTimeout(timer);
