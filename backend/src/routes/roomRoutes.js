@@ -296,7 +296,7 @@ router.delete('/leave/:roomCode', leaveRoom);
 /**
  * @swagger
  * /api/rooms/chooseMafia/{roomCode}:
- *   post:
+ *   get:
  *     summary: Выбор мафии в комнате
  *     tags: [Комнаты]
  *     parameters:
