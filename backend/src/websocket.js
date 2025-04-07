@@ -34,6 +34,7 @@ function startWebSocket(server) {
         
                 socket.join(roomCode);
                 socket.emit("joinedRoom", { room, player });
+                io.to(roomCode).emit("joinedRoom", { player });
                 console.log(`Игрок ${player.name} (${socket.id}) присоединился к комнате ${roomCode}`);
             } catch (error) {
                 console.error("Ошибка при присоединении к комнате:", error);
