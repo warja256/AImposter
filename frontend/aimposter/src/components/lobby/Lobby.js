@@ -7,7 +7,7 @@ import logo from '../../assets/images/logo.png';
 import avatar from "../../assets/images/avatar.png";
 import { getRoomDetails } from "../../api/room_api.js";
 
-const socket = io("http://localhost:8080");
+const socket = io("ws://localhost:8080");
 
 const LobbyScreen = () => {
   const [roomData, setRoomData] = useState(null);
