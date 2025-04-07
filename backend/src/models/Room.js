@@ -7,6 +7,7 @@ const Room = sequelize.define('Room', {
     round: { type: DataTypes.INTEGER, defaultValue: 1 },
     status: { type: DataTypes.ENUM('day', 'night'), defaultValue: 'day' },
     playerCount: { type: DataTypes.INTEGER, defaultValue: 1 },
+    playStatus: {type: DataTypes.ENUM('stands', 'coming'), defaultValue: 'stands'},
     roomCode: {
         type: DataTypes.STRING(4),
         unique: true,  // Уникальность кода

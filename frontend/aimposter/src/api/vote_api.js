@@ -30,3 +30,23 @@ export const mafiaSetVote = async (voterId, targetId, roomCode) => {
     throw error;
   }
 };
+
+export const endVotingRound = async (roomCode) => {
+    try {
+      const response = await axios.post(`${API_URL}/vote/end/${roomCode}`);
+      return response.data; // Это может быть исключённый игрок или сообщение
+    } catch (error) {
+      console.error("Ошибка при завершении голосования:", error);
+      throw error;
+    }
+  };
+
+  export const killPlayer = async (roomCode) => {
+    try {
+      const response = await axios.post(`${API_URL}/vote/kill/${roomCode}`);
+      return response.data; // вернёт объект с полем { player } или сообщение
+    } catch (error) {
+      console.error("Ошибка при убийстве игрока:", error);
+      throw error;
+    }
+  };
