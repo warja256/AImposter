@@ -99,12 +99,13 @@ function startWebSocket(server) {
                 }
 
                 const roundNumber = room.round;
+                const player = await Room.findOne({ where: { playerId } });
 
                 if (!global.messageBuffer[roomCode]) {
                     global.messageBuffer[roomCode] = [];
                 }
 
-                const newMessage = { roomCode, playerId, roundNumber, content };
+                const newMessage = { roomCode, playerId, name: player.name, roundNumber, content };
                 global.messageBuffer[roomCode].push(newMessage);
 
                 // Сохраняем сообщение в БД
@@ -133,16 +134,6 @@ function startWebSocket(server) {
             console.log(`Игрок отключился: ${socket.id}`);
         });
     });
-
-    // Рассылка сообщений каждые 20 секунд
-    setInterval(() => {
-        Object.keys(global.messageBuffer).forEach((roomCode) => {
-            if (global.messageBuffer[roomCode].length > 0) {
-                io.to(roomCode).emit("newMessages", global.messageBuffer[roomCode]);
-                global.messageBuffer[roomCode] = [];
-            }
-        });
-    }, 20000);
 }
 
 module.exports = { startWebSocket };
