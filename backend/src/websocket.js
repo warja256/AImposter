@@ -99,7 +99,7 @@ function startWebSocket(server) {
                 }
 
                 const roundNumber = room.round;
-                const player = await Room.findOne({ where: { playerId } });
+                const player = await Player.findOne({ where: { id: playerId } });
 
                 if (!global.messageBuffer[roomCode]) {
                     global.messageBuffer[roomCode] = [];
