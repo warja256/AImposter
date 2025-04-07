@@ -8,7 +8,7 @@ import { createRoom, joinRoom } from "../../api/room_api.js";  // Импорти
 import { io } from "socket.io-client";
 
 // создаём сокет один раз
-const socket = io("http://localhost:8080"); 
+const socket = io("ws://localhost:8080"); 
 
 const WelcomeScreen = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -42,12 +42,12 @@ const WelcomeScreen = () => {
     }
   
     try {
-      const response = await createRoom(playerName, token);
+      const response = await createRoom(playerName);
   
       if (response.token) {
         setToken(response.token);
         localStorage.setItem("authToken", response.token);
-        setToken(response.token);
+        console.log(response.token);
       }
   
       const roomCode = response.room.roomCode;
@@ -57,7 +57,7 @@ const WelcomeScreen = () => {
       // ✅ Подписываемся заранее
       socket.once("joinedRoom", ({ room, player }) => {
         console.log("✅ Получено joinedRoom:", { room, player });
-        navigate('/lobby', { state: { playerName, roomCode, playerId: id, isCreator } });
+        navigate('/lobby', { state: { playerName, roomCode, playerId: id, isCreator, token: token} });
       });
   
       socket.once("error", (message) => {

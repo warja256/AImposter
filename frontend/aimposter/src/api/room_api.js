@@ -35,6 +35,7 @@ export const getRoomDetails = async (roomCode) => {
   export const createRoom = async (playerName) => {
     try {
       const response = await axios.post(`${API_URL}/rooms`, { playerName });
+      console.log(response);
       return response.data;
     } catch (error) {
       throw error;

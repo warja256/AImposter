@@ -32,7 +32,7 @@ const LobbyScreen = () => {
   }, [location.state]);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("authToken");
     console.log("Токен из localStorage:", token);
     if (!token) {
       console.error("Токен не найден!");
@@ -63,7 +63,7 @@ const LobbyScreen = () => {
         playerId: playerId
       });
     }
-  
+
     socket.on("joinedRoom", (data) => {
       console.log("Игрок присоединился к комнате:", data);
       setPlayerData(data.player);  
@@ -71,7 +71,7 @@ const LobbyScreen = () => {
   
     socket.on("gameStarted", (data) => {
       console.log("Игра началась", data);
-      alert(data.message);
+      console.log(data.message);
       navigate("/connection");
     });
   
@@ -88,7 +88,7 @@ const LobbyScreen = () => {
   
 
   const handleStartGame = () => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("authToken");
   
     socket.emit("startGame", {
       token: token,
