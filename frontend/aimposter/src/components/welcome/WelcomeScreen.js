@@ -5,12 +5,18 @@ import "../header.css";
 import logo from "../../assets/images/logo.png";
 import avatar from "../../assets/images/avatar.png";
 import { createRoom, joinRoom } from "../../api/room_api.js";  // Импортируем API функции
+import { io } from "socket.io-client";
+
+// создаём сокет один раз
+const socket = io("http://localhost:8080"); 
 
 const WelcomeScreen = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isManual, setIsManual] = useState(false);
   const [playerName, setPlayerName] = useState(""); // Добавляем состояние для имени игрока
   const [roomCode, setRoomCode] = useState(""); // Добавляем состояние для кода комнаты
+  const [token, setToken] = useState(localStorage.getItem("authToken"));
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -36,24 +42,45 @@ const WelcomeScreen = () => {
     }
   
     try {
-      const response = await createRoom(playerName);
-      console.log("API Response:", response);  // Для отладки
-      const { roomCode } = response.room;
-      const { id } = response.player;
-      const isCreator = response.player.id === response.room.creator;
+      const response = await createRoom(playerName, token);
   
-      if (!roomCode || !id) {
-        throw new Error("Неверный ответ от сервера");
+      if (response.token) {
+        setToken(response.token);
+        localStorage.setItem("authToken", response.token);
+        setToken(response.token);
       }
   
-      console.log("Передаю в LobbyScreen данные: ", { playerName: playerName, roomCode: roomCode, playerId: id, isCreator: isCreator });
-       navigate('/lobby', { state: { playerName: playerName, roomCode: roomCode, playerId: id, isCreator: isCreator } });
-        
+      const roomCode = response.room.roomCode;
+      const id = response.player.id;
+      const isCreator = id === response.room.creator;
+  
+      // ✅ Подписываемся заранее
+      socket.once("joinedRoom", ({ room, player }) => {
+        console.log("✅ Получено joinedRoom:", { room, player });
+        navigate('/lobby', { state: { playerName, roomCode, playerId: id, isCreator } });
+      });
+  
+      socket.once("error", (message) => {
+        alert("❌ Ошибка: " + message);
+      });
+  
+      // 🚀 Отправляем joinRoom
+      socket.emit("joinRoom", {
+        token: response.token,
+        roomCode,
+        playerId: id,
+      });
+  
     } catch (error) {
-      console.error("Error creating room:", error);
+      console.error("Ошибка при создании комнаты:", error);
       alert("Ошибка при создании комнаты");
     }
   };
+  
+  
+  
+  
+  
   
   const handleJoinGame = async () => {
     if (!playerName || !roomCode) {
@@ -62,22 +89,26 @@ const WelcomeScreen = () => {
     }
   
     try {
-      const response = await joinRoom(roomCode, playerName);
-      console.log("API Response:", response);  // Для отладки
+      const response = await joinRoom(roomCode, playerName, token);
       const { id } = response.player;
   
-      if (!id) {
-        throw new Error("Неверный ответ от сервера");
-      }
+      socket.emit("joinRoom", { token, roomCode, playerId: id });
   
-      console.log("Передаю в LobbyScreen данные: ", { playerName: playerName, roomCode: roomCode, playerId: id });
-      navigate('/lobby', { state: { playerName: playerName, roomCode: roomCode, playerId: id } });
-        
+      socket.once("joinedRoom", ({ room, player }) => {
+        navigate('/lobby', { state: { playerName, roomCode, playerId: id, isCreator: false } });
+      });
+  
+      socket.once("error", (message) => {
+        alert(message);
+      });
+  
     } catch (error) {
-      console.error("Error joining room:", error);
+      console.error("Ошибка при присоединении к комнате:", error);
       alert("Ошибка при присоединении к комнате");
     }
   };
+  
+  
   
   
 
