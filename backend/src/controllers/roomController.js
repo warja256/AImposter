@@ -160,6 +160,12 @@ const chooseMafia = async (req,res) =>{
             return res.status(404).json({message: "В комнате нет игроков"});
         }
 
+        let existingMafia = players.find(p => p.role==='mafia');
+        if (existingMafia)
+        {
+            return res.status(400).json({message: "В комнате уже есть мафия"});
+        }
+        
         const mafiaIndex = Math.floor(Math.random() *players.length);
         const mafia = players[mafiaIndex];
 
