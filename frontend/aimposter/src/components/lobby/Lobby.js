@@ -72,7 +72,7 @@ const LobbyScreen = () => {
     socket.on("gameStarted", (data) => {
       console.log("Игра началась", data);
       console.log(data.message);
-      navigate("/connection");
+      navigate("/connection", {state: {playerName, playerId, roomCode } });
     });
   
     socket.on("error", (errorMessage) => {
@@ -100,7 +100,6 @@ const LobbyScreen = () => {
 
   const handleCopyRoomCode = () => {
     navigator.clipboard.writeText(roomCode)
-      .then(() => alert("Код комнаты скопирован!"))
       .catch(err => console.error("Ошибка при копировании:", err));
   };
 
