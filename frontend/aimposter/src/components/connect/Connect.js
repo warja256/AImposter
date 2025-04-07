@@ -14,9 +14,13 @@ const ConnectScreen = () => {
         const fetchMafiaId = async () => {
             try {
                 const mafiaData = await getMafiaId(roomCode);
+                console.log(mafiaData.mafiaId || "нет");
                 if (mafiaData.mafiaId === playerId) {
+                    
+                    // Если игрок — мафия
                     navigate('/mafia-role', { state: { playerName, roomCode, playerId } });
                 } else {
+                    // Если игрок — человек
                     navigate('/human-role', { state: { playerName, roomCode, playerId } });
                 }
             } catch (error) {
@@ -25,10 +29,11 @@ const ConnectScreen = () => {
         };
 
         const timer = setTimeout(() => {
-            navigate('/mafia-role');
-        }, 5000);
+            fetchMafiaId(); 
+        }, 3000);
 
         return () => clearTimeout(timer);
+
     }, [navigate, playerId, roomCode]);
 
     return (
