@@ -91,17 +91,16 @@ const WelcomeScreen = () => {
     try {
       const response = await joinRoom(roomCode, playerName, token);
       const { id } = response.player;
-
+  
       if (response.token) {
         setToken(response.token);
         localStorage.setItem("authToken", response.token);
       }
-
   
       socket.emit("joinRoom", { token, roomCode, playerId: id });
   
       socket.once("joinedRoom", ({ room, player }) => {
-        navigate('/lobby', { state: { playerName, roomCode, playerId: id, isCreator: false } });
+        navigate('/lobby', { state: { playerName, roomCode, playerId: player.id, isCreator: false, token } });
       });
   
       socket.once("error", (message) => {
@@ -113,6 +112,20 @@ const WelcomeScreen = () => {
       alert("Ошибка при присоединении к комнате");
     }
   };
+  
+
+  useEffect(() => {
+    // Подписка на событие игрока, присоединившегося в комнату
+    socket.on("playerJoined", ({ player }) => {
+      console.log(`🔔 Присоединился игрок: ${player.name}`);
+      // Здесь можно обновлять локальный список игроков, если он есть
+    });
+  
+    return () => {
+      socket.off("playerJoined");
+    };
+  }, []);
+  
   
   
   
