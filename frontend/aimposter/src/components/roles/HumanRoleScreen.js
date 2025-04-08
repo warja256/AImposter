@@ -7,14 +7,16 @@ import logo from '../../assets/images/logo.png';
 
 const HumanRoleScreen = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { token, playerName, roomCode, playerId } = location.state || {};
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigate('/chat');
+      navigate('/chat', {state: {token, playerName, roomCode, playerId}});
     }, 7000);
 
     return () => clearTimeout(timer);
-  }, [navigate]);
+  }, [navigate, token, playerName, roomCode, playerId]);
 
   return (
     <div className="role-screen">

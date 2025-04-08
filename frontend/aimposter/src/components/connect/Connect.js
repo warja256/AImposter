@@ -8,7 +8,7 @@ import { getMafiaId } from '../../api/role_api';
 const ConnectScreen = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const { playerName, playerId, roomCode } = location.state || {};
+    const { playerName, playerId, roomCode, token } = location.state || {};
 
     useEffect(() => {
         const fetchMafiaId = async () => {
@@ -18,10 +18,10 @@ const ConnectScreen = () => {
                 if (mafiaData.mafiaId === playerId) {
                     
                     // Если игрок — мафия
-                    navigate('/mafia-role', { state: { playerName, roomCode, playerId } });
+                    navigate('/mafia-role', { state: { playerName, roomCode, playerId, token } });
                 } else {
                     // Если игрок — человек
-                    navigate('/human-role', { state: { playerName, roomCode, playerId } });
+                    navigate('/human-role', { state: { playerName, roomCode, playerId, token } });
                 }
             } catch (error) {
                 console.error("Ошибка при определении мафии:", error);
@@ -34,7 +34,7 @@ const ConnectScreen = () => {
 
         return () => clearTimeout(timer);
 
-    }, [navigate, playerId, roomCode]);
+    }, [navigate, playerId, roomCode, token]);
 
     return (
         <div className="connect-screen">

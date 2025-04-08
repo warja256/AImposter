@@ -72,7 +72,7 @@ const LobbyScreen = () => {
     socket.on("gameStarted", (data) => {
       console.log("Игра началась", data);
       console.log(data.message);
-      navigate("/connection", {state: {playerName, playerId, roomCode } });
+      navigate("/connection", {state: {playerName, playerId, roomCode, token } });
     });
   
     socket.on("error", (errorMessage) => {

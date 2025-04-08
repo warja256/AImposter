@@ -8,14 +8,16 @@ import logo from '../../assets/images/logo.png';
 
 const MafiaScreen = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { token, playerName, roomCode, playerId } = location.state || {};
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigate('/ai-chat'); 
+      navigate('/ai-chat', { state: { token, playerName, roomCode, playerId } }); // 👈 передаём дальше, если надо
     }, 7000);
 
     return () => clearTimeout(timer);
-  }, [navigate]);
+  }, [navigate, token, playerName, roomCode, playerId]);
 
   return (
     <div className="role-screen">
