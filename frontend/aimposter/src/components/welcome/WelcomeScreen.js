@@ -91,6 +91,12 @@ const WelcomeScreen = () => {
     try {
       const response = await joinRoom(roomCode, playerName, token);
       const { id } = response.player;
+
+      if (response.token) {
+        setToken(response.token);
+        localStorage.setItem("authToken", response.token);
+      }
+
   
       socket.emit("joinRoom", { token, roomCode, playerId: id });
   
