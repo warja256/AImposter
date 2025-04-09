@@ -1,6 +1,6 @@
 // src/components/MafiaScreen.js
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './RoleScreen.css';
 import '../header.css';
 import robot from '../../assets/images/mafia_ai.png';
