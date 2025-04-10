@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { getRoomDetails } from '../../api/room_api';
 import './MafiaVoting.css';
 import '../header.css';
 import logo from '../../assets/images/logo.png';
@@ -8,13 +9,30 @@ import avatar from "../../assets/images/avatar.png";
 const MafiaVotingScreen = () => {
     const [countdown, setCountdown] = useState(25);
     const [selectedPlayer, setSelectedPlayer] = useState(null);
-    const navigate = useNavigate(); // Hook for navigation
+    const [roomData, setRoomData] = useState(null);
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const { playerName, roomCode, playerId, token } = location.state || {};
 
     const formatTime = (seconds) => {
         const minutes = Math.floor(seconds / 60);
         const remainingSeconds = seconds % 60;
         return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
     };
+
+    useEffect(() => {
+        const fetchRoomDetails = async () => {
+            try {
+                const data = await getRoomDetails(roomCode);
+                setRoomData(data);
+            } catch (error) {
+                console.error("Ошибка при получении данных о комнате:", error);
+            }
+        };
+
+        fetchRoomDetails();
+    }, [roomCode]);
 
     useEffect(() => {
         if (countdown > 0) {
@@ -37,9 +55,8 @@ const MafiaVotingScreen = () => {
     }, [selectedPlayer]);
 
     const handleCountdownEnd = () => {
-        // Logic for navigating to another page
         console.log("Таймер завершен! Переход на другую страницу...");
-        // navigate('/next-page'); // Uncomment this line when ready to navigate
+        // navigate('/ai-chat', { state: { playerName, roomCode, playerId, token }});
     };
 
     const handlePlayerSelect = (playerId) => {
@@ -68,34 +85,20 @@ const MafiaVotingScreen = () => {
                 </div>
 
                 <div className="player-list">
-                    <button
-                        className={`player-button-m ${selectedPlayer === 1 ? 'selected' : ''}`}
-                        onClick={() => handlePlayerSelect(1)}
-                    >
-                        <img src={avatar} className="avatar" />
-                        <div className="text">Игрок 1</div>
-                    </button>
-                    <button
-                        className={`player-button-m ${selectedPlayer === 2 ? 'selected' : ''}`}
-                        onClick={() => handlePlayerSelect(2)}
-                    >
-                        <img src={avatar} className="avatar" />
-                        <div className="text">Игрок 2</div>
-                    </button>
-                    <button
-                        className={`player-button-m ${selectedPlayer === 3 ? 'selected' : ''}`}
-                        onClick={() => handlePlayerSelect(3)}
-                    >
-                        <img src={avatar} className="avatar" />
-                        <div className="text">Игрок 3</div>
-                    </button>
-                    <button
-                        className={`player-button-m ${selectedPlayer === 4 ? 'selected' : ''}`}
-                        onClick={() => handlePlayerSelect(4)}
-                    >
-                        <img src={avatar} className="avatar" />
-                        <div className="text">Игрок 4</div>
-                    </button>
+                    {roomData && roomData.Players ? (
+                        roomData.Players.map((player) => (
+                            <button
+                                key={player.id}
+                                className={`player-button-m ${selectedPlayer === player.id ? 'selected' : ''}`}
+                                onClick={() => handlePlayerSelect(player.id)}
+                            >
+                                <img src={player.avatar || avatar} className="avatar" alt={`Игрок ${player.name}`} />
+                                <div className="text">{player.name}</div>
+                            </button>
+                        ))
+                    ) : (
+                        <p>Загрузка участников...</p>
+                    )}
                 </div>
 
                 <button className="send-button-m" onClick={handleSend}>

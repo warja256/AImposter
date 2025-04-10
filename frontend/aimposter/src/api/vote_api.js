@@ -42,13 +42,13 @@ export const endVotingRound = async (roomCode) => {
     }
   };
 
-  export const endMafiaVoting = async (roomCode) => {
-    try {
-      const response = await fetch(`${API_URL}/vote/mafia/${roomCode}/end`);
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error("Ошибка при исключении игрока:", error);
-      throw error;
-    }
-  };
+export const endMafiaVoting = async (roomCode) => {
+  try {
+    const response = await fetch(`${API_URL}/vote/mafia/${roomCode}/end`);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Ошибка при исключении игрока:", error);
+    throw error;
+  }
+};
