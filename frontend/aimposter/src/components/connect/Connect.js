@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { getRoomDetails } from "../../api/room_api.js";
 import { getMafiaId } from "../../api/role_api.js";
+import logo from '../../assets/images/logo.png';
 
 const ConnectScreen = () => {
   const navigate = useNavigate();
@@ -16,19 +17,26 @@ const ConnectScreen = () => {
         const player = roomDetails.Players.find(p => p.id === playerId);
         const mafiaData = await getMafiaId(roomCode);
 
-        if (mafiaData.message === "В комнате уже есть мафия") {
-          console.log("Мафия уже выбрана в этой комнате.");
-          return; // Прерываем выполнение, если мафия уже выбрана
+        let mafiaIdFinal = mafiaData.mafiaId;
+
+        if (mafiaData.alreadyChosen) {
+          const existingMafia = roomDetails.Players.find(p => p.role === 'mafia');
+          if (existingMafia) {
+            mafiaIdFinal = existingMafia.id;
+          } else {
+            console.warn("Мафия уже выбрана, но не найдена в списке игроков.");
+            return;
+          }
         }
 
-        const mafiaId = mafiaData.mafiaId;
         if (player) {
-          if (playerId === mafiaId) {
+          if (playerId === mafiaIdFinal) {
             navigate('/mafia-role', { state: { playerName, roomCode, playerId, token } });
           } else {
             navigate('/human-role', { state: { playerName, roomCode, playerId, token } });
           }
         }
+
       } catch (error) {
         console.error("Ошибка при получении данных о комнате:", error);
       }
