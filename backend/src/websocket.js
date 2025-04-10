@@ -119,7 +119,7 @@ function startWebSocket(server) {
                 });
         
                 // Проверяем лимит сообщений
-                const playerMessages = global.messageBuffer[roomCode].filter(msg => msg.playerId === playerId);
+                const playerMessages = global.messageBuffer[roomCode].filter(msg => msg.playerId === playerId && msg.roundNumber === roundNumber);
                 if (playerMessages.length >= 6) {
                     socket.emit("messageLimit", { message: "Вы достигли лимита сообщений за этот раунд." });
                     return;
