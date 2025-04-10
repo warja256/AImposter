@@ -9,14 +9,12 @@ import sendImg from '../../assets/images/send.png';
 import socket from "../../config/socket";
 
 const ChatScreen = () => {
-    const [countdown, setCountdown] = useState(250);
+    const [countdown, setCountdown] = useState(140);
     const [round, setRound] = useState(1);
     const [inputValue, setInputValue] = useState('');
     const [isInputActive, setIsInputActive] = useState(false);
     const [chatMessages, setChatMessages] = useState([]);
-    const [isSending, setIsSending] = useState(false);  // Флаг для предотвращения частых отправок
     const [isFinalReview, setIsFinalReview] = useState(false);
-    const [typingTimeout, setTypingTimeout] = useState(null); // Для задержки отправки
     const navigate = useNavigate();
     const location = useLocation();
     const chatEndRef = useRef(null);
@@ -72,7 +70,7 @@ const ChatScreen = () => {
     const handleSendMessage = () => {
         const trimmed = inputValue.trim();
 
-        if (trimmed && !isSending && !isFinalReview) {
+        if (trimmed && !isFinalReview) {
             const messageData = {
                 token,
                 roomCode,
@@ -80,13 +78,13 @@ const ChatScreen = () => {
                 content: trimmed
             };
 
-            console.log("Отправка сообщения:", messageData);
-            socket.emit('sendMessage', messageData);
-            setInputValue('');
-            setIsSending(true);  // Устанавливаем флаг отправки
+            console.log("Отправка сообщения с задержкой в 20 секунд:", messageData);
+
+            // Устанавливаем задержку в 20 секунд перед отправкой
             setTimeout(() => {
-                setIsSending(false);  // Ожидаем немного перед повторной отправкой
-            }, 1000); // 1 секунда задержки
+                socket.emit('sendMessage', messageData);
+                setInputValue('');
+            }, 20000); // 20 секунд
         }
     };
 
@@ -94,18 +92,6 @@ const ChatScreen = () => {
         const value = e.target.value;
         setInputValue(value);
         setIsInputActive(value.trim().length > 0);
-
-        // Отправляем сообщение через задержку
-        if (typingTimeout) {
-            clearTimeout(typingTimeout); // Если был таймер, сбрасываем его
-        }
-
-        // Устанавливаем новый таймер, чтобы отправить сообщение через 1 секунду после ввода
-        setTypingTimeout(setTimeout(() => {
-            if (value.trim()) {
-                handleSendMessage();
-            }
-        }, 1000));  // Задержка 1 секунда
     };
 
     useEffect(() => {
