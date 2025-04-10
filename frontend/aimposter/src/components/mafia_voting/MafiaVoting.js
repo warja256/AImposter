@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { getRoomDetails } from '../../api/room_api';
+import { mafiaSetVote } from '../../api/vote_api';
 import './MafiaVoting.css';
 import '../header.css';
 import logo from '../../assets/images/logo.png';
@@ -63,9 +64,14 @@ const MafiaVotingScreen = () => {
         setSelectedPlayer(playerId);
     };
 
-    const handleSend = () => {
+    const handleSend = async () => {
         if (selectedPlayer !== null) {
-            console.log(`Отправлен выбор: Игрок ${selectedPlayer}`);
+            try {
+                const response = await mafiaSetVote(playerId, selectedPlayer, roomCode);
+                console.log(`Голос отправлен: Игрок ${selectedPlayer}, Статус: ${response.status}`);
+            } catch (error) {
+                console.error("Ошибка при отправке голоса:", error);
+            }
         }
     };
 
@@ -86,7 +92,7 @@ const MafiaVotingScreen = () => {
 
                 <div className="player-list">
                     {roomData && roomData.Players ? (
-                        roomData.Players.map((player) => (
+                        roomData.Players.filter(player => player.id !== playerId).map((player) => (
                             <button
                                 key={player.id}
                                 className={`player-button-m ${selectedPlayer === player.id ? 'selected' : ''}`}
