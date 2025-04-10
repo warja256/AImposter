@@ -5,10 +5,8 @@ import "../header.css";
 import logo from "../../assets/images/logo.png";
 import avatar from "../../assets/images/avatar.png";
 import { createRoom, joinRoom } from "../../api/room_api.js";  // Импортируем API функции
-import { io } from "socket.io-client";
+import socket from "../../config/socket";
 
-// создаём сокет один раз
-const socket = io("ws://localhost:8080"); 
 
 const WelcomeScreen = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -57,7 +55,10 @@ const WelcomeScreen = () => {
       // ✅ Подписываемся заранее
       socket.once("joinedRoom", ({ room, player }) => {
         console.log("✅ Получено joinedRoom:", { room, player });
-        navigate('/lobby', { state: { playerName, roomCode, playerId: id, isCreator, token: token} });
+        navigate('/lobby', {
+          state: { playerName, roomCode, playerId: id, isCreator, token: response.token }
+        });
+        
       });
   
       socket.once("error", (message) => {

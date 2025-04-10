@@ -84,31 +84,32 @@ function startWebSocket(server) {
         socket.on("sendMessage", async (data) => {
             try {
                 const { token, roomCode, playerId, content } = data;
-
+        
                 const decoded = verifyToken(token);
                 if (!decoded) {
                     return socket.emit("error", "Неверный или истёкший токен!");
                 }
-
+        
                 if (!roomCode) {
-                    return socket.emit("error", "Код комнаты обязательны!");
+                    return socket.emit("error", "Код комнаты обязателен!");
                 }
                 const room = await Room.findOne({ where: { roomCode } });
+        
                 if (!room) {
                     socket.emit("error", { message: "Комната не найдена" });
                     return;
                 }
-
+        
                 const roundNumber = room.round;
                 const player = await Player.findOne({ where: { id: playerId } });
-
+        
                 if (!global.messageBuffer[roomCode]) {
                     global.messageBuffer[roomCode] = [];
                 }
-
+        
                 const newMessage = { roomCode, playerId, name: player.name, roundNumber, content };
                 global.messageBuffer[roomCode].push(newMessage);
-
+        
                 // Сохраняем сообщение в БД
                 const newMessage_1 = await Message.create({
                     playerId: playerId,
@@ -116,19 +117,25 @@ function startWebSocket(server) {
                     roundNumber: roundNumber,
                     content: content
                 });
-
+        
                 // Проверяем лимит сообщений
                 const playerMessages = global.messageBuffer[roomCode].filter(msg => msg.playerId === playerId);
                 if (playerMessages.length >= 6) {
                     socket.emit("messageLimit", { message: "Вы достигли лимита сообщений за этот раунд." });
+                    return;
                 }
-
+        
+                // Лог для отладки
+                console.log("Отправка нового сообщения в комнату:", newMessage);
+        
+                // Отправка сообщения всем пользователям в комнате
                 io.to(roomCode).emit("newMessage", newMessage);
             } catch (error) {
                 console.error("Ошибка при отправке сообщения:", error);
                 socket.emit("error", { message: "Ошибка при отправке сообщения" });
             }
         });
+        
 
         // Отключение игрока
         socket.on("disconnect", () => {

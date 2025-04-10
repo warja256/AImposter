@@ -1,14 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { io } from "socket.io-client";
 import './HumanChat.css';
 import '../header.css';
 import logo from '../../assets/images/logo.png';
 import info from '../../assets/images/info.png';
 import img from '../../assets/images/blue_human.png';
 import sendImg from '../../assets/images/send.png';
-
-const socket = io("ws://localhost:8080");
+import socket from "../../config/socket";
 
 const ChatScreen = () => {
     const [countdown, setCountdown] = useState(250);
@@ -16,11 +14,13 @@ const ChatScreen = () => {
     const [inputValue, setInputValue] = useState('');
     const [isInputActive, setIsInputActive] = useState(false);
     const [chatMessages, setChatMessages] = useState([]);
-    const [hasMessageSent, setHasMessageSent] = useState(false);
+    const [isSending, setIsSending] = useState(false);  // Флаг для предотвращения частых отправок
     const [isFinalReview, setIsFinalReview] = useState(false);
+    const [typingTimeout, setTypingTimeout] = useState(null); // Для задержки отправки
     const navigate = useNavigate();
     const location = useLocation();
     const chatEndRef = useRef(null);
+
     const { token, playerName, roomCode, playerId } = location.state || {};
 
     const formatTime = (seconds) => {
@@ -30,12 +30,25 @@ const ChatScreen = () => {
     };
 
     useEffect(() => {
+        if (roomCode) {
+            console.log("Присоединение к комнате:", roomCode);
+        }
+    }, [roomCode]);
+
+    useEffect(() => {
         socket.on('newMessage', (message) => {
-            setChatMessages((prevMessages) => [...prevMessages, message]);
+            console.log("Сообщение от сервера:", message);
+            if (message.content) {
+                setChatMessages((prevMessages) => {
+                    const updatedMessages = [...prevMessages, { name: message.name, content: message.content }];
+                    console.log("Обновленные сообщения:", updatedMessages);
+                    return updatedMessages;
+                });
+            }
         });
 
         return () => {
-            socket.off('newMessage'); 
+            socket.off('newMessage');
         };
     }, []);
 
@@ -45,41 +58,54 @@ const ChatScreen = () => {
             return () => clearTimeout(timer);
         } else {
             if (round < 6) {
-                // Переход к следующему раунду
                 setRound(round + 1);
                 setCountdown(25);
-                setHasMessageSent(false);
             } else if (!isFinalReview) {
-                // После 6-го раунда - фаза финального просмотра
                 setIsFinalReview(true);
-                setCountdown(10); // 10 секунд на финальный просмотр
+                setCountdown(10);
             } else {
-                // После финального просмотра - переход
                 navigate('/human-voting');
             }
         }
     }, [countdown, round, isFinalReview]);
 
     const handleSendMessage = () => {
-        if (inputValue.trim() && !hasMessageSent && !isFinalReview) {
+        const trimmed = inputValue.trim();
+
+        if (trimmed && !isSending && !isFinalReview) {
             const messageData = {
-                token: token, 
-                roomCode: roomCode,
-                playerId: playerId, 
-                content: inputValue
+                token,
+                roomCode,
+                playerId,
+                content: trimmed
             };
 
-            // Отправка сообщения через WebSocket
+            console.log("Отправка сообщения:", messageData);
             socket.emit('sendMessage', messageData);
             setInputValue('');
-            setHasMessageSent(true);
+            setIsSending(true);  // Устанавливаем флаг отправки
+            setTimeout(() => {
+                setIsSending(false);  // Ожидаем немного перед повторной отправкой
+            }, 1000); // 1 секунда задержки
         }
     };
 
-    const handleKeyDown = (e) => {
-        if (e.key === 'Enter' && !isFinalReview) {
-            handleSendMessage();
+    const handleInputChange = (e) => {
+        const value = e.target.value;
+        setInputValue(value);
+        setIsInputActive(value.trim().length > 0);
+
+        // Отправляем сообщение через задержку
+        if (typingTimeout) {
+            clearTimeout(typingTimeout); // Если был таймер, сбрасываем его
         }
+
+        // Устанавливаем новый таймер, чтобы отправить сообщение через 1 секунду после ввода
+        setTypingTimeout(setTimeout(() => {
+            if (value.trim()) {
+                handleSendMessage();
+            }
+        }, 1000));  // Задержка 1 секунда
     };
 
     useEffect(() => {
@@ -102,13 +128,14 @@ const ChatScreen = () => {
                         <p className="code-value">{roomCode}</p>
                     </div>
                 </div>
+
                 <div className="chat">
                     {chatMessages.map((msg, i) => (
-                        <div key={i} className={`chat-message ${msg.sender}`}>
-                            {msg.sender !== 'user' && msg.name && (
+                        <div key={i} className={`chat-message ${msg.name === playerName ? 'user' : 'other'}`}>
+                            {msg.name && (
                                 <div className="nickname">{msg.name}:</div>
                             )}
-                            <div className="message-text">{msg.text}</div>
+                            <div className="message-text">{msg.content}</div>
                         </div>
                     ))}
                     <div ref={chatEndRef} />
@@ -119,12 +146,13 @@ const ChatScreen = () => {
                         className="chat-input-line"
                         placeholder={isFinalReview ? "Финальный просмотр..." : "Введите сообщение..."}
                         value={inputValue}
-                        onChange={(e) => {
-                            setInputValue(e.target.value);
-                            setIsInputActive(e.target.value.length > 0);
+                        onChange={handleInputChange}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter' && !isFinalReview) {
+                                handleSendMessage();
+                            }
                         }}
-                        onKeyDown={handleKeyDown}
-                        disabled={isFinalReview || hasMessageSent || countdown === 0}
+                        disabled={isFinalReview || countdown === 0}
                     />
                     <div className='img-inside-input'>
                         <img

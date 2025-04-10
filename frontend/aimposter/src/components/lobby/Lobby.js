@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { io } from "socket.io-client";
 import "../header.css";
 import "./Lobby.css";
 import logo from '../../assets/images/logo.png';
 import avatar from "../../assets/images/avatar.png";
 import { getRoomDetails } from "../../api/room_api.js";
+import socket from "../../config/socket";
 
-const socket = io("ws://localhost:8080");
+
 
 const LobbyScreen = () => {
   const [roomData, setRoomData] = useState(null);
@@ -23,7 +23,7 @@ const LobbyScreen = () => {
 
   useEffect(() => {
     if (location.state) {
-      const { playerName, roomCode, playerId, isCreator } = location.state;
+      const { playerName, roomCode, playerId, isCreator, token } = location.state;
       setPlayerName(playerName);
       setRoomCode(roomCode);
       setPlayerId(playerId);
