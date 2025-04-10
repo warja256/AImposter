@@ -1,6 +1,6 @@
 // src/components/MafiaScreen.js
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './RoleScreen.css';
 import '../header.css';
 import robot from '../../assets/images/mafia_ai.png';
@@ -13,7 +13,7 @@ const MafiaScreen = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigate('/ai-chat', { state: { token, playerName, roomCode, playerId } }); // 👈 передаём дальше, если надо
+      navigate('/ai-chat', { state: { token, playerName, roomCode, playerId } }); 
     }, 7000);
 
     return () => clearTimeout(timer);

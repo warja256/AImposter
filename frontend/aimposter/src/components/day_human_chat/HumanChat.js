@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { io } from "socket.io-client";
 import './HumanChat.css';
 import '../header.css';
 import logo from '../../assets/images/logo.png';
@@ -7,9 +8,10 @@ import info from '../../assets/images/info.png';
 import img from '../../assets/images/blue_human.png';
 import sendImg from '../../assets/images/send.png';
 
+const socket = io("ws://localhost:8080");
+
 const ChatScreen = () => {
-    const [roomCode, setRoomCode] = useState('9090');
-    const [countdown, setCountdown] = useState(25);
+    const [countdown, setCountdown] = useState(250);
     const [round, setRound] = useState(1);
     const [inputValue, setInputValue] = useState('');
     const [isInputActive, setIsInputActive] = useState(false);
@@ -17,7 +19,9 @@ const ChatScreen = () => {
     const [hasMessageSent, setHasMessageSent] = useState(false);
     const [isFinalReview, setIsFinalReview] = useState(false);
     const navigate = useNavigate();
+    const location = useLocation();
     const chatEndRef = useRef(null);
+    const { token, playerName, roomCode, playerId } = location.state || {};
 
     const formatTime = (seconds) => {
         const minutes = Math.floor(seconds / 60);
@@ -26,16 +30,29 @@ const ChatScreen = () => {
     };
 
     useEffect(() => {
+        socket.on('newMessage', (message) => {
+            setChatMessages((prevMessages) => [...prevMessages, message]);
+        });
+
+        return () => {
+            socket.off('newMessage'); 
+        };
+    }, []);
+
+    useEffect(() => {
         if (countdown > 0) {
             const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
             return () => clearTimeout(timer);
         } else {
             if (round < 6) {
                 // Переход к следующему раунду
-                handleNextRound();
+                setRound(round + 1);
+                setCountdown(25);
+                setHasMessageSent(false);
             } else if (!isFinalReview) {
                 // После 6-го раунда - фаза финального просмотра
-                handleFinalReview();
+                setIsFinalReview(true);
+                setCountdown(10); // 10 секунд на финальный просмотр
             } else {
                 // После финального просмотра - переход
                 navigate('/human-voting');
@@ -43,39 +60,17 @@ const ChatScreen = () => {
         }
     }, [countdown, round, isFinalReview]);
 
-    const handleNextRound = () => {
-        // Добавляем сообщения от других игроков
-        const mockMessages = [
-            { text: `Сообщение от игрока 1`, sender: 'other', name: 'Player1' },
-            { text: `Сообщение от игрока 2`, sender: 'other', name: 'Player2' },
-            { text: `Сообщение от игрока 3`, sender: 'other', name: 'Player3' }
-        ];
-
-        setChatMessages(prev => [...prev, ...mockMessages]);
-        setRound(round + 1);
-        setCountdown(25);
-        setHasMessageSent(false);
-    };
-
-    const handleFinalReview = () => {
-        // Добавляем финальные сообщения
-        const finalMessages = [
-            { text: `Сообщение от игрока 1`, sender: 'other', name: 'Player1' },
-            { text: `Сообщение от игрока 2`, sender: 'other', name: 'Player2' },
-            { text: `Сообщение от игрока 3`, sender: 'other', name: 'Player3' }
-        ];
-
-        setChatMessages(prev => [...prev, ...finalMessages]);
-        setIsFinalReview(true);
-        setCountdown(10); // 10 секунд на финальный просмотр
-    };
-
     const handleSendMessage = () => {
         if (inputValue.trim() && !hasMessageSent && !isFinalReview) {
-            setChatMessages(prev => [
-                ...prev,
-                { text: `${inputValue}`, sender: 'user' }
-            ]);
+            const messageData = {
+                token: token, 
+                roomCode: roomCode,
+                playerId: playerId, 
+                content: inputValue
+            };
+
+            // Отправка сообщения через WebSocket
+            socket.emit('sendMessage', messageData);
             setInputValue('');
             setHasMessageSent(true);
         }
@@ -107,7 +102,6 @@ const ChatScreen = () => {
                         <p className="code-value">{roomCode}</p>
                     </div>
                 </div>
-
                 <div className="chat">
                     {chatMessages.map((msg, i) => (
                         <div key={i} className={`chat-message ${msg.sender}`}>

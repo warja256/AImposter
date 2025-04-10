@@ -5,7 +5,7 @@ import "../header.css";
 import "./Lobby.css";
 import logo from '../../assets/images/logo.png';
 import avatar from "../../assets/images/avatar.png";
-import { getRoomDetails } from "../../api/room_api.js";
+
 
 const socket = io("ws://localhost:8080");
 
@@ -39,8 +39,7 @@ const LobbyScreen = () => {
       return;
     }
     console.log("Токен:", token);
-     // Получаем токен из localStorage
-  
+
     // Получаем данные о комнате и игроках
     const fetchRoomData = async () => {
       try {
@@ -51,11 +50,11 @@ const LobbyScreen = () => {
         console.error("Ошибка при получении данных о комнате:", error);
       }
     };
-  
+
     if (roomCode) {
       fetchRoomData();
     }
-  
+
     if (token && roomCode && playerId) {
       socket.emit("joinRoom", {
         token: token, // передаём актуальный токен
@@ -68,35 +67,41 @@ const LobbyScreen = () => {
       console.log("Игрок присоединился к комнате:", data);
       setPlayerData(data.player);  
     });
-  
-    socket.on("gameStarted", (data) => {
-      console.log("Игра началась", data);
-      console.log(data.message);
-      navigate("/connection", {state: {playerName, playerId, roomCode, token } });
+
+    socket.on("gameStarted", async (data) => {
+      const { roomCode } = data;
+      const token = localStorage.getItem("authToken"); // Получаем токен внутри эффекта
+
+      try {
+        navigate('/connection', { state: { playerName, roomCode, playerId, token } });
+
+      } catch (error) {
+        console.error("Ошибка при получении ID мафии:", error);
+        alert("Ошибка при получении данных о роли мафии.");
+      }
     });
-  
+
     socket.on("error", (errorMessage) => {
       alert(errorMessage);
     });
-  
+
     return () => {
+      // Очистка обработчиков при размонтировании компонента
       socket.off("joinedRoom");
       socket.off("gameStarted");
       socket.off("error");
     };
-  }, [roomCode, playerId]);
-  
+  }, [roomCode, playerId, navigate, playerName]);
 
   const handleStartGame = () => {
     const token = localStorage.getItem("authToken");
-  
-    socket.emit("startGame", {
-      token: token,
-      roomCode: roomCode,
-      playerId: playerId,
-    });
+    if (!token) {
+      alert("Ошибка: токен не найден!");
+      return;
+    }
+
+    socket.emit("startGame", { token, roomCode, playerId });
   };
-  
 
   const handleCopyRoomCode = () => {
     navigator.clipboard.writeText(roomCode)

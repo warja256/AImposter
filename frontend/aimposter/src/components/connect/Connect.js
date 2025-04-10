@@ -1,43 +1,47 @@
-import "../header.css";
-import "./Connect.css";
 import React, { useEffect } from 'react';
-import logo from '../../assets/images/logo.png';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { getMafiaId } from '../../api/role_api';
+import { getRoomDetails } from "../../api/room_api.js";
+import { getMafiaId } from "../../api/role_api.js";
 
 const ConnectScreen = () => {
-    const navigate = useNavigate();
-    const location = useLocation();
-    const { playerName, playerId, roomCode, token } = location.state || {};
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { playerName, playerId, roomCode, token, mafiaId } = location.state || {};
 
-    useEffect(() => {
-        const fetchMafiaId = async () => {
-            try {
-                const mafiaData = await getMafiaId(roomCode);
-                console.log(mafiaData.mafiaId || "нет");
-                if (mafiaData.mafiaId === playerId) {
-                    
-                    // Если игрок — мафия
-                    navigate('/mafia-role', { state: { playerName, roomCode, playerId, token } });
-                } else {
-                    // Если игрок — человек
-                    navigate('/human-role', { state: { playerName, roomCode, playerId, token } });
-                }
-            } catch (error) {
-                console.error("Ошибка при определении мафии:", error);
-            }
-        };
+  useEffect(() => {
+    const fetchRoomDetails = async () => {
+      try {
+        const roomDetails = await getRoomDetails(roomCode);
+        console.log(roomDetails);
+        const player = roomDetails.Players.find(p => p.id === playerId);
+        const mafiaData = await getMafiaId(roomCode);
 
-        const timer = setTimeout(() => {
-            fetchMafiaId(); 
-        }, 3000);
+        if (mafiaData.message === "В комнате уже есть мафия") {
+          console.log("Мафия уже выбрана в этой комнате.");
+          return; // Прерываем выполнение, если мафия уже выбрана
+        }
 
-        return () => clearTimeout(timer);
+        const mafiaId = mafiaData.mafiaId;
+        if (player) {
+          if (playerId === mafiaId) {
+            navigate('/mafia-role', { state: { playerName, roomCode, playerId, token } });
+          } else {
+            navigate('/human-role', { state: { playerName, roomCode, playerId, token } });
+          }
+        }
+      } catch (error) {
+        console.error("Ошибка при получении данных о комнате:", error);
+      }
+    };
 
-    }, [navigate, playerId, roomCode, token]);
+    if (roomCode) {
+      fetchRoomDetails();
+    }
 
-    return (
-        <div className="connect-screen">
+  }, [roomCode, playerId, mafiaId, navigate]);
+
+  return (
+    <div className="connect-screen">
             <div className="logo-container">
                 <img src={logo} alt="AImposter Logo" />
                 <span className="header-title">AImposter</span>
@@ -52,7 +56,7 @@ const ConnectScreen = () => {
                 <span></span>
             </div>
         </div>
-    );
+  );
 };
 
 export default ConnectScreen;
