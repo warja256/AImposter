@@ -90,7 +90,7 @@ const WelcomeScreen = () => {
     }
   
     try {
-      const response = await joinRoom(roomCode, playerName, token);
+      const response = await joinRoom(roomCode, playerName);
       const { id } = response.player;
   
       if (response.token) {
