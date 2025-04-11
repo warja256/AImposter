@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { playerSetVote, endVotingRound } from '../../api/vote_api.js';
+import { getRoomDetails } from '../../api/room_api'; // Используем существующую функцию
 import './HumanVoting.css';
 import '../header.css';
 import logo from '../../assets/images/logo.png';
@@ -8,8 +10,32 @@ import avatar from "../../assets/images/avatar.png";
 const HumanVotingScreen = () => {
     const [countdown, setCountdown] = useState(20);
     const [selectedPlayer, setSelectedPlayer] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
+    const [players, setPlayers] = useState([]);
+    const [isLoadingPlayers, setIsLoadingPlayers] = useState(true);
     const navigate = useNavigate();
     const location = useLocation();
+
+    const { token, playerName, roomCode, playerId } = location.state || {};
+
+    // Загружаем данные комнаты и игроков
+    useEffect(() => {
+        const fetchRoomData = async () => {
+            try {
+                if (roomCode) {
+                    const roomData = await getRoomDetails(roomCode);
+                    const roomPlayers = roomData.Players || roomData.players || [];
+                    setPlayers(roomPlayers);
+                }
+            } catch (error) {
+                console.error('Ошибка при загрузке данных комнаты:', error);
+            } finally {
+                setIsLoadingPlayers(false);
+            }
+        };
+
+        fetchRoomData();
+    }, [roomCode, playerId]);
 
     const formatTime = (seconds) => {
         const minutes = Math.floor(seconds / 60);
@@ -26,38 +52,70 @@ const HumanVotingScreen = () => {
         }
     }, [countdown]);
 
-    const handleCountdownEnd = () => {
-        const { roomCode, playerId } = location.state || {};
-        navigate('/killed', {
-            state: {
-                roomCode: roomCode,
-                playerId: playerId,
-                votedPlayer: selectedPlayer
+    const handleCountdownEnd = async () => {
+        try {
+            if (roomCode) {
+                const response = await endVotingRound(roomCode);
+                console.log('Результат голосования:', response);
+
+                if (response.id && response.id.toString() === playerId.toString()) {
+                    navigate('/retired', {
+                        state: {
+                            token,
+                            playerName,
+                            roomCode,
+                            playerId,
+                            isEliminated: true
+                        }
+                    });
+                } else {
+                    navigate('/human-voting-results', {
+                        state: {
+                            token,
+                            playerName,
+                            roomCode,
+                            playerId,
+                            eliminatedPlayer: response.name
+                        }
+                    });
+                }
             }
-        });
-    };
-
-    const handlePlayerSelect = (playerId) => {
-        setSelectedPlayer(playerId);
-    };
-
-    const handleSend = () => {
-        if (selectedPlayer !== null) {
-            console.log(`Отправлен выбор: Игрок ${selectedPlayer}`);
-            handleCountdownEnd();
+        } catch (error) {
+            console.error('Ошибка при завершении голосования:', error);
+            navigate('/human-voting-results', {
+                state: {
+                    token,
+                    playerName,
+                    roomCode,
+                    playerId,
+                    error: 'Не удалось завершить голосование'
+                }
+            });
         }
     };
 
-    // Новая функция для перехода на экран голосования мафии
-    const handleNightTransition = () => {
-        const { roomCode, playerId } = location.state || {};
-        navigate('/mafia-voting', {
-            state: {
-                roomCode: roomCode,
-                playerId: playerId,
-                dayVote: selectedPlayer // Передаем результаты дневного голосования
+    const handlePlayerSelect = (playerId) => {
+        setSelectedPlayer(prev => prev === playerId ? null : playerId);
+    };
+
+    const handleSend = async () => {
+        if (selectedPlayer === null || isLoading) return;
+        
+        try {
+            setIsLoading(true);
+            
+            if (!roomCode || !playerId) {
+                throw new Error("Отсутствуют roomCode или playerId");
             }
-        });
+            
+            await playerSetVote(playerId, selectedPlayer, roomCode);
+            console.log(`Голос успешно отправлен за игрока ${selectedPlayer}`);
+            handleCountdownEnd();
+        } catch (error) {
+            console.error("Не удалось отправить голос:", error);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -75,35 +133,40 @@ const HumanVotingScreen = () => {
                     </div>
                 </div>
 
-                <div className="player-list">
-                    {[1, 2, 3, 4].map((playerId) => (
-                        <button
-                            key={playerId}
-                            className={`player-button-h ${selectedPlayer === playerId ? 'selected' : ''}`}
-                            onClick={() => handlePlayerSelect(playerId)}
-                        >
-                            <img src={avatar} className="avatar" alt={`Player ${playerId}`} />
-                            <div className="text">Игрок {playerId}</div>
-                        </button>
-                    ))}
-                </div>
+                {isLoadingPlayers ? (
+                    <div className="loading-players">Загрузка списка игроков...</div>
+                ) : players.length === 0 ? (
+                    <div className="no-players">Нет доступных игроков для голосования</div>
+                ) : (
+                    <div className="player-list">
+                        {players.map((player) => (
+                            <button
+                                key={player.id}
+                                className={`player-button-h ${selectedPlayer === player.id ? 'selected' : ''}`}
+                                onClick={() => handlePlayerSelect(player.id)}
+                                disabled={isLoading}
+                            >
+                                <img 
+                                    src={player.avatar || avatar} 
+                                    className="avatar" 
+                                    alt={`Player ${player.name}`} 
+                                />
+                                <div className="text">{player.name}</div>
+                            </button>
+                        ))}
+                    </div>
+                )}
 
                 <button 
                     className="send-button-h" 
                     onClick={handleSend}
-                    disabled={selectedPlayer === null}
+                    disabled={selectedPlayer === null || isLoading || isLoadingPlayers}
                 >
-                    <div className="button-text">ОТПРАВИТЬ</div>
+                    <div className="button-text">
+                        {isLoading ? 'ОТПРАВКА...' : 'ОТПРАВИТЬ'}
+                    </div>
                 </button>
             </div>
-            
-            {/* Кнопка для перехода в ночную фазу */}
-            <button 
-                className="but-night" 
-                onClick={handleNightTransition}
-            >
-                <div className="button-text">НОЧЬ</div>
-            </button>
         </div>
     );
 };
