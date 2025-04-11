@@ -157,7 +157,7 @@ function startWebSocket(server) {
 
                 const player = await Player.findOne({ where: { id: playerId } });
         
-                socket.emit("alertKill", { player });
+                socket.emit("alertedKill", { player });
                 io.to(roomCode).emit("alertedKill", { player });
             } catch (error) {
                 console.error("Ошибка при присоединении к комнате:", error);
