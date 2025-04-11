@@ -13,6 +13,7 @@ const ChatScreen = () => {
     const [round, setRound] = useState(1);
     const [inputValue, setInputValue] = useState('');
     const [isInputActive, setIsInputActive] = useState(false);
+    const [isSendingBlocked, setIsSendingBlocked] = useState(false);
     const [chatMessages, setChatMessages] = useState([]);
     const [isFinalReview, setIsFinalReview] = useState(false);
     const navigate = useNavigate();
@@ -62,7 +63,7 @@ const ChatScreen = () => {
                 setIsFinalReview(true);
                 setCountdown(10);
             } else {
-                navigate('/human-voting', {state: {token, playerName, roomCode, playerId}})
+                navigate('/human-voting', { state: { token, playerName, roomCode, playerId } });
             }
         }
     }, [countdown, round, isFinalReview]);
@@ -70,7 +71,7 @@ const ChatScreen = () => {
     const handleSendMessage = () => {
         const trimmed = inputValue.trim();
 
-        if (trimmed && !isFinalReview) {
+        if (trimmed && !isFinalReview && !isSendingBlocked) {
             const messageData = {
                 token,
                 roomCode,
@@ -78,13 +79,16 @@ const ChatScreen = () => {
                 content: trimmed
             };
 
-            console.log("Отправка сообщения с задержкой в 20 секунд:", messageData);
+            console.log("Отправка сообщения:", messageData);
+            socket.emit('sendMessage', messageData);
+            setInputValue('');
+            setIsInputActive(false);
+            setIsSendingBlocked(true);
 
-            // Устанавливаем задержку в 20 секунд перед отправкой
+            // Блокируем ввод на 20 секунд
             setTimeout(() => {
-                socket.emit('sendMessage', messageData);
-                setInputValue('');
-            }, 20000); // 20 секунд
+                setIsSendingBlocked(false);
+            }, 20000);
         }
     };
 
@@ -134,20 +138,20 @@ const ChatScreen = () => {
                         value={inputValue}
                         onChange={handleInputChange}
                         onKeyDown={(e) => {
-                            if (e.key === 'Enter' && !isFinalReview) {
+                            if (e.key === 'Enter' && !isFinalReview && !isSendingBlocked) {
                                 handleSendMessage();
                             }
                         }}
-                        disabled={isFinalReview || countdown === 0}
+                        disabled={isFinalReview || countdown === 0 || isSendingBlocked}
                     />
                     <div className='img-inside-input'>
                         <img
                             src={isInputActive ? sendImg : img}
                             alt="Send"
-                            onClick={isFinalReview ? undefined : handleSendMessage}
-                            style={{ 
-                                cursor: isFinalReview ? 'not-allowed' : 'pointer',
-                                opacity: isFinalReview ? 0.5 : 1
+                            onClick={isFinalReview || isSendingBlocked ? undefined : handleSendMessage}
+                            style={{
+                                cursor: (isFinalReview || isSendingBlocked) ? 'not-allowed' : 'pointer',
+                                opacity: (isFinalReview || isSendingBlocked) ? 0.5 : 1
                             }}
                         />
                     </div>
