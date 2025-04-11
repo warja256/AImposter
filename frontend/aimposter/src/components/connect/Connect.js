@@ -2,12 +2,13 @@ import React, { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { getRoomDetails } from "../../api/room_api.js";
 import { getMafiaId } from "../../api/role_api.js";
+import './Connect.css';
 import logo from '../../assets/images/logo.png';
 
 const ConnectScreen = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { playerName, playerId, roomCode, token, mafiaId } = location.state || {};
+  const { playerName, playerId, roomCode, token } = location.state || {};
 
   useEffect(() => {
     const fetchRoomDetails = async () => {
@@ -30,11 +31,13 @@ const ConnectScreen = () => {
         }
 
         if (player) {
-          if (playerId === mafiaIdFinal) {
-            navigate('/mafia-role', { state: { playerName, roomCode, playerId, token } });
-          } else {
-            navigate('/human-role', { state: { playerName, roomCode, playerId, token } });
-          }
+          setTimeout(() => {
+            if (playerId === mafiaIdFinal) {
+              navigate('/mafia-role', { state: { playerName, roomCode, playerId, token } });
+            } else {
+              navigate('/human-role', { state: { playerName, roomCode, playerId, token } });
+            }
+          }, 5000); // 5 секунд
         }
 
       } catch (error) {
@@ -46,24 +49,24 @@ const ConnectScreen = () => {
       fetchRoomDetails();
     }
 
-  }, [roomCode, playerId, mafiaId, navigate]);
+  }, [roomCode, playerId, navigate]);
 
   return (
     <div className="connect-screen">
-            <div className="logo-container">
-                <img src={logo} alt="AImposter Logo" />
-                <span className="header-title">AImposter</span>
-            </div>
-            <div>
-                <h3 className="connect-header">ОПРЕДЕЛЯЕМ ВАШУ РОЛЬ</h3>
-            </div>
-            <div className="connect-dots">
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
+      <div className="logo-container">
+        <img src={logo} alt="AImposter Logo" />
+        <span className="header-title">AImposter</span>
+      </div>
+      <div>
+        <h3 className="connect-header">ОПРЕДЕЛЯЕМ ВАШУ РОЛЬ</h3>
+      </div>
+      <div className="connect-dots">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
   );
 };
 
