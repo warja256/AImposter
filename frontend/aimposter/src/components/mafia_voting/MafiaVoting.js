@@ -72,7 +72,7 @@ const MafiaVotingScreen = () => {
             if (eliminatedPlayer.id === playerId) {
                 navigate('/killed', { state: { playerName, roomCode, playerId, token } });
             } else {
-                navigate('/night-result', { state: { playerName, roomCode, playerId, token } });
+                navigate('/night-result', { state: {eliminatedPlayerName: eliminatedPlayer.name, playerName, roomCode, playerId, token } });
             }
         } catch (error) {
             console.error("Ошибка при определении выбывшего игрока:", error);
