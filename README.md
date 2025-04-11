@@ -27,17 +27,20 @@
 
    Запустите серверную часть
      
-    ```bash
+   ```bash
         cd backend/src
-    ```
-    ```bash
+   ```
+    
+   ```bash
         node app.js
-    ```
+   ```
     
    Запустите пользовательскую часть
-    ```bash
-        cd frontend/aimposter
-    ```
-    ```bash
+   
+   ```bash
+      cd frontend/aimposter
+   ```
+    
+   ```bash
         npm start
-    ```
+   ```
