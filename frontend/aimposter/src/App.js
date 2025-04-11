@@ -21,6 +21,7 @@ import KilledUser from './components/retired/KilledUser.js';
 import RetiredUser from './components/retired/RetiredUser.js';
 import MafiaWinnerScreen from './components/winner/MafiaWinnerScreen.js';
 import HumanWinnerScreen from './components/winner/HumanWinnerScreen.js';
+import HumanVotingResults from './components/retired/HumanVotingResults.js';
 
 const App = () => {
   return (
@@ -44,6 +45,7 @@ const App = () => {
         <Route path="/connection" element={<ConnectScreen />} />
         <Route path="/mafia-role" element={<MafiaScreen />} />
         <Route path="/human-role" element={<HumanRoleScreen />} />
+        <Route path="/human-voting-results" element={<HumanVotingResults />} />
       </Routes>
     </Router>
   );

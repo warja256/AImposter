@@ -62,7 +62,7 @@ const ChatScreen = () => {
                 setIsFinalReview(true);
                 setCountdown(10);
             } else {
-                navigate('/human-voting');
+                navigate('/human-voting', {state: {token, playerName, roomCode, playerId}})
             }
         }
     }, [countdown, round, isFinalReview]);
