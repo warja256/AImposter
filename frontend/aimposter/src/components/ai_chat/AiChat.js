@@ -44,7 +44,6 @@ const AiChatScreen = () => {
       setSentMessages([...sentMessages, message]); // Добавляем сообщение в массив
       setMessage(''); // Очищаем поле ввода
       setShowChoices(true); // Переключаемся на отображение вариантов выбора
-      setCountdown(15); // Сбрасываем таймер и начинаем отсчет заново
       
       // Переход на страницу ответов
       navigate('/ai-responses', {
