@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { playerSetVote, endVotingRound } from '../../api/vote_api.js';
-import { getRoomDetails } from '../../api/room_api'; // Используем существующую функцию
+import { getRoomDetails } from '../../api/room_api';
 import './HumanVoting.css';
 import '../header.css';
 import logo from '../../assets/images/logo.png';
