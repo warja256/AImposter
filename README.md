@@ -38,7 +38,7 @@
    Запустите пользовательскую часть
    
    ```bash
-      cd frontend/aimposter
+        cd frontend/aimposter
    ```
     
    ```bash
