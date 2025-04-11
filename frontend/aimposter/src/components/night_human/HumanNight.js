@@ -39,17 +39,29 @@ const HumanNightScreen = () => {
       }
     };
 
-    socket.on('alertedKill', handleAlertedKill);
+    if (token && roomCode && playerId) {
+      socket.emit("joinRoom", {
+        token: token,
+        roomCode: roomCode,
+        playerId: playerId
+      });
+
+      socket.on("alertedKill", handleAlertedKill);
+
+      socket.on("error", (errorMessage) => {
+        alert(errorMessage);
+      });
+    }
 
     return () => {
-      socket.off('alertedKill', handleAlertedKill);
+      socket.off("alertedKill", handleAlertedKill);
+      socket.off("error");
     };
-  }, [playerId, roomCode, playerName, token, navigate]);
+  }, [playerId, roomCode, token, playerName, navigate]);
 
   const handleCountdownEnd = () => {
-    // Заглушка для будущего кода перехода на другую страницу
     console.log("Таймер завершен! Переход на другую страницу...");
-    navigate('/night-result'); // Раскомментируйте эту строку, когда будете готовы к переходу
+    // Если таймер завершился, но событие еще не пришло, можно добавить дополнительную логику
   };
 
   return (
