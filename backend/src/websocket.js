@@ -10,10 +10,10 @@ function startWebSocket(server) {
     io.on("connection", (socket) => {
         console.log(`Игрок подключился: ${socket.id}`);
 
-        // Присоединение к комнате
+        //Присоединение к комнате
         socket.on("joinRoom", async (data) => {
             try {
-                const { token, roomCode, playerId} = data; // Читаем данные из запроса(токен, комната, сообщение)
+                const { token, roomCode, playerId} = data;
 
                 const decoded = verifyToken(token);
                 if (!decoded) {
@@ -133,6 +133,35 @@ function startWebSocket(server) {
             } catch (error) {
                 console.error("Ошибка при отправке сообщения:", error);
                 socket.emit("error", { message: "Ошибка при отправке сообщения" });
+            }
+        });
+
+        socket.on("alertKill", async (data) => {
+            try {
+                const { token, roomCode, playerId} = data;
+
+                const decoded = verifyToken(token);
+                if (!decoded) {
+                    return socket.emit("error", "Неверный или истёкший токен!");
+                }
+        
+                if (!roomCode) {
+                    return socket.emit("error", "Код комнаты обязателен!");
+                }
+        
+                const room = await Room.findOne({ where: { roomCode } });
+        
+                if (!room) {
+                    return socket.emit("error", "Комната не найдена!");
+                }
+
+                const player = await Player.findOne({ where: { id: playerId } });
+        
+                socket.emit("alertKill", { player });
+                io.to(roomCode).emit("alertedKill", { player });
+            } catch (error) {
+                console.error("Ошибка при присоединении к комнате:", error);
+                socket.emit("error", "Ошибка при присоединении к комнате");
             }
         });
         

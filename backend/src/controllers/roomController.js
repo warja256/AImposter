@@ -30,7 +30,7 @@ const createRoom = async (req, res) => {
 
         
         const newPlayer = await Player.create({ name: playerName });
-        const newRoom = await Room.create({roomCode: roomCode, creator: newPlayer.id});  // Создаём комнату
+        const newRoom = await Room.create({roomCode: roomCode, creator: newPlayer.id});
 
         await GameSession.create({
             roomId: newRoom.id,
@@ -39,13 +39,13 @@ const createRoom = async (req, res) => {
         const token = generateToken(newPlayer);
 
 
-        res.status(201).json({room: newRoom, player: newPlayer, token});  // Отправляем ответ с созданной комнатой
+        res.status(201).json({room: newRoom, player: newPlayer, token}); 
     } catch (error) {
         console.error(error);
         res.status(500).json({ 
             message: 'Ошибка создания комнаты и игрока!',
-            details: error.message,  // Добавление деталей ошибки
-            stack: error.stack  // Полная трассировка стека (для разработки)
+            details: error.message,
+            stack: error.stack
          });
     }
 };
