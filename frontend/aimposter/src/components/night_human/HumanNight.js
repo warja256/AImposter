@@ -2,11 +2,15 @@ import React, { useState, useEffect } from 'react';
 import './HumanNight.css';
 import '../header.css';
 import logo from '../../assets/images/logo.png';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import socket from "../../config/socket";
 
 const HumanNightScreen = () => {
   const [countdown, setCountdown] = useState(20);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const { playerName, roomCode, playerId, token } = location.state || {};
 
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
@@ -22,6 +26,25 @@ const HumanNightScreen = () => {
       handleCountdownEnd();
     }
   }, [countdown, navigate]);
+
+  useEffect(() => {
+    const handleAlertedKill = (data) => {
+      const { player } = data;
+      if (player.id === playerId) {
+        // Текущий игрок выбыл
+        navigate('/killed', { state: { playerName, roomCode, playerId, token } });
+      } else {
+        // Текущий игрок не выбыл
+        navigate('/night-result', { state: { eliminatedPlayerName: player.name, playerName, roomCode, playerId, token } });
+      }
+    };
+
+    socket.on('alertedKill', handleAlertedKill);
+
+    return () => {
+      socket.off('alertedKill', handleAlertedKill);
+    };
+  }, [playerId, roomCode, playerName, token, navigate]);
 
   const handleCountdownEnd = () => {
     // Заглушка для будущего кода перехода на другую страницу

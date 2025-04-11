@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { getRoomDetails } from "../../api/room_api.js";
 import { getMafiaId } from "../../api/role_api.js";
 import logo from '../../assets/images/logo.png';
+import "./Connect.css";
 
 const ConnectScreen = () => {
   const navigate = useNavigate();
@@ -30,11 +31,13 @@ const ConnectScreen = () => {
         }
 
         if (player) {
-          if (playerId === mafiaIdFinal) {
-            navigate('/mafia-role', { state: { playerName, roomCode, playerId, token } });
-          } else {
-            navigate('/human-role', { state: { playerName, roomCode, playerId, token } });
-          }
+          setTimeout(() => {
+            if (playerId === mafiaIdFinal) {
+              navigate('/mafia-role', { state: { playerName, roomCode, playerId, token } });
+            } else {
+              navigate('/human-role', { state: { playerName, roomCode, playerId, token } });
+            }
+          }, 5000); // 5 секунд
         }
 
       } catch (error) {
