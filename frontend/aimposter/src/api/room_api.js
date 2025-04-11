@@ -51,3 +51,24 @@ export const getRoomDetails = async (roomCode) => {
       throw error;
     }
   };
+
+  export const changeRoomStatus = async (roomCode) => {
+    try {
+      const response = await fetch(`${API_URL}/rooms/${roomCode}/status`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include' // если используете куки для аутентификации
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      return await response.json();
+    } catch (error) {
+      console.error("Ошибка при смене статуса игры:", error);
+      throw error;
+    }
+  };

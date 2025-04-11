@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { changeRoomStatus } from '../../api/room_api.js'; // Импортируем функцию смены статуса
 import './Retired.css';
 import '../header.css';
 import logo from '../../assets/images/logo.png';
@@ -7,6 +8,7 @@ import logo from '../../assets/images/logo.png';
 const HumanVotingResults = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [isLoading, setIsLoading] = useState(false);
   
   const { 
     token, 
@@ -16,24 +18,34 @@ const HumanVotingResults = () => {
     eliminatedPlayer 
   } = location.state || {};
 
-
   const [userName, setUserName] = useState('');
 
   useEffect(() => {
     if (eliminatedPlayer) {
-        setUserName(eliminatedPlayer);
+      setUserName(eliminatedPlayer);
     }
   }, [eliminatedPlayer]);
 
-  const handleButtonClick = () => {
-    navigate('/human-night', {
-      state: {
-        token,
-        playerName, 
-        roomCode,
-        playerId,
-      }
-    });
+  const handleButtonClick = async () => {
+    setIsLoading(true);
+    
+    try {
+      await changeRoomStatus(roomCode);
+
+      navigate('/human-night', {
+        state: {
+          token,
+          playerName, 
+          roomCode,
+          playerId,
+        }
+      });
+      
+    } catch (err) {
+      console.error('Ошибка при смене статуса игры:', err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -46,13 +58,16 @@ const HumanVotingResults = () => {
       <div className="night-result">
         <p className="message">ПО ИТОГАМ ГОЛОСОВАНИЯ НАС ПОКИНУЛ</p>
         <p className="retired-user">{userName}</p>
+        
         <button 
           className="send-button" 
           type="button"
           onClick={handleButtonClick}
+          disabled={isLoading}
         >
-          Продолжить
+          {isLoading ? 'Переход...' : 'Продолжить'}
         </button>
+        
         <br />
       </div>
     </div>
