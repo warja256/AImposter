@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { getRoomDetails } from '../../api/room_api';
-import { mafiaSetVote } from '../../api/vote_api';
+import { mafiaSetVote, endMafiaVoting } from '../../api/vote_api';
 import './MafiaVoting.css';
 import '../header.css';
 import logo from '../../assets/images/logo.png';
@@ -40,7 +40,6 @@ const MafiaVotingScreen = () => {
             const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
             return () => clearTimeout(timer);
         } else {
-            // Placeholder for future code to navigate to another page
             handleCountdownEnd();
         }
     }, [countdown, navigate]);
@@ -55,13 +54,29 @@ const MafiaVotingScreen = () => {
         return () => clearInterval(messageInterval);
     }, [selectedPlayer]);
 
-    const handleCountdownEnd = () => {
-        console.log("Таймер завершен! Переход на другую страницу...");
-        // navigate('/ai-chat', { state: { playerName, roomCode, playerId, token }});
-    };
+    // const handleCountdownEnd = () => {
+    //     console.log("Таймер завершен! Переход на другую страницу...");
+    //     // navigate('/retired', { state: { playerName, roomCode, playerId, token }});
+    // };
 
     const handlePlayerSelect = (playerId) => {
         setSelectedPlayer(playerId);
+    };
+
+    const handleCountdownEnd = async () => {
+        console.log("Таймер завершен! Определение выбывшего игрока...");
+        try {
+            const eliminatedPlayer = await endMafiaVoting(roomCode);
+            console.log("Выбывший игрок:", eliminatedPlayer);
+
+            if (eliminatedPlayer.id === playerId) {
+                navigate('/killed', { state: { playerName, roomCode, playerId, token } });
+            } else {
+                navigate('/night-result', { state: { playerName, roomCode, playerId, token } });
+            }
+        } catch (error) {
+            console.error("Ошибка при определении выбывшего игрока:", error);
+        }
     };
 
     const handleSend = async () => {
@@ -69,6 +84,8 @@ const MafiaVotingScreen = () => {
             try {
                 const response = await mafiaSetVote(playerId, selectedPlayer, roomCode);
                 console.log(`Голос отправлен: Игрок ${selectedPlayer}, Статус: ${response.status}`);
+
+                handleCountdownEnd();
             } catch (error) {
                 console.error("Ошибка при отправке голоса:", error);
             }
