@@ -3,7 +3,7 @@ const router = express.Router();
 const { sendMessage, getMessages } = require('../controllers/chatController');
 
 /**
- * @swagger
+ * 
  * /api/chat/{roomCode}/send:
  *   post:
  *     summary: Отправить сообщение в чат
@@ -55,11 +55,11 @@ const { sendMessage, getMessages } = require('../controllers/chatController');
  *       500:
  *         description: Ошибка на сервере
  */
-router.post('/send', sendMessage);
+//router.post('/send', sendMessage);
 
 
 /**
- * @swagger
+ * 
  * /api/chat/{roomCode}:
  *   get:
  *     summary: Получить историю сообщений в чате за текущий раунд
@@ -100,7 +100,7 @@ router.post('/send', sendMessage);
  *       500:
  *         description: Ошибка на сервере
  */
-router.get('/:roomCode', getMessages);
+//router.get('/:roomCode', getMessages);
 
 
 module.exports = router;

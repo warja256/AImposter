@@ -37,6 +37,8 @@ const { createRoom, joinRoom, getRoom, leaveRoom, chooseMafia, changeStatus, isW
  *                       type: string
  *                     playerCount:
  *                       type: number
+ *                     playStatus:
+ *                       type: string
  *                     id:
  *                       type: integer
  *                     roomCode:
@@ -91,7 +93,7 @@ router.post('/', createRoom);
 
 /**
  * @swagger
- * /api/rooms/{roomCode}/join:
+ * /api/rooms/join:
  *   post:
  *     summary: Присоединение к существующей комнате
  *     tags: [Комнаты]
@@ -125,6 +127,8 @@ router.post('/', createRoom);
  *                       type: string
  *                     playerCount:
  *                       type: number
+ *                     playStatus:
+ *                       type: string
  *                     roomCode:
  *                       type: string
  *                     creator:
@@ -202,6 +206,8 @@ router.post('/join', joinRoom);
  *                   type: string
  *                 playerCount:
  *                   type: number
+ *                 playStatus:
+ *                   type: string
  *                 roomCode:
  *                   type: string
  *                 creator:
@@ -247,7 +253,7 @@ router.get('/:roomCode', getRoom);
 /**
  * @swagger
  * /api/rooms/leave/{roomCode}:
- *   post:
+ *   delete:
  *     summary: Выход из комнаты
  *     tags: [Комнаты]
  *     parameters:
@@ -361,6 +367,8 @@ router.get('/chooseMafia/:roomCode', chooseMafia);
  *                   type: string
  *                 playerCount:
  *                   type: number
+ *                 playStatus:
+ *                   type: string
  *                 roomCode:
  *                   type: string
  *                 creator:
@@ -385,7 +393,7 @@ router.get('/chooseMafia/:roomCode', chooseMafia);
  *                 details:
  *                   type: string
  */
-router.get('/changeStatus/:roomCode', changeStatus);
+router.put('/changeStatus/:roomCode', changeStatus);
 
 /**
  * @swagger

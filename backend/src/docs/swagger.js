@@ -6,8 +6,8 @@ const swaggerOptions = {
   swaggerDefinition: {
     openapi: '3.0.0',
     info: {
-      title: 'Mafia Game API',
-      description: 'API для игры в мафию',
+      title: 'AImposter Game API',
+      description: 'API для игры в ИИ-мафию',
       version: '1.0.0',
     },
     servers: [
