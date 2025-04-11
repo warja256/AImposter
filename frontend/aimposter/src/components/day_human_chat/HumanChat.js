@@ -10,11 +10,11 @@ import socket from "../../config/socket";
 
 const ChatScreen = () => {
     const [countdown, setCountdown] = useState(140);
-    const [round, setRound] = useState(1);
     const [inputValue, setInputValue] = useState('');
     const [isInputActive, setIsInputActive] = useState(false);
     const [chatMessages, setChatMessages] = useState([]);
     const [isFinalReview, setIsFinalReview] = useState(false);
+    const [hasNavigated, setHasNavigated] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
     const chatEndRef = useRef(null);
@@ -54,18 +54,16 @@ const ChatScreen = () => {
         if (countdown > 0) {
             const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
             return () => clearTimeout(timer);
-        } else {
-            if (round < 6) {
-                setRound(round + 1);
-                setCountdown(25);
-            } else if (!isFinalReview) {
-                setIsFinalReview(true);
-                setCountdown(10);
-            } else {
-                navigate('/human-voting', {state: {token, playerName, roomCode, playerId}})
-            }
+        } else if (!isFinalReview) {
+            setIsFinalReview(true);
+            setCountdown(10); // 10 секунд на финальный просмотр
+        } else if (!hasNavigated) {
+            setHasNavigated(true);
+            navigate('/human-voting', { state: { token, playerName, roomCode, playerId } });
         }
-    }, [countdown, round, isFinalReview]);
+    }, [countdown, isFinalReview, hasNavigated]);
+    
+    
 
     const handleSendMessage = () => {
         const trimmed = inputValue.trim();

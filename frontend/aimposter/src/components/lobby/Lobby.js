@@ -65,7 +65,8 @@ const LobbyScreen = () => {
 
     socket.on("joinedRoom", (data) => {
       console.log("Игрок присоединился к комнате:", data);
-      setPlayerData(data.player);  
+      setPlayerData(data.player); 
+      fetchRoomData(); 
     });
 
     socket.on("gameStarted", async (data) => {
@@ -92,6 +93,17 @@ const LobbyScreen = () => {
       socket.off("error");
     };
   }, [roomCode, playerId, navigate, playerName]);
+
+  const fetchRoomData = async () => {
+    try {
+      const data = await getRoomDetails(roomCode);
+      setRoomData(data);
+      setPlayerCount(data.playerCount);
+    } catch (error) {
+      console.error("Ошибка при получении данных о комнате:", error);
+    }
+  };
+  
 
   const handleStartGame = () => {
     const token = localStorage.getItem("authToken");
